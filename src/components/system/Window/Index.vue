@@ -1,6 +1,6 @@
 <template>
   <div class="c__window" :style="Window.style">
-    <div class="title">{{ title }}</div>
+    <div class="title" @mousedown="handleDragStart" @mouseup="handleDragEnd">{{ title }}</div>
     <div class="controls">
       <div class="controls--btn">
         <img src="./assets/min.svg" alt="" />
@@ -12,12 +12,17 @@
         <img src="./assets/close.svg" alt="" />
       </div>
     </div>
-    <div class="content"></div>
+    <div class="content">
+      {{ mouse }}
+    </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { computed, reactive } from "vue";
+import { computed, reactive, watchEffect } from "vue";
+import { useMouse } from "@vueuse/core";
+
+const mouse = useMouse();
 
 const modelValue = defineModel({
   default: false,
@@ -29,8 +34,13 @@ const props = defineProps({
 });
 
 const Window = reactive({
+  dragging: false,
   x: 50,
   y: 50,
+  ox: 0,
+  oy: 0,
+  sx: 0,
+  sy: 0,
   width: 800,
   height: 600,
 
@@ -42,6 +52,24 @@ const Window = reactive({
       height: `${Window.height}px`,
     };
   }),
+});
+
+const handleDragStart = () => {
+  Window.sx = mouse.x.value;
+  Window.sy = mouse.y.value;
+  Window.ox = Window.x;
+  Window.oy = Window.y;
+  Window.dragging = true;
+};
+const handleDragEnd = () => {
+  Window.dragging = false;
+};
+
+watchEffect(() => {
+  if (Window.dragging) {
+    Window.x = Window.ox + mouse.x.value - Window.sx;
+    Window.y = Window.oy + mouse.y.value - Window.sy;
+  }
 });
 </script>
 
