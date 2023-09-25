@@ -1,5 +1,5 @@
 <template>
-  <div class="c__window" :style="Window.style">
+  <div class="c__window" :class="{ is_active: isActive }" :style="Window.style" @mousedown="handleWindowMouseDown">
     <div class="title" @mousedown="handleDragStart" @mouseup="handleDragEnd">{{ title }}</div>
     <div class="controls">
       <div class="controls--btn">
@@ -8,12 +8,12 @@
       <div class="controls--btn">
         <img src="./assets/max.svg" alt="" />
       </div>
-      <div class="controls--btn is_close">
+      <div class="controls--btn is_close" @click="handleClose">
         <img src="./assets/close.svg" alt="" />
       </div>
     </div>
     <div class="content">
-      {{ mouse }}
+      <slot name="default"></slot>
     </div>
   </div>
 </template>
@@ -24,10 +24,14 @@ import { useMouse } from "@vueuse/core";
 
 const mouse = useMouse();
 
+const emit = defineEmits(["active", "close"]);
 const modelValue = defineModel({
   default: false,
 });
 const props = defineProps({
+  isActive: {
+    default: false,
+  },
   title: {
     default: "",
   },
@@ -35,8 +39,8 @@ const props = defineProps({
 
 const Window = reactive({
   dragging: false,
-  x: 50,
-  y: 50,
+  x: Math.random() * 50 + 50,
+  y: Math.random() * 50 + 50,
   ox: 0,
   oy: 0,
   sx: 0,
@@ -50,6 +54,7 @@ const Window = reactive({
       top: `${Window.y}px`,
       width: `${Window.width}px`,
       height: `${Window.height}px`,
+      zIndex: props.isActive ? 60 : 50,
     };
   }),
 });
@@ -63,6 +68,12 @@ const handleDragStart = () => {
 };
 const handleDragEnd = () => {
   Window.dragging = false;
+};
+const handleWindowMouseDown = () => {
+  emit("active");
+};
+const handleClose = () => {
+  emit("close");
 };
 
 watchEffect(() => {
@@ -82,9 +93,13 @@ watchEffect(() => {
   grid-template-rows: 40px 1fr;
   overflow: hidden;
   position: fixed;
-  z-index: 50;
   background: linear-gradient(-10deg, #ccc, #fff);
-  box-shadow: 2px 2px 6px #0006;
+  box-shadow: 2px 2px 6px #0003;
+
+  &.is_active {
+    background: linear-gradient(-10deg, #ccc 0%, #fff 80%, #ecf4ff 100%);
+    box-shadow: 2px 2px 6px #0009;
+  }
 }
 .title {
   align-items: center;
@@ -117,8 +132,8 @@ watchEffect(() => {
       background: #0002;
     }
     & > img {
-      width: 50%;
-      height: 50%;
+      width: 36%;
+      height: 36%;
     }
   }
 }

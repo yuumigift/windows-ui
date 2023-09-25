@@ -4,13 +4,86 @@
     <div class="title">
       <span>Windows UI</span>
     </div>
+    <div class="desk">
+      <TaskIcon v-for="(app, index) in App.list" :key="index" :icon="`/icon/${app.icon}`" title="测试程序" @click="App.open(app)"></TaskIcon>
+    </div>
+
+    <Window v-for="(task, index) in Task.list" :key="task.id" :title="task.title" :is-active="task.isActive" @active="Task.handleActive(task)" @close="Task.handleClose(task)">
+      <component :is="task.render"></component>
+    </Window>
     <TaskBar></TaskBar>
-    <Window title="Yuumi App"></Window>
   </div>
 </template>
 <script setup lang="ts">
 import TaskBar from "@/components/system/TaskBar/Index.vue";
 import Window from "@/components/system/Window/Index.vue";
+import TaskIcon from "@/components/system/TaskIcon/Index.vue";
+import { reactive, watch } from "vue";
+
+interface IApp {
+  title: string;
+  vuePath: string;
+  icon: string;
+}
+
+interface ITask {
+  id: number;
+  title: string;
+  render: any;
+  isActive: boolean;
+}
+
+const appModules = import.meta.glob("@/apps/**/*.vue");
+
+const App = reactive({
+  list: [
+    {
+      title: "测试程序",
+      vuePath: "MyTest/Index.vue",
+      icon: "garden.png",
+    },
+  ] as IApp[],
+
+  async open(app: IApp) {
+    const getModule = (path?: string) => {
+      const globs = Object.keys(appModules);
+      const glob = globs.find((g) => g.includes(path ?? ""));
+      return appModules[glob ?? ""];
+    };
+    const module = getModule(app.vuePath);
+    const render: any = await module();
+    Task.list.push({
+      id: Math.floor(Math.random() * 1e10),
+      title: app.title,
+      render: render.default,
+      isActive: true,
+    });
+  },
+});
+
+const Task = reactive({
+  list: [] as ITask[],
+
+  handleActive(task: ITask) {
+    Task.list.forEach((task) => {
+      task.isActive = false;
+    });
+    const foundTask = Task.list.find((item) => item.id === task.id);
+    if (foundTask) {
+      foundTask.isActive = true;
+    }
+  },
+  handleClose(task: ITask) {
+    Task.list = Task.list.filter((item) => item.id !== task.id);
+    Task.setDefaultActive();
+  },
+  setDefaultActive() {
+    const foundTask = Task.list.find((item) => item.isActive);
+    if (!foundTask) {
+      Task.list[Task.list.length - 1].isActive = true;
+    }
+  },
+});
 </script>
 <style lang="less" scoped>
 .c__desktop {
@@ -33,5 +106,10 @@ import Window from "@/components/system/Window/Index.vue";
   position: absolute;
   inset: 0;
   background: linear-gradient(135deg, #327aff, #250047);
+}
+.desk {
+  position: absolute;
+  inset: 0;
+  z-index: 10;
 }
 </style>
