@@ -1,17 +1,19 @@
 <template>
-  <div class="page">
+  <div id="desktop" class="c__desktop">
     <div class="background"></div>
     <div class="title">
       <span>Windows UI</span>
     </div>
+    <TaskBar></TaskBar>
+    <Window title="Yuumi App"></Window>
   </div>
-  <TaskBar></TaskBar>
 </template>
 <script setup lang="ts">
 import TaskBar from "@/components/system/TaskBar/Index.vue";
+import Window from "@/components/system/Window/Index.vue";
 </script>
 <style lang="less" scoped>
-.page {
+.c__desktop {
   position: relative;
   position: fixed;
   display: grid;

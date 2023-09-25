@@ -1,0 +1,11 @@
+<template>
+  <div class="c__window"></div>
+</template>
+
+<script setup lang="ts">
+  
+</script>
+
+<style lang="less" scoped>
+  
+</style>
