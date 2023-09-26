@@ -5,8 +5,11 @@
       <div class="controls--btn">
         <img src="./assets/min.svg" alt="" />
       </div>
-      <div class="controls--btn">
+      <div class="controls--btn" v-if="!Window.isMaximize" @click="Window.isMaximize = true">
         <img src="./assets/max.svg" alt="" />
+      </div>
+      <div class="controls--btn" v-else @click="Window.isMaximize = false">
+        <img src="./assets/reset.svg" alt="" />
       </div>
       <div class="controls--btn is_close" @click="handleClose">
         <img src="./assets/close.svg" alt="" />
@@ -39,6 +42,7 @@ const props = defineProps({
 
 const Window = reactive({
   dragging: false,
+  isMaximize: false,
   x: Math.random() * 50 + 50,
   y: Math.random() * 50 + 50,
   ox: 0,
@@ -49,13 +53,23 @@ const Window = reactive({
   height: 600,
 
   style: computed((): any => {
-    return {
-      left: `${Window.x}px`,
-      top: `${Window.y}px`,
-      width: `${Window.width}px`,
-      height: `${Window.height}px`,
-      zIndex: props.isActive ? 60 : 50,
-    };
+    if (Window.isMaximize) {
+      return {
+        left: 0,
+        right: 0,
+        top: 0,
+        bottom: "50px",
+        zIndex: props.isActive ? 60 : 50,
+      };
+    } else {
+      return {
+        left: `${Window.x}px`,
+        top: `${Window.y}px`,
+        width: `${Window.width}px`,
+        height: `${Window.height}px`,
+        zIndex: props.isActive ? 60 : 50,
+      };
+    }
   }),
 });
 
