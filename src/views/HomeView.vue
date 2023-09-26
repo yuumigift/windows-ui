@@ -42,7 +42,7 @@ const App = reactive({
   async open(app: IApp) {
     const getModule = (path?: string) => {
       const globs = Object.keys(appModules);
-      const glob = globs.find((g) => g.includes(path ?? ""));
+      const glob = globs.find((g) => g.includes(path ?? "--"));
       return appModules[glob ?? ""];
     };
     const module = getModule(app.vuePath);
