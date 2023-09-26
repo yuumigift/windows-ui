@@ -19,6 +19,7 @@ import TaskBar from "@/components/system/TaskBar/Index.vue";
 import TaskIcon from "@/components/system/TaskIcon/Index.vue";
 import Window from "@/components/system/Window/Index.vue";
 import { reactive } from "vue";
+import { apps } from "@/system";
 
 interface IApp {
   title: string;
@@ -36,18 +37,7 @@ interface ITask {
 const appModules = import.meta.glob("@/apps/**/*.vue");
 
 const App = reactive({
-  list: [
-    {
-      title: "测试程序",
-      vuePath: "MyTest/Index.vue",
-      icon: "garden.png",
-    },
-    {
-      title: "星空闪耀",
-      vuePath: "Star/Index.vue",
-      icon: "star.png",
-    },
-  ] as IApp[],
+  list: apps as IApp[],
 
   async open(app: IApp) {
     const getModule = (path?: string) => {
