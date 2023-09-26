@@ -82,7 +82,6 @@ const Task = reactive({
 </script>
 <style lang="less" scoped>
 .c__desktop {
-  position: relative;
   position: fixed;
   display: grid;
   inset: 0;
