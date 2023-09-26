@@ -59,6 +59,7 @@ const Window = reactive({
         right: 0,
         top: 0,
         bottom: "50px",
+        borderRadius: "0",
         zIndex: props.isActive ? 60 : 50,
       };
     } else {
