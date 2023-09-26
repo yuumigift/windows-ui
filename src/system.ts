@@ -9,4 +9,8 @@ export const apps = [
     vuePath: "Star/Index.vue",
     icon: "star.png",
   },
+  {
+    title: "IntelliJ IDEA",
+    vuePath: "idea/Index.vue"
+  }
 ];
