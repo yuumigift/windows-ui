@@ -9,7 +9,7 @@
     </div>
 
     <Window v-for="task in Task.list" :key="task.id" :title="task.title" :is-active="task.isActive" @active="Task.handleActive(task)" @close="Task.handleClose(task)">
-      <component :is="task.render"></component>
+      <component :is="task.render" :key="task.id"></component>
     </Window>
     <TaskBar></TaskBar>
   </div>
