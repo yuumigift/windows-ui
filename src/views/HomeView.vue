@@ -79,7 +79,7 @@ const Task = reactive({
   },
   setDefaultActive() {
     const foundTask = Task.list.find((item) => item.isActive);
-    if (!foundTask) {
+    if (!foundTask && Task.list.length) {
       Task.list[Task.list.length - 1].isActive = true;
     }
   },
