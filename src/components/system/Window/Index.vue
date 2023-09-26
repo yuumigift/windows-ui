@@ -140,5 +140,6 @@ watchEffect(() => {
 
 .content {
   grid-area: c;
+  position: relative;
 }
 </style>

@@ -5,7 +5,7 @@
       <span>Windows UI</span>
     </div>
     <div class="desk">
-      <TaskIcon v-for="(app, index) in App.list" :key="index" :icon="`/icon/${app.icon}`" title="测试程序" @click="App.open(app)"></TaskIcon>
+      <TaskIcon v-for="(app, index) in App.list" :key="index" :icon="`/icon/${app.icon}`" :title="app.title" @click="App.open(app)"></TaskIcon>
     </div>
 
     <Window v-for="task in Task.list" :key="task.id" :title="task.title" :is-active="task.isActive" @active="Task.handleActive(task)" @close="Task.handleClose(task)">
@@ -41,6 +41,11 @@ const App = reactive({
       title: "测试程序",
       vuePath: "MyTest/Index.vue",
       icon: "garden.png",
+    },
+    {
+      title: "星空闪耀",
+      vuePath: "Star/Index.vue",
+      icon: "star.png",
     },
   ] as IApp[],
 
