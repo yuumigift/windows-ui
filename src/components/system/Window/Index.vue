@@ -100,15 +100,15 @@ watchEffect(() => {
 
 <style lang="less" scoped>
 .c__window {
-  border-radius: 8px;
   display: grid;
-  grid-template-areas: "a b" "c c";
-  grid-template-columns: 1fr auto;
-  grid-template-rows: 40px 1fr;
-  overflow: hidden;
   position: fixed;
-  background: linear-gradient(-10deg, #ccc, #fff);
+  grid-template-areas: "a b" "c c";
+  grid-template-rows: 40px 1fr;
+  grid-template-columns: 1fr auto;
+  border-radius: 8px;
   box-shadow: 2px 2px 6px #0003;
+  background: linear-gradient(-10deg, #ccc, #fff);
+  overflow: hidden;
 
   &.is_active {
     background: linear-gradient(-10deg, #ccc 0%, #fff 80%, #ecf4ff 100%);
@@ -116,25 +116,25 @@ watchEffect(() => {
   }
 }
 .title {
-  align-items: center;
-  color: #222;
   display: grid;
   grid-area: a;
+  align-items: center;
   padding: 0 1em;
+  color: #222;
   user-select: none;
 }
 .controls {
-  grid-area: b;
   display: grid;
+  grid-area: b;
   grid-template-columns: repeat(3, 40px);
 
   &--btn {
-    align-items: center;
-    background: #fff0;
-    cursor: pointer;
     display: grid;
+    align-items: center;
     justify-items: center;
     transition: 0.2s;
+    background: #fff0;
+    cursor: pointer;
     user-select: none;
 
     &.is_close {
@@ -153,7 +153,7 @@ watchEffect(() => {
 }
 
 .content {
-  grid-area: c;
   position: relative;
+  grid-area: c;
 }
 </style>

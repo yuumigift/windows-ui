@@ -14,24 +14,24 @@
 
 <style lang="less" scoped>
 .c__task_bar {
+  display: flex;
   position: fixed;
-  left: 0;
   bottom: 0;
+  left: 0;
+  z-index: 100;
+  background: #fff6;
   width: 100vw;
   height: 50px;
   backdrop-filter: blur(5px);
-  z-index: 100;
-  display: flex;
-  background: #fff6;
 }
 .start {
-  width: 50px;
-  height: 50px;
   display: grid;
   align-items: center;
   justify-items: center;
-  cursor: pointer;
   transition: 0.2s;
+  cursor: pointer;
+  width: 50px;
+  height: 50px;
 
   &:hover {
     background: #fff2;

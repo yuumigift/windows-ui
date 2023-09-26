@@ -82,28 +82,28 @@ const Task = reactive({
 </script>
 <style lang="less" scoped>
 .c__desktop {
-  position: fixed;
   display: grid;
+  position: fixed;
   inset: 0;
 }
 .title {
-  position: absolute;
-  inset: 0;
   display: grid;
+  position: absolute;
   align-items: center;
   justify-items: center;
-  font-size: 100px;
-  color: #fff9;
   text-shadow: 2px 2px 4px #0006;
+  color: #fff9;
+  font-size: 100px;
+  inset: 0;
 }
 .background {
   position: absolute;
-  inset: 0;
   background: linear-gradient(135deg, #327aff, #250047);
+  inset: 0;
 }
 .desk {
   position: absolute;
-  inset: 0;
   z-index: 10;
+  inset: 0;
 }
 </style>
