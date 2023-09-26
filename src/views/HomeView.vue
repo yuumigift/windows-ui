@@ -8,7 +8,7 @@
       <TaskIcon v-for="(app, index) in App.list" :key="index" :icon="`/icon/${app.icon}`" title="测试程序" @click="App.open(app)"></TaskIcon>
     </div>
 
-    <Window v-for="(task, index) in Task.list" :key="task.id" :title="task.title" :is-active="task.isActive" @active="Task.handleActive(task)" @close="Task.handleClose(task)">
+    <Window v-for="task in Task.list" :key="task.id" :title="task.title" :is-active="task.isActive" @active="Task.handleActive(task)" @close="Task.handleClose(task)">
       <component :is="task.render"></component>
     </Window>
     <TaskBar></TaskBar>
@@ -16,9 +16,9 @@
 </template>
 <script setup lang="ts">
 import TaskBar from "@/components/system/TaskBar/Index.vue";
-import Window from "@/components/system/Window/Index.vue";
 import TaskIcon from "@/components/system/TaskIcon/Index.vue";
-import { reactive, watch } from "vue";
+import Window from "@/components/system/Window/Index.vue";
+import { reactive } from "vue";
 
 interface IApp {
   title: string;
