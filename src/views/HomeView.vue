@@ -18,8 +18,8 @@
 import TaskBar from "@/components/system/TaskBar/Index.vue";
 import TaskIcon from "@/components/system/TaskIcon/Index.vue";
 import Window from "@/components/system/Window/Index.vue";
-import { reactive } from "vue";
 import { apps } from "@/system";
+import { reactive } from "vue";
 
 interface IApp {
   title: string;
