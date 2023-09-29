@@ -8,12 +8,10 @@ export {}
 declare module 'vue' {
   export interface GlobalComponents {
     ACascader: typeof import('ant-design-vue/es')['Cascader']
-    AConfigProvider: typeof import('ant-design-vue/es')['ConfigProvider']
     ADropdown: typeof import('ant-design-vue/es')['Dropdown']
     AMenu: typeof import('ant-design-vue/es')['Menu']
     AMenuDivider: typeof import('ant-design-vue/es')['MenuDivider']
     AMenuItem: typeof import('ant-design-vue/es')['MenuItem']
-    ASubMenu: typeof import('ant-design-vue/es')['SubMenu']
     Index: typeof import('./src/components/system/TaskBar/Index.vue')['default']
     Item: typeof import('./src/components/system/TaskBar/Item.vue')['default']
     MyCascader: typeof import('./src/components/cascader/MyCascader.vue')['default']
