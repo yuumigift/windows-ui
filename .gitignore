@@ -14,6 +14,8 @@ dist-ssr
 coverage
 *.local
 pnpm-lock.yaml
+package-lock.json
+components.d.ts
 
 /cypress/videos/
 /cypress/screenshots/
