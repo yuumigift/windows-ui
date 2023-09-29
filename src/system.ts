@@ -11,6 +11,7 @@ export const apps = [
   },
   {
     title: "IntelliJ IDEA",
-    vuePath: "idea/Index.vue"
+    vuePath: "idea/Index.vue",
+    icon: "idea.webp"
   }
 ];

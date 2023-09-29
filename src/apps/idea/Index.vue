@@ -1,9 +1,6 @@
 <template>
-0
+  <head-menu></head-menu>
 </template>
-<script setup lang="ts">
-
+<script lang="ts" setup>
+import HeadMenu from "@/apps/idea/components/HeadMenu.vue";
 </script>
-<style scoped lang="less">
-
-</style>
