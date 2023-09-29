@@ -9,6 +9,7 @@ export default defineConfig({
   server: {
     port: 1999,
   },
+  base: "",
   plugins: [
     vue({
       script: {
