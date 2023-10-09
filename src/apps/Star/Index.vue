@@ -1,10 +1,10 @@
 <template>
   <div class="c__star" ref="ref_star" @mousemove="handleMouseMove">
     <div class="star" v-for="(star, index) in Star.list" :key="index" :style="Star.getStyle(star)">
-      <img v-if="star.img === 0" src="./assets/star_blue.png" alt="" />
-      <img v-if="star.img === 1" src="./assets/star_green.png" alt="" />
-      <img v-if="star.img === 2" src="./assets/star_pink.png" alt="" />
-      <img v-if="star.img === 3" src="./assets/star_red.png" alt="" />
+      <img v-if="star.img === 0" src="./assets/star_one.png" alt="" />
+      <img v-if="star.img === 1" src="./assets/star_two.png" alt="" />
+      <img v-if="star.img === 2" src="./assets/star_three.png" alt="" />
+      <img v-if="star.img === 3" src="./assets/star_four.png" alt="" />
     </div>
   </div>
 </template>
