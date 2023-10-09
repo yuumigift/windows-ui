@@ -5,7 +5,7 @@
       <span>Windows UI</span>
     </div>
     <div class="desk">
-      <TaskIcon v-for="(app, index) in App.list" :key="index" :icon="`/icon/${app.icon}`" :title="app.title" @click="App.open(app)"></TaskIcon>
+      <TaskIcon v-for="(app, index) in App.list" :key="index" :icon="app.icon" :title="app.title" @click="App.open(app)"></TaskIcon>
     </div>
 
     <Window

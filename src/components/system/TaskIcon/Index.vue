@@ -1,7 +1,7 @@
 <template>
   <div class="c__task_icon">
     <div class="icon">
-      <img :src="icon" alt="" />
+      <img :src="`/icon/${icon}`" alt="" />
     </div>
     <div class="title">{{ title }}</div>
   </div>
