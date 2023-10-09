@@ -1,8 +1,8 @@
 <template>
-  <div class="c__window" :class="{ is_active: isActive }" :style="Window.style" @mousedown="handleWindowMouseDown">
+  <div v-show="!isMinimize" class="c__window" :class="{ is_active: isActive }" :style="Window.style" @mousedown="handleWindowMouseDown">
     <div class="title" @mousedown="handleDragStart" @mouseup="handleDragEnd">{{ title }}</div>
     <div class="controls">
-      <div class="controls--btn">
+      <div class="controls--btn" @click="handleMinimize">
         <img src="./assets/min.svg" alt="" />
       </div>
       <div class="controls--btn" v-if="!Window.isMaximize" @click="Window.isMaximize = true">
@@ -27,12 +27,12 @@ import { useMouse } from "@vueuse/core";
 
 const mouse = useMouse();
 
-const emit = defineEmits(["active", "close"]);
-const modelValue = defineModel({
-  default: false,
-});
+const emit = defineEmits(["active", "close", "minimize"]);
 const props = defineProps({
   isActive: {
+    default: false,
+  },
+  isMinimize: {
     default: false,
   },
   title: {
@@ -89,6 +89,9 @@ const handleWindowMouseDown = () => {
 };
 const handleClose = () => {
   emit("close");
+};
+const handleMinimize = () => {
+  emit("minimize");
 };
 
 watchEffect(() => {

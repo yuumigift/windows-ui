@@ -7,14 +7,15 @@
     <div class="desk">
       <TaskIcon v-for="(app, index) in App.list" :key="index" :icon="app.icon" :title="app.title" @click="App.open(app)"></TaskIcon>
     </div>
-
     <Window
       v-for="task in Task.list"
       :key="task.id"
       :title="task.title"
       :is-active="task.isActive"
+      :is-minimize="task.isMinimize"
       @active="Task.handleActive(task)"
       @close="Task.handleClose(task)"
+      @minimize="Task.handleMinimize(task)"
     >
       <component :is="task.render" :key="task.id"></component>
     </Window>

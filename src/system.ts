@@ -1,6 +1,6 @@
 import type { System } from "@/types";
 import { apps } from "@/apps/config";
-import { reactive } from "vue";
+import { markRaw, reactive } from "vue";
 
 export const Task = reactive({
   list: [] as System.ITask[],
@@ -12,16 +12,23 @@ export const Task = reactive({
     const foundTask = Task.list.find((item) => item.id === task.id);
     if (foundTask) {
       foundTask.isActive = true;
+      foundTask.isMinimize = false;
     }
   },
   handleClose(task: System.ITask) {
     Task.list = Task.list.filter((item) => item.id !== task.id);
     Task.setDefaultActive();
   },
+  handleMinimize(task: System.ITask) {
+    task.isMinimize = true;
+    task.isActive = false;
+    Task.setDefaultActive();
+  },
   setDefaultActive() {
     const foundTask = Task.list.find((item) => item.isActive);
-    if (!foundTask && Task.list.length) {
-      Task.list[Task.list.length - 1].isActive = true;
+    const showedTask = Task.list.filter((item) => !item.isMinimize);
+    if (!foundTask && showedTask.length) {
+      Task.handleActive.call(null, showedTask[showedTask.length - 1]);
     }
   },
 });
@@ -38,11 +45,13 @@ export const App = reactive({
     };
     const module = getModule(app.vuePath);
     const render: any = await module();
+    Task.list = Task.list.map((task) => ({ ...task, isActive: false }));
     Task.list.push({
       id: Math.floor(Math.random() * 1e10),
       title: app.title,
-      render: render.default,
+      render: markRaw(render.default),
       isActive: true,
+      isMinimize: false,
     });
   },
 });

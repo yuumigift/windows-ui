@@ -10,5 +10,6 @@ export namespace System {
     title: string;
     render: any;
     isActive: boolean;
+    isMinimize: boolean;
   }
 }
