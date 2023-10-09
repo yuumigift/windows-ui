@@ -9,10 +9,15 @@
 ```js
 // 应用程序配置示例
 {
-    title: "测试程序",
-    vuePath: "MyTest/Index.vue",
-    icon: "garden.png",
-}
+  title: "测试程序",
+  vuePath: "MyTest/Index.vue",
+  icon: "garden.png",
+},
+{
+  title: "星空闪耀",
+  vuePath: "Star/Index.vue",
+  icon: "star.png",
+},
 ```
 
 ### 🍒🍒🍒欢迎各位小伙伴提交自己的奇思妙想~
