@@ -2,6 +2,8 @@ import type { System } from "@/types";
 import { apps } from "@/apps/config";
 import { markRaw, reactive } from "vue";
 
+const appModules = import.meta.glob("@/apps/**/*.vue");
+
 export const Task = reactive({
   list: [] as System.ITask[],
 
@@ -33,7 +35,6 @@ export const Task = reactive({
   },
 });
 
-const appModules = import.meta.glob("@/apps/**/*.vue");
 export const App = reactive({
   list: apps as System.IApp[],
 
