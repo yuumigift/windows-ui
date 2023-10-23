@@ -35,6 +35,27 @@
           <a-sub-menu key="File Properties..." style="text-indent: 21px" title="File Properties...">
           </a-sub-menu>
           <hr/>
+          <a-sub-menu key="Local History..." style="text-indent: 21px" title="Local History...">
+          </a-sub-menu>
+          <hr/>
+          <a-menu-item><SaveOutlined /> &nbsp;Save All<span class="menu-placeholder">Ctrl+S</span></a-menu-item>
+          <a-menu-item><SyncOutlined /> &nbsp;Reload All from Disk<span class="menu-placeholder">Ctrl+Alt+Y</span></a-menu-item>
+          <a-menu-item><span class="menu-item-icon"/>Repair IDE</a-menu-item>
+          <a-menu-item><span class="menu-item-icon"/>Invalidate Caches...</a-menu-item>
+          <hr/>
+          <a-sub-menu key="Manage IDE Settings" style="text-indent: 21px" title="Manage IDE Settings">
+          </a-sub-menu>
+          <a-sub-menu key="New Projects Setup" style="text-indent: 21px" title="New Projects Setup">
+          </a-sub-menu>
+          <a-menu-item><span class="menu-item-icon"/>Save File as Template...</a-menu-item>
+          <hr/>
+          <a-sub-menu key="Export" style="text-indent: 21px" title="Export">
+          </a-sub-menu>
+          <a-menu-item><PrinterOutlined /> &nbsp;Print...</a-menu-item>
+          <hr/>
+          <a-menu-item><span class="menu-item-icon"/>Power Save Mode</a-menu-item>
+          <hr/>
+          <a-menu-item><span class="menu-item-icon"/>Exit</a-menu-item>
         </a-menu>
       </template>
     </a-dropdown>
@@ -42,7 +63,7 @@
   </a-config-provider>
 </template>
 <script lang="ts" setup>
-import {AlignLeftOutlined, MenuUnfoldOutlined, FolderOutlined, SettingOutlined} from "@ant-design/icons-vue";
+import {AlignLeftOutlined, MenuUnfoldOutlined, FolderOutlined, SettingOutlined, SaveOutlined, SyncOutlined, PrinterOutlined} from "@ant-design/icons-vue";
 import '../css/Theme.css'
 import {reactive, ref} from "vue";
 import {theme} from "ant-design-vue";
