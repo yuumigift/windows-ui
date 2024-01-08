@@ -53,6 +53,8 @@ export const App = reactive({
       render: markRaw(render.default),
       isActive: true,
       isMinimize: false,
+      width: app.width ?? 800,
+      height: app.height ?? 600,
     });
   },
 });

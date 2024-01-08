@@ -13,6 +13,8 @@
       :title="task.title"
       :is-active="task.isActive"
       :is-minimize="task.isMinimize"
+      :width="task.width"
+      :height="task.height"
       @active="Task.handleActive(task)"
       @close="Task.handleClose(task)"
       @minimize="Task.handleMinimize(task)"

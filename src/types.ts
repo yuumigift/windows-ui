@@ -3,6 +3,8 @@ export namespace System {
     title: string;
     vuePath: string;
     icon: string;
+    width?: number;
+    height?: number;
   }
 
   export interface ITask {
@@ -11,5 +13,7 @@ export namespace System {
     render: any;
     isActive: boolean;
     isMinimize: boolean;
+    width: number;
+    height: number;
   }
 }

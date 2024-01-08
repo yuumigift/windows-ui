@@ -4,7 +4,7 @@
       :theme="{ token: { colorPrimary: data.colorPrimary, borderRadius: `${data.borderRadius}px` } }"
   >
   <div class="backgroundColorDark backgroundColorDarkHeader" style="display: flex;height: 35px;align-items: center">
-    <img style="width: 17px;height:17px;margin-left: 6px;margin-right: 10px;" src="public/icon/idea.ico" alt="">
+    <!-- <img style="width: 17px;height:17px;margin-left: 6px;margin-right: 10px;" src="public/icon/idea.png" alt=""> -->
     <a-dropdown name="theme" :trigger="['click']">
       <a class="ant-dropdown-link" @click.prevent>
         <MenuUnfoldOutlined />

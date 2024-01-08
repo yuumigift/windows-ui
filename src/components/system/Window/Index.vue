@@ -38,6 +38,12 @@ const props = defineProps({
   title: {
     default: "",
   },
+  width: {
+    default: 800,
+  },
+  height: {
+    default: 600,
+  },
 });
 
 const Window = reactive({
@@ -49,8 +55,8 @@ const Window = reactive({
   oy: 0,
   sx: 0,
   sy: 0,
-  width: 800,
-  height: 600,
+  width: props.width,
+  height: props.height,
 
   style: computed((): any => {
     if (Window.isMaximize) {
