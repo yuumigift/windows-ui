@@ -501,8 +501,8 @@ const Zombie = (() => {
 }
 .bank {
   position: absolute;
-  right: 0;
-  top: 0;
+  right: 10px;
+  top: 10px;
   width: 100px;
   height: 110px;
 }
@@ -510,8 +510,8 @@ const Zombie = (() => {
   position: absolute;
   text-align: center;
   width: 100px;
-  right: 0;
-  top: 78px;
+  right: 10px;
+  top: 88px;
   font-size: 20px;
   font-weight: bold;
   color: red;
@@ -520,8 +520,8 @@ const Zombie = (() => {
   position: absolute;
   text-align: center;
   width: 100px;
-  right: 0;
-  top: 120px;
+  right: 10px;
+  top: 130px;
   font-size: 16px;
   font-weight: bold;
   color: white;
