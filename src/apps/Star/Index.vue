@@ -1,16 +1,21 @@
 <template>
   <div class="c__star" ref="ref_star" @mousemove="handleMouseMove">
-    <div class="star" v-for="(star, index) in Star.list" :key="index" :style="Star.getStyle(star)">
+    <!-- <div class="star" v-for="(star, index) in Star.list" :key="index" :style="Star.getStyle(star)">
       <img v-if="star.img === 0" src="./assets/star_one.png" alt="" />
       <img v-if="star.img === 1" src="./assets/star_two.png" alt="" />
       <img v-if="star.img === 2" src="./assets/star_three.png" alt="" />
       <img v-if="star.img === 3" src="./assets/star_four.png" alt="" />
-    </div>
+    </div> -->
+    <canvas class="cvs" ref="ref_cvs" :width="Star.width" :height="Star.height"></canvas>
   </div>
 </template>
 
 <script lang="ts" setup>
 import { reactive, ref } from "vue";
+import imgPath1 from "./assets/star_one.png";
+import imgPath2 from "./assets/star_two.png";
+import imgPath3 from "./assets/star_three.png";
+import imgPath4 from "./assets/star_four.png";
 
 interface IStar {
   x: number;
@@ -26,13 +31,20 @@ interface IStar {
 }
 
 const ref_star = ref<Element>();
+const ref_cvs = ref<HTMLCanvasElement>();
 
 const Star = reactive({
   config: {
-    size: 40,
+    size: 60,
     rotation_speed: 6,
     gravity: 8,
   },
+  width: 800,
+  height: 560,
+  img1: new Image(),
+  img2: new Image(),
+  img3: new Image(),
+  img4: new Image(),
   list: [] as IStar[],
 
   getStyle(item: IStar) {
@@ -62,6 +74,16 @@ const Star = reactive({
     });
   },
   enterFrame() {
+    const rect = ref_star.value?.getBoundingClientRect() ?? { width: 800, height: 560, x: 0, y: 0 };
+    Star.width = rect.width;
+    Star.height = rect.height;
+
+    const cvs = ref_cvs.value;
+    if (!cvs) return;
+    const ctx = cvs.getContext("2d");
+    if (!ctx) return;
+    ctx.clearRect(0, 0, Star.width, Star.height);
+
     Star.list = Star.list.filter((star) => !star.is_delete);
     Star.list.forEach((star: IStar) => {
       star.x += star.vx;
@@ -72,16 +94,35 @@ const Star = reactive({
       if (star.opacity < 0) {
         star.is_delete = true;
       }
+
+      const imgMap: any = {
+        1: Star.img1,
+        2: Star.img2,
+        3: Star.img3,
+        4: Star.img4,
+      };
+      const img = imgMap[star.img];
+      if (!img) return;
+      ctx.globalAlpha = star.opacity;
+      ctx.drawImage(img, star.x - Star.config.size / 2 - rect.x, star.y - Star.config.size / 2 - rect.y, Star.config.size, Star.config.size);
+      ctx.globalAlpha = 0;
     });
     requestAnimationFrame(Star.enterFrame);
   },
 });
 
 const handleMouseMove = (e: MouseEvent) => {
-  Star.addStar(e.clientX, e.clientY);
+  for (let i = 0; i < 8; i++) {
+    Star.addStar(e.clientX, e.clientY);
+  }
 };
-
-Star.enterFrame();
+onMounted(() => {
+  Star.img1.src = imgPath1;
+  Star.img2.src = imgPath2;
+  Star.img3.src = imgPath3;
+  Star.img4.src = imgPath4;
+  Star.enterFrame();
+});
 </script>
 
 <style scoped lang="less">
@@ -97,5 +138,9 @@ Star.enterFrame();
     width: 100%;
     height: 100%;
   }
+}
+.cvs {
+  position: absolute;
+  inset: 0;
 }
 </style>
