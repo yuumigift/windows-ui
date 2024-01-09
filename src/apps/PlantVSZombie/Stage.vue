@@ -48,9 +48,14 @@ const mouse = useMouse();
 // 🌱 游戏 🌱
 const Game = (() => {
   const s = reactive({
+    exit: false,
     score: 0,
     scoreResult: 0,
     over: false,
+  });
+
+  onUnmounted(() => {
+    s.exit = true;
   });
 
   return s;
@@ -73,6 +78,7 @@ const Sun = (() => {
     });
   };
   const act = () => {
+    if (Game.exit) return;
     requestAnimationFrame(act);
     s.list = s.list.filter((o) => !o.deleted);
     s.list.forEach((o) => {
@@ -249,6 +255,7 @@ const Grid = (() => {
 const Plant = (() => {
   const act = () => {
     if (Game.over) return;
+    if (Game.exit) return;
     requestAnimationFrame(act);
     Plant.list.forEach((o) => {
       s.list = s.list.filter((o) => !o.deleted);
@@ -307,6 +314,7 @@ const Bullet = (() => {
   };
   const act = () => {
     if (Game.over) return;
+    if (Game.exit) return;
     requestAnimationFrame(act);
     s.list = s.list.filter((o) => !o.deleted);
     s.ctx?.clearRect(0, 0, ref_cvs_bullet.value!.width, ref_cvs_bullet.value!.height);
@@ -378,6 +386,7 @@ const Zombie = (() => {
   };
   const act = () => {
     if (Game.over) return;
+    if (Game.exit) return;
     requestAnimationFrame(act);
     s.cd--;
     if (s.cd <= 0) {
