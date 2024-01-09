@@ -1,11 +1,7 @@
 <template>
   <div class="c__star" ref="ref_star" @mousemove="handleMouseMove">
-    <!-- <div class="star" v-for="(star, index) in Star.list" :key="index" :style="Star.getStyle(star)">
-      <img v-if="star.img === 0" src="./assets/star_one.png" alt="" />
-      <img v-if="star.img === 1" src="./assets/star_two.png" alt="" />
-      <img v-if="star.img === 2" src="./assets/star_three.png" alt="" />
-      <img v-if="star.img === 3" src="./assets/star_four.png" alt="" />
-    </div> -->
+    <!-- 图片加载中 -->
+    <div class="loading" v-if="Star.imgLoadingCount > 0">图片加载中</div>
     <canvas class="cvs" ref="ref_cvs" :width="Star.width" :height="Star.height"></canvas>
   </div>
 </template>
@@ -39,6 +35,7 @@ const Star = reactive({
     rotation_speed: 6,
     gravity: 8,
   },
+  imgLoadingCount: 4,
   width: 800,
   height: 560,
   img1: new Image(),
@@ -121,6 +118,18 @@ onMounted(() => {
   Star.img2.src = imgPath2;
   Star.img3.src = imgPath3;
   Star.img4.src = imgPath4;
+  Star.img1.addEventListener("load", () => {
+    Star.imgLoadingCount--;
+  });
+  Star.img2.addEventListener("load", () => {
+    Star.imgLoadingCount--;
+  });
+  Star.img3.addEventListener("load", () => {
+    Star.imgLoadingCount--;
+  });
+  Star.img4.addEventListener("load", () => {
+    Star.imgLoadingCount--;
+  });
   Star.enterFrame();
 });
 </script>
@@ -142,5 +151,14 @@ onMounted(() => {
 .cvs {
   position: absolute;
   inset: 0;
+}
+.loading {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff4;
+  font-size: 20px;
 }
 </style>
