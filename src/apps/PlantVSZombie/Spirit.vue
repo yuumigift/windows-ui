@@ -55,9 +55,7 @@ const css_pointerEvent = computed((): string => (props.canClick ? "auto" : "none
 
 const handleLoad = () => {
   if (width.value === 0) {
-    console.log("sdf");
     const rect = ref_spirit.value?.getBoundingClientRect();
-    console.log(rect);
     width.value = (rect?.width ?? 0) / props.count;
   }
   if (props.count > 1) {
