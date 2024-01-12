@@ -13,6 +13,7 @@
     "@ant-design/icons-vue": "^7.0.0",
     "@vueuse/core": "^10.4.1",
     "ant-design-vue": "4.x",
+    "dayjs": "^1.11.10",
     "element-plus": "^2.5.0",
     "lodash": "^4.17.21",
     "vue": "^3.3.4",
