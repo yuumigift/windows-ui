@@ -43,6 +43,7 @@ onUnmounted(() => {
   position: fixed;
   border-radius: 8px;
   border: 1px solid #0001;
+  overflow: hidden;
 }
 .menu {
   width: 160px;
