@@ -8,7 +8,7 @@ import { onClickOutside } from "@vueuse/core";
 
 const props = defineProps({
   menu: {
-    default: <{ title: string; handler: Function }[]>[],
+    default: () => <{ title: string; handler: Function }[]>[],
   },
 });
 
