@@ -1,5 +1,5 @@
 <template>
-  <div v-if="visible" ref="r__right_menu" class="c__right_menu" :style="{ left: `${menuX}px`, top: `${menuY}px` }" @click="handleClick">
+  <div v-if="visible" ref="ref_right_menu" class="c__right_menu" :style="{ left: `${menuX}px`, top: `${menuY}px` }" @click="handleClick">
     <div class="menu" v-for="item in menu" :key="item.title" @click="item.handler">{{ item.title }}</div>
   </div>
 </template>
@@ -15,7 +15,7 @@ const props = defineProps({
 const visible = ref(false);
 const menuX = ref(0);
 const menuY = ref(0);
-const r__right_menu = ref<HTMLElement>();
+const ref_right_menu = ref<HTMLElement>();
 
 const handleMenuOpen = (e: MouseEvent) => {
   e.preventDefault();
@@ -32,7 +32,7 @@ const handleClickOutside = () => {
 
 onMounted(() => {
   window.addEventListener("contextmenu", handleMenuOpen);
-  onClickOutside(r__right_menu, handleClickOutside);
+  onClickOutside(ref_right_menu, handleClickOutside);
 });
 onUnmounted(() => {
   window.removeEventListener("contextmenu", handleMenuOpen);
