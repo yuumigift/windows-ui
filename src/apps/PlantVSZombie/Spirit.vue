@@ -107,11 +107,11 @@ onMounted(init);
   position: relative;
   height: 100%;
   overflow: hidden;
-  // 
-  &>img{
+  //
+  & > img {
     display: block;
     object-fit: cover;
-    width:auto;
+    width: auto;
   }
 }
 .health {
