@@ -41,7 +41,7 @@ const ZOMBIE_CD = 1000;
 
 const ref_game = ref<Element>();
 const ref_bank = ref<Element>();
-const ref_cvs_bullet = ref<any>();
+const ref_cvs_bullet = ref<HTMLCanvasElement>();
 
 const mouse = useMouse();
 
