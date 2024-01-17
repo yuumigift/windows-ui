@@ -49,9 +49,9 @@ const mouse = useMouse();
 const Game = (() => {
   const s = reactive({
     exit: false,
+    over: false,
     score: 0,
     scoreResult: 0,
-    over: false,
   });
 
   onUnmounted(() => {
