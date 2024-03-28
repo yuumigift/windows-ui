@@ -6,7 +6,6 @@ import vueJsx from '@vitejs/plugin-vue-jsx'
 import ViteAutoImport from "unplugin-auto-import/vite";
 import VueDevTools from 'vite-plugin-vue-devtools'
 
-const {VITE_APP_URL} = import.meta.env;
 // https://vitejs.dev/config/
 export default defineConfig({
   server: {
