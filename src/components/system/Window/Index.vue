@@ -81,11 +81,13 @@ const Window = reactive({
 });
 
 const handleDragStart = () => {
-  Window.sx = mouse.x.value;
-  Window.sy = mouse.y.value;
-  Window.ox = Window.x;
-  Window.oy = Window.y;
-  Window.dragging = true;
+  if (!Window.isMaximize) {
+    Window.sx = mouse.x.value;
+    Window.sy = mouse.y.value;
+    Window.ox = Window.x;
+    Window.oy = Window.y;
+    Window.dragging = true;
+  }
 };
 const handleDragEnd = () => {
   Window.dragging = false;
