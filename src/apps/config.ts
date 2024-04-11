@@ -26,4 +26,9 @@ export const apps = [
     width: 1200,
     height: 640,
   },
+  {
+    title: "植物大战僵尸（小圆限定）",
+    vuePath: "PlantVsZombieMadoka/index.vue",
+    icon: "pvzMadoka.png",
+  }
 ];
