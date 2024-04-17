@@ -1,5 +1,5 @@
 <template>
-  <div class="c__task_icon">
+  <div class="c__task_icon" :title="title">
     <div class="icon">
       <img :src="`/icon/${icon}`" alt="" />
     </div>
@@ -8,7 +8,7 @@
 </template>
 
 <script setup lang="ts">
-const props = defineProps({
+defineProps({
   icon: {
     default: "",
   },
