@@ -98,7 +98,11 @@ const snake = (() => {
     const x = floor(Math.random() * 9);
     const y = floor(Math.random() * 9);
     console.log(y, x);
-    s.map[y][x] = 2;
+    if (s.map[y][x] === 0) {
+      s.map[y][x] = 2;
+    } else {
+      generateFood();
+    }
   };
   const init = () => {
     s.map[0][0] = 1;
