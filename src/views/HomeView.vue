@@ -42,13 +42,13 @@ import { Task, App } from "@/system";
   align-items: center;
   justify-items: center;
   text-shadow: 2px 2px 4px #0006;
-  color: #fff9;
+  color: #fff6;
   font-size: 100px;
   inset: 0;
 }
 .background {
   position: absolute;
-  background: linear-gradient(135deg, #327aff, #250047);
+  background: radial-gradient(#2e4055, #151d27);
   inset: 0;
 }
 .desk {
