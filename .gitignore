@@ -30,3 +30,5 @@ auto-imports.d.ts
 *.njsproj
 *.sln
 *.sw?
+
+*.tsbuildinfo
