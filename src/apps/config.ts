@@ -30,5 +30,10 @@ export const apps = [
     title: "植物大战僵尸（小圆限定）",
     vuePath: "PlantVsZombieMadoka/index.vue",
     icon: "pvzMadoka.png",
+  },
+  {
+    title: "贪吃蛇",
+    vuePath: "GreedySnake/index.vue",
+    icon: "GreedySnake.webp",
   }
 ];
