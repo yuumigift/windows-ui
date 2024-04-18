@@ -1,33 +1,20 @@
 <template>
   <div class="outer-div">
     <div class="inner-div">
-      <div v-for="(row, rowIndex) in snake.map" :key="rowIndex" class="row">
-        <span v-for="(item, colIndex) in row" :key="colIndex" class="cell" :class="snake.getClass(item)"> {{ item }} </span>
+      <div v-for="(row, rowIndex) in Init.map" :key="rowIndex" class="row">
+        <span v-for="(item, colIndex) in row" :key="colIndex" class="cell" :class="Init.getClass(item)"> {{ item }} </span>
       </div>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { floor } from "lodash";
 
-type Direction = "ArrowUp" | "ArrowDown" | "ArrowLeft" | "ArrowRight";
+type Direction = "ArrowUp" | "ArrowLeft" | "ArrowRight";
 type Position = { x: number; y: number };
 type Control = Record<Direction, () => boolean>;
 
-const snake = (() => {
-  const defaultMap = [
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-  ];
+const Init = (() => {
   const defaultPosition: Position = { x: 0, y: 0 };
   const control: Control = {
     ArrowUp: () => {
@@ -35,14 +22,6 @@ const snake = (() => {
       let re = pos.y > 0;
       if (re) {
         pos.y--;
-      }
-      return re;
-    },
-    ArrowDown: () => {
-      const pos = s.position;
-      let re = pos.y < s.map.length - 1;
-      if (re) {
-        pos.y++;
       }
       return re;
     },
@@ -74,38 +53,15 @@ const snake = (() => {
     const x = pos.x;
     const y = pos.y;
     if (!result) return;
-    s.snakeBody.push({ ...pos });
-    let first = s.snakeBody[0];
-    if (s.map[y][x] === 2) {
-      eat();
-    } else {
-      s.map[first.y][first.x] = 0;
-      s.snakeBody.shift();
-    }
     s.map[y][x] = 1;
-    s.snakeBody.map((item) => {
-      s.map[item.y][item.x] = 1;
-    });
+
   };
   const getClass = (item: number) => ({
     isActive: item === 1,
     isFood: item === 2,
   });
-  const eat = () => {
-    generateFood();
-  };
-  const generateFood = () => {
-    const x = floor(Math.random() * 9);
-    const y = floor(Math.random() * 9);
-    if (s.map[y][x] === 0) {
-      s.map[y][x] = 2;
-    } else {
-      generateFood();
-    }
-  };
   const init = () => {
     s.map[0][0] = 1;
-    generateFood();
   };
   window.addEventListener("keydown", (e) => {
     if (isDirectionKey(e.key)) {
@@ -113,13 +69,10 @@ const snake = (() => {
     }
   });
 
-  setInterval(() => {}, 1000);
-
   const s = reactive({
     position: { ...defaultPosition },
-    snakeBody: [defaultPosition],
     toward: <Direction>"ArrowLeft",
-    map: [...defaultMap],
+    map: <any[]>[],
     getClass,
   });
   init();
