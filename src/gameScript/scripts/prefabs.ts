@@ -1,4 +1,4 @@
-export const Prefab = (name:string, fn:() => {}, assets: {} = {}) => {
+export const Prefab = (name:string, fn:() => {}, assets:Assets[]) => {
 
     const s = reactive({
         name:name,
@@ -8,11 +8,12 @@ export const Prefab = (name:string, fn:() => {}, assets: {} = {}) => {
     return s
 }
 
-export const Assets = (type:string, path:string) => {
+export class Assets {
 
-    const s = reactive({
-        type:type,
-        path:path,
-    })
-    return s
+    private type:string
+    private path:string
+    constructor(type:string, path:string) {
+        this.type = type
+        this.path = path
+    }
 }
