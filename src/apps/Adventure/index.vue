@@ -44,7 +44,7 @@ const Init = (() => {
   };
 
   const isDirectionKey = (key: string): key is Direction => {
-    const keys = ["ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight"];
+    const keys = ["ArrowUp", "ArrowLeft", "ArrowRight"];
     return keys.includes(key);
   };
   const motion = (key: Direction) => {

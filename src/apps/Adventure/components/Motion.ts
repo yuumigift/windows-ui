@@ -1,5 +1,3 @@
-import {EntityScript} from "@/gameScript/scripts/entityscript";
-
 export const motion = (inst:any) => {
 
     const setMaxHeight = (height: number) => {
@@ -18,4 +16,20 @@ export const motion = (inst:any) => {
         jump
     })
     return s
+}
+export class Motion{
+    name: string
+    maxHeight: number
+    inst:any
+    setMaxHeight(height: number) {
+        this.maxHeight = height
+    }
+    jump(){
+        this.inst.position.y ++
+    }
+    constructor(inst:any) {
+        this.inst = inst
+        this.name = "Jump"
+        this.maxHeight = 1
+    }
 }
