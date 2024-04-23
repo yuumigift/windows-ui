@@ -47,9 +47,9 @@ export const EntityScript = () => {
     }
     const s = reactive({
         entity: {} as any,
-        events:{} as any,
+        events:{} as Record<string,(...args:any[])=>any>,
         guid: "" as string,
-        components: {} as any,
+        components: {} as Record<string,any>,
         position: {x: 0, y: 0} as {x:number, y:number},
         AddComponent,
         DoPeriodicTask,
