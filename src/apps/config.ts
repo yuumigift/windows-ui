@@ -10,6 +10,13 @@ export const apps = [
     icon: "garden.png",
   },
   {
+    title: "大冒险（悠米）",
+    vuePath: "AdventureYuumi/Index.vue",
+    icon: "garden.png",
+    width: 800,
+    height: 640,
+  },
+  {
     title: "星空闪耀",
     vuePath: "Star/Index.vue",
     icon: "star.png",
