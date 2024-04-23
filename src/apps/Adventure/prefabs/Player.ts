@@ -1,6 +1,7 @@
 import {CreateEntity} from "@/gameScript/scripts/mainfunctions";
 import {Assets, Prefab} from "@/gameScript/scripts/prefabs";
-import {Motion, motion} from "@/apps/Adventure/components/Motion";
+import {Motion} from "@/apps/Adventure/components/Motion";
+import {Health} from "@/apps/Adventure/components/Health";
 
 const assets = [
     new Assets("ANIM", "")
@@ -8,10 +9,12 @@ const assets = [
 
 const fn = () => {
     const inst = CreateEntity("player")
-    inst.AddComponent(Motion)
-    const motion1 = inst.components.motion as ReturnType<typeof motion>
-    motion1.setMaxHeight(1)
+    const motion = new Motion()
+    inst.AddComponent(motion)
+    const health = new Health()
+    inst.AddComponent(health)
     return inst
 }
 
 export const player = Prefab("player", fn, assets)
+

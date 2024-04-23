@@ -1,4 +1,7 @@
-export const motion = (inst:any) => {
+import type {EntityScript} from "@/gameScript/scripts/entityscript";
+import {RegisterComponent} from "@/gameScript/scripts/entityscript";
+
+/*export const motion = (inst:any) => {
 
     const setMaxHeight = (height: number) => {
         s.maxHeight = height
@@ -16,20 +19,18 @@ export const motion = (inst:any) => {
         jump
     })
     return s
-}
-export class Motion{
-    name: string
-    maxHeight: number
-    inst:any
+}*/
+export class Motion extends RegisterComponent{
+    maxHeight = 1
     setMaxHeight(height: number) {
         this.maxHeight = height
     }
     jump(){
-        this.inst.position.y ++
+        if (this.inst.components.health.isAlive()){
+            this.inst.position.y ++
+        }
     }
-    constructor(inst:any) {
-        this.inst = inst
-        this.name = "Jump"
-        this.maxHeight = 1
+    constructor() {
+        super();
     }
 }
