@@ -42,9 +42,8 @@ export const EntityScript = () => {
     }
 
     const ListenForEvent = (event:string, eventHandle:(...args:any) => {}) => {
-        s.events[event] = (...args:any) => {
-            eventHandle(...args)
-        }
+        s.events[event] = eventHandle
+
     }
     const s = reactive({
         entity: {} as any,
