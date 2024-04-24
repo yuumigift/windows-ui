@@ -53,6 +53,11 @@ import { Task, App } from "@/system";
 }
 .desk {
   position: absolute;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  align-content: flex-start;
   z-index: 10;
   inset: 0;
 }

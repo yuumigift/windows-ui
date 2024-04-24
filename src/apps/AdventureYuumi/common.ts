@@ -1,5 +1,7 @@
+export const GRAVITY = 0.05;
+
+let ctx: CanvasRenderingContext2D | undefined | null;
 export const useCanvas = () => {
-  let ctx: CanvasRenderingContext2D | undefined | null;
   const checkCtx = (ctx: CanvasRenderingContext2D | undefined | null): ctx is CanvasRenderingContext2D => {
     if (!ctx) return false;
     return true;
@@ -7,7 +9,7 @@ export const useCanvas = () => {
   const setContext = (_ctx: CanvasRenderingContext2D | undefined | null) => {
     ctx = _ctx;
   };
-  const draw = (x: number, y: number, width: number, height: number, color: string = "#000") => {
+  const draw = (x: number, y: number, width: number, height: number, color: string = "black") => {
     if (!checkCtx(ctx)) return;
     ctx.fillStyle = color;
     ctx.fillRect(x, y, width, height);
