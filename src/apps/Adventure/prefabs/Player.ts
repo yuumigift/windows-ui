@@ -13,6 +13,7 @@ const fn = () => {
     inst.AddComponent(motion)
     const health = new Health()
     inst.AddComponent(health)
+    inst.AddTag("player")
     return inst
 }
 

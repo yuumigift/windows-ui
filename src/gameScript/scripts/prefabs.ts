@@ -1,8 +1,8 @@
 export const Prefab = (name:string, fn:() => {}, assets:Assets[]) => {
 
     const s = reactive({
+        fn,
         name:name,
-        fn:fn,
         assets:assets,
     })
     return s
