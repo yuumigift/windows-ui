@@ -28,6 +28,7 @@ defineProps({
   padding: 10px;
   width: 80px;
   overflow: hidden;
+  flex:0 0 auto;
 
   &:hover {
     background: #0002;
