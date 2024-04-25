@@ -1,5 +1,11 @@
 export const apps = [
   {
+    title: "AI助手",
+    vuePath: "AiTool/Index.vue",
+    width:400,height:90,
+    icon: "ai-icon2.gif",
+  },
+  {
     title: "测试程序",
     vuePath: "MyTest/Index.vue",
     icon: "garden.png",
