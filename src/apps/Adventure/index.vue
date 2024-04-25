@@ -10,10 +10,12 @@
 
 <script setup lang="ts">
 
+import {player} from "@/apps/Adventure/prefabs/Player";
+
 type Direction = "ArrowUp" | "ArrowLeft" | "ArrowRight";
 type Position = { x: number; y: number };
 type Control = Record<Direction, () => boolean>;
-
+player.fn()
 const Init = (() => {
   const defaultPosition: Position = { x: 0, y: 0 };
   const control: Control = {
@@ -61,7 +63,7 @@ const Init = (() => {
     isFood: item === 2,
   });
   const init = () => {
-    s.map[0][0] = 1;
+    s.map[0] = 1;
   };
   window.addEventListener("keydown", (e) => {
     if (isDirectionKey(e.key)) {

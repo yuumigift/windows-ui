@@ -1,6 +1,6 @@
 import {RegisterComponent} from "@/gameScript/scripts/entityscript";
 
-export class Health extends RegisterComponent{
+export class Health extends RegisterComponent {
     get maxHealth(): number {
         return this._maxHealth;
     }
@@ -14,19 +14,25 @@ export class Health extends RegisterComponent{
     }
 
     set currentHealth(value: number) {
-        this._currentHealth = value;
-        if (this._currentHealth === 0){
+        if (this._currentHealth + value <= 0) {
+            this._currentHealth = 0
             this.inst.PushEvent("death")
         }
+        this._currentHealth = value;
+        this.inst.PushEvent("health_doDelta")
     }
+
     private _maxHealth: number = 100;
     private _currentHealth: number = this._maxHealth;
-    public isAlive(){
+
+    public isAlive() {
         return this._currentHealth > 0
     }
+
     public DoDelta(num: number) {
         this.currentHealth += num;
     }
+
     constructor() {
         super();
     }
