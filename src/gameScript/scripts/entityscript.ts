@@ -39,20 +39,15 @@ export const EntityScript = () => {
         const comp = component
         comp.inst = s
         const name = comp.constructor.name.toLowerCase()
-        if (!s.components[name]) {
-            s.components[name] = comp
-        }
+        if (!s.components[name]) s.components[name] = comp
     }
     const PushEvent = (event: string, ...args: any) => s.events[event](...args)
-
 
     const ListenForEvent = (event: string, eventHandle: (...args: any) => {}) => s.events[event] = eventHandle
 
 
     const AddTag = (tag: string) => {
-        if (!s.tags.includes(tag)) {
-            s.tags.push(tag)
-        }
+        if (!s.tags.includes(tag)) s.tags.push(tag)
     }
 
     const RemoveTag = (tags: string[]) => s.tags = s.tags.filter(item => !tags.includes(item))
