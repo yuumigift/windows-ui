@@ -1,4 +1,5 @@
 import {reactive} from "vue";
+import {Locomotor} from "@/apps/Adventure/components/Locomotor";
 
 
 export class RegisterComponent {
@@ -34,7 +35,6 @@ const DoPeriodicTask = (timeout: number, handler: TimerHandler,) => {
 
 
 export const EntityScript = () => {
-
     const AddComponent = (component: RegisterComponent) => {
         const comp = component
         comp.inst = s
@@ -52,6 +52,8 @@ export const EntityScript = () => {
 
     const RemoveTag = (tags: string[]) => s.tags = s.tags.filter(item => !tags.includes(item))
 
+    const GetPosition = () => s.components.locomotor.position
+
     const s = reactive({
         entity: {} as any,
         events: {} as Record<string, (...args: any[]) => any>,
@@ -60,7 +62,6 @@ export const EntityScript = () => {
             guid: "" as string
         },
         components: {} as Record<string, any>,
-        position: {x: 0, y: 0} as { x: number, y: number },
         tags: <string[]>[],
         AddComponent,
         DoPeriodicTask,
@@ -69,6 +70,7 @@ export const EntityScript = () => {
         ListenForEvent,
         AddTag,
         RemoveTag,
+        GetPosition,
     })
     return s
 }
