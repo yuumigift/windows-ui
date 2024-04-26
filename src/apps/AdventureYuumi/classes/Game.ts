@@ -21,8 +21,8 @@ export class Game {
     clear();
     if (!this.player) return;
     if (!this.ground) return;
-    this.ground?.enterFrame();
-    this.player?.enterFrame({
+    this.ground.enterFrame();
+    this.player.enterFrame({
       ground: this.ground,
     });
   }
