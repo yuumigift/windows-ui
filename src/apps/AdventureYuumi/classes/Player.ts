@@ -85,7 +85,7 @@ export class Player {
       }
     }
     this.is_jump = false;
-    this.rect = this.rect;
+    
     draw(this.rect.x, this.rect.y, this.rect.w, this.rect.h, "red");
   }
 }
