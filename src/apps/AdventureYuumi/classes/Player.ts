@@ -53,6 +53,11 @@ export class Player {
     }
     this.rect.x += this.vx;
     this.rect.y += this.vy;
+    if (this.rect.x < 0) {
+      this.rect.x = 0;
+    } else if (this.rect.x + this.rect.w > 800) {
+      this.rect.x = 800 - this.rect.w;
+    }
     this.vy += GRAVITY;
     const old_player_rect: Rect = {
       x: this.rect.x,
@@ -65,7 +70,9 @@ export class Player {
       const new_player_rect: Rect = block(old_player_rect, ground_rect);
       if (new_player_rect.y !== old_player_rect.y) {
         this.jumping = false;
-        this.vy = 0;
+        if (this.vy > 0) {
+          this.vy = 0;
+        }
       }
       this.rect = new_player_rect;
     });
