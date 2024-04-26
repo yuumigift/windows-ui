@@ -81,7 +81,7 @@ export class Player {
     });
     if (is_understand_ground) {
       if (this.is_jump) {
-        this.vy = -4;
+        this.vy = -3;
       }
     }
     this.is_jump = false;
