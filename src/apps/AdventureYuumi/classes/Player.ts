@@ -70,9 +70,7 @@ export class Player {
       const new_player_rect: Rect = block(old_player_rect, ground_rect);
       if (new_player_rect.y !== old_player_rect.y) {
         this.jumping = false;
-        if (this.vy > 0) {
-          this.vy = 0;
-        }
+        this.vy = 0;
       }
       this.rect = new_player_rect;
     });
