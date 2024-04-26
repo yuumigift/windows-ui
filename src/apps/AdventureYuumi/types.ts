@@ -1,3 +1,9 @@
 export interface ISpiritInstance {
-  enterFrame: () => void;
+  enterFrame: (...args: any[]) => void;
+}
+export interface Rect {
+  x: number;
+  y: number;
+  w: number;
+  h: number;
 }
