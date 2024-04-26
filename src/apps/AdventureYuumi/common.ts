@@ -5,10 +5,7 @@ export const PLAYER_HEIGHT = 80;
 
 let ctx: CanvasRenderingContext2D | undefined | null;
 export const useCanvas = () => {
-  const checkCtx = (ctx: CanvasRenderingContext2D | undefined | null): ctx is CanvasRenderingContext2D => {
-    if (!ctx) return false;
-    return true;
-  };
+  const checkCtx = (ctx: CanvasRenderingContext2D | undefined | null): ctx is CanvasRenderingContext2D => !!ctx;
   const setContext = (_ctx: CanvasRenderingContext2D | undefined | null) => {
     ctx = _ctx;
   };
