@@ -13,6 +13,7 @@ export class Player {
   vx = 0;
   vy = 0;
   jumping = false;
+  is_jump = false;
   is_left = false;
   is_right = false;
   constructor() {
@@ -20,8 +21,7 @@ export class Player {
       switch (e.key) {
         case "ArrowUp":
           if (!this.jumping) {
-            this.vy = -4;
-            this.jumping = true;
+            this.is_jump = true;
           }
           break;
         case "ArrowLeft":
@@ -44,6 +44,10 @@ export class Player {
     });
   }
   enterFrame({ ground }: { ground: InstanceType<typeof Ground> }) {
+    this.rect.x += this.vx;
+    this.rect.y += this.vy;
+    this.vy += GRAVITY;
+
     if (this.is_left && !this.is_right) {
       this.vx = -2;
     } else if (this.is_right && !this.is_left) {
@@ -51,30 +55,37 @@ export class Player {
     } else {
       this.vx = 0;
     }
-    this.rect.x += this.vx;
-    this.rect.y += this.vy;
+
     if (this.rect.x < 0) {
       this.rect.x = 0;
     } else if (this.rect.x + this.rect.w > 800) {
       this.rect.x = 800 - this.rect.w;
     }
-    this.vy += GRAVITY;
-    const old_player_rect: Rect = {
-      x: this.rect.x,
-      y: this.rect.y,
-      w: this.rect.w,
-      h: this.rect.h,
-    };
 
+    let is_understand_ground = false;
     ground.rect_list.map((ground_rect) => {
-      const new_player_rect: Rect = block(old_player_rect, ground_rect);
-      if (new_player_rect.y !== old_player_rect.y) {
+      const block_info = block(this.rect, ground_rect);
+      this.rect = block_info.rect;
+      if (block_info.info.direction === "up") {
+        is_understand_ground = true;
         this.jumping = false;
-        this.vy = 0;
+        if (this.vy > 1) {
+          this.vy = 1;
+        }
       }
-      this.rect = new_player_rect;
+      if (block_info.info.direction === "down") {
+        if (this.vy < 0) {
+          this.vy = 0;
+        }
+      }
     });
-
+    if (is_understand_ground) {
+      if (this.is_jump) {
+        this.vy = -4;
+      }
+    }
+    this.is_jump = false;
+    this.rect = this.rect;
     draw(this.rect.x, this.rect.y, this.rect.w, this.rect.h, "red");
   }
 }
