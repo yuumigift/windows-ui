@@ -21,7 +21,7 @@ export const useCanvas = () => {
   return { draw, clear, setContext };
 };
 
-export const block = (a: Rect, b: Rect): { rect: Rect; info: { direction: string } } => {
+export const block = (a: Rect, b: Rect): { rect: Rect; direction: string } => {
   // 计算a和b的边界
   a = { ...a };
   b = { ...b };
@@ -33,7 +33,7 @@ export const block = (a: Rect, b: Rect): { rect: Rect; info: { direction: string
 
   // 判断a和b是否有重叠
   if (aRight <= b.x || a.x >= bRight || aBottom <= b.y || a.y >= bBottom) {
-    return { rect: a, info: { direction } }; // 没有重叠，直接返回原位置
+    return { rect: a, direction }; // 没有重叠，直接返回原位置
   }
 
   // 计算重叠区域的宽度和高度
@@ -83,6 +83,6 @@ export const block = (a: Rect, b: Rect): { rect: Rect; info: { direction: string
   // 返回调整后的a的位置
   return {
     rect,
-    info: { direction },
+    direction,
   };
 };

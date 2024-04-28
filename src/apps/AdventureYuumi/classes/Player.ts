@@ -66,14 +66,14 @@ export class Player {
     ground.rect_list.map((ground_rect) => {
       const block_info = block(this.rect, ground_rect);
       this.rect = block_info.rect;
-      if (block_info.info.direction === "up") {
+      if (block_info.direction === "up") {
         is_understand_ground = true;
         this.jumping = false;
         if (this.vy > 1) {
           this.vy = 1;
         }
       }
-      if (block_info.info.direction === "down") {
+      if (block_info.direction === "down") {
         if (this.vy < 0) {
           this.vy = 0;
         }
@@ -85,7 +85,7 @@ export class Player {
       }
     }
     this.is_jump = false;
-    
+
     draw(this.rect.x, this.rect.y, this.rect.w, this.rect.h, "red");
   }
 }
