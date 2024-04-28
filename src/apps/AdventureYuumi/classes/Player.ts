@@ -49,9 +49,9 @@ export class Player {
     this.vy += GRAVITY;
 
     if (this.is_left && !this.is_right) {
-      this.vx = -2;
+      this.vx = -1;
     } else if (this.is_right && !this.is_left) {
-      this.vx = 2;
+      this.vx = 1;
     } else {
       this.vx = 0;
     }
