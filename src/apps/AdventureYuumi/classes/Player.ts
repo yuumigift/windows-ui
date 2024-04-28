@@ -20,9 +20,7 @@ export class Player {
     addEventListener("keydown", (e) => {
       switch (e.key) {
         case "ArrowUp":
-          if (!this.jumping) {
-            this.is_jump = true;
-          }
+          this.is_jump = true;
           break;
         case "ArrowLeft":
           this.is_left = true;
@@ -34,6 +32,8 @@ export class Player {
     });
     addEventListener("keyup", (e) => {
       switch (e.key) {
+        case "ArrowUp":
+          this.is_jump = false;
         case "ArrowLeft":
           this.is_left = false;
           break;
@@ -79,12 +79,9 @@ export class Player {
         }
       }
     });
-    if (is_understand_ground) {
-      if (this.is_jump) {
-        this.vy = -3;
-      }
+    if (is_understand_ground && this.is_jump && this.vy > 0) {
+      this.vy = -3;
     }
-    this.is_jump = false;
 
     draw(this.rect.x, this.rect.y, this.rect.w, this.rect.h, "red");
   }
