@@ -1,7 +1,7 @@
 import type { Rect } from "./types";
 export const GRAVITY = 0.05;
-export const PLAYER_WIDTH = 50;
-export const PLAYER_HEIGHT = 80;
+export const PLAYER_WIDTH = 18;
+export const PLAYER_HEIGHT = 38;
 
 let ctx: CanvasRenderingContext2D | undefined | null;
 export const useCanvas = () => {

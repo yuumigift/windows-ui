@@ -5,12 +5,14 @@
 </template>
 <script lang="ts" setup>
 import { Game } from "./classes/Game";
+import { Scene } from "./classes/Scene";
 import { Player } from "./classes/Player";
 import { Ground } from "./classes/Ground";
 
 const canvas = ref<HTMLCanvasElement>();
 
 const game = new Game();
+game.addScene(new Scene());
 game.addPlayer(new Player());
 game.addGround(new Ground());
 
