@@ -1,19 +1,20 @@
+import type { EnterFramePayload, Rect } from "../types";
 import { useCanvas } from "../common";
-import type { Rect } from "../types";
+
 const { draw } = useCanvas();
 
 export class Ground {
+  #pixel_size = 20;
   rect_list: Rect[] = [];
-  #_pixel_size = 20;
   constructor() {
-    this.add({ x: 0, y: 500, w: 800, h: 100 });
+    this.add({ x: 0, y: 500, w: 8000, h: 100 });
     let tail = 0;
-    for (let index = 0; index < 6; index++) {
+    for (let index = 0; index < 20; index++) {
       this.generateSteps(tail + index + 2, 0, 2 + index);
       tail += index + 2 + 2;
     }
   }
-  enterFrame() {
+  enterFrame({ scene }: EnterFramePayload) {
     this.rect_list.forEach((rect) => {
       draw(rect.x, rect.y, rect.w, rect.h, "#333");
     });
@@ -22,7 +23,7 @@ export class Ground {
     this.rect_list.push(rect);
   }
   addCube(x: number, y: number, w: number = 1, h: number = 1) {
-    this.add({ x: x * this.#_pixel_size, y: 500 - this.#_pixel_size - y * this.#_pixel_size, w: this.#_pixel_size * w, h: this.#_pixel_size * h });
+    this.add({ x: x * this.#pixel_size, y: 500 - this.#pixel_size - y * this.#pixel_size, w: this.#pixel_size * w, h: this.#pixel_size * h });
   }
   generateSteps(x: number, y: number, step_num: number) {
     for (let index = 0; index < step_num; index++) {

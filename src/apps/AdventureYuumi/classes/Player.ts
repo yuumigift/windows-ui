@@ -1,6 +1,6 @@
-import { Ground } from "./Ground";
+import type { EnterFramePayload, Rect } from "../types";
 import { GRAVITY, PLAYER_HEIGHT, PLAYER_WIDTH, block, useCanvas } from "../common";
-import type { Rect } from "../types";
+
 const { draw } = useCanvas();
 
 export class Player {
@@ -43,7 +43,7 @@ export class Player {
       }
     });
   }
-  enterFrame({ ground }: { ground: InstanceType<typeof Ground> }) {
+  enterFrame({ ground, scene }: EnterFramePayload) {
     this.rect.x += this.vx;
     this.rect.y += this.vy;
     this.vy += GRAVITY;
