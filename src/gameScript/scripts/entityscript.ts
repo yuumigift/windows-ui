@@ -1,5 +1,6 @@
 import {reactive} from "vue";
-import {Locomotor} from "@/apps/Adventure/components/Locomotor";
+import {AdventurePhysical} from "@/apps/Adventure/main/Physical";
+import Physical = AdventurePhysical.Physical;
 
 
 export class RegisterComponent {
@@ -43,7 +44,7 @@ export const EntityScript = () => {
     }
     const PushEvent = (event: string, ...args: any) => s.events?.[event](...args)
 
-    const ListenForEvent = (event: string, eventHandle: (...args: any) => {}) => s.events[event] = eventHandle
+    const ListenForEvent = (event: string, eventHandle: (...args: any) => void) => s.events[event] = eventHandle
 
 
     const AddTag = (tag: string) => {
@@ -71,6 +72,7 @@ export const EntityScript = () => {
         AddTag,
         RemoveTag,
         GetPosition,
+        Physical:new Physical(this)
     })
     return s
 }

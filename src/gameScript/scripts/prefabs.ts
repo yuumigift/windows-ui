@@ -1,3 +1,6 @@
+import {AllPrefabs} from "@/gameScript/scripts/main";
+import type {EntityScript} from "@/gameScript/scripts/entityscript";
+
 export const Prefab = (name:string, fn:() => {}, assets:Assets[]) => {
 
     const s = reactive({
@@ -5,6 +8,7 @@ export const Prefab = (name:string, fn:() => {}, assets:Assets[]) => {
         name:name,
         assets:assets,
     })
+    AllPrefabs[name] = s
     return s
 }
 
@@ -16,4 +20,9 @@ export class Assets {
         this.type = type
         this.path = path
     }
+}
+
+export const SpawnPrefab = (name:string):ReturnType<typeof EntityScript> => {
+    const inst = AllPrefabs[name]?.fn()
+    return inst
 }
