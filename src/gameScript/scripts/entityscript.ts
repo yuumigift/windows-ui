@@ -12,7 +12,7 @@ export class RegisterComponent {
 }
 
 const DoTaskInTime = (timeout: number, handler: TimerHandler,) => {
-    const timer = setTimeout(handler, timeout)
+    const timer = setTimeout(handler, timeout * 1000)
     const Cancel = () => {
         clearTimeout(timer)
     }
@@ -23,7 +23,7 @@ const DoTaskInTime = (timeout: number, handler: TimerHandler,) => {
     return s
 }
 const DoPeriodicTask = (timeout: number, handler: TimerHandler,) => {
-    const timer = setInterval(handler, timeout)
+    const timer = setInterval(handler, timeout * 1000)
     const Cancel = () => {
         clearInterval(timer)
     }

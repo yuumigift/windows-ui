@@ -19,11 +19,9 @@ export namespace AdventurePhysical {
         // 摩擦力系数
         private _frictionCoefficient: number = 0.1;
 
-        private pos = reactive({x: this.x, y: this.y})
-
-        public GetPosition(){
-            return this.pos
-        }
+        public pos = computed(() => {
+            return {x: this.x, y: this.y}
+        })
 
         get frictionCoefficient(): number {
             return this._frictionCoefficient;
