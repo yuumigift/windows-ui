@@ -7,7 +7,7 @@ export class Player {
   rect: Rect = {
     w: PLAYER_WIDTH,
     h: PLAYER_HEIGHT,
-    x: 300,
+    x: 200,
     y: 0,
   };
   ax = 0;
