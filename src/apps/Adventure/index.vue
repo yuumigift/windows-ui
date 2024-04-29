@@ -1,5 +1,5 @@
 <template>
-  <div class="outer-div">
+  <div class="outer-div" v-if="load.IsLoad()">
     <div class="inner-div">
       <div :style="Init?.getPosition">{{Init?.getPosition}}</div>
     </div>
