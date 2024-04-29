@@ -70,7 +70,7 @@ export namespace AdventurePhysical {
         public UpdatePosition(): void {
             // 根据当前速度更新位置
             if (this.toward[Toward.UP]){
-                this.SetInitialVelocity(0 ,20)
+                this.SetInitialVelocity(0 ,300)
             }
             if (this.toward[Toward.LEFT]){
                 this.SetInitialVelocity(-30 ,0)
@@ -80,7 +80,7 @@ export namespace AdventurePhysical {
             }
             this._velocityX *= (1 - this.frictionCoefficient);
             this.pos.x += this._velocityX;
-            this.pos.y += this._velocityY;
+            this.pos.y = this._velocityY;
             this.savePos();
             this.setGravity()
             this.checkCollision()
