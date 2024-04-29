@@ -85,8 +85,5 @@ export const block = (a: Rect, b: Rect): { rect: Rect; direction: string } => {
     h: a.h,
   };
   // 返回调整后的a的位置
-  return {
-    rect,
-    direction,
-  };
+  return { rect, direction };
 };
