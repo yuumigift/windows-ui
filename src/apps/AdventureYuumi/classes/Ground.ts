@@ -6,7 +6,6 @@ const { draw } = useCanvas();
 class GroundBase {
   #pixel_size = 20;
   rect_list: Rect[] = [];
-  enterFrame({ viewport }: EnterFramePayload) {}
   add(rect: Rect) {
     this.rect_list.push(rect);
   }
@@ -54,8 +53,8 @@ class MovingGround extends GroundBase {
 }
 
 export class Ground extends GroundBase {
-  static_ground: GroundBase;
-  moving_ground: GroundBase;
+  static_ground: StaticGround;
+  moving_ground: MovingGround;
   constructor() {
     super();
     this.static_ground = new StaticGround();
@@ -63,7 +62,6 @@ export class Ground extends GroundBase {
     this.rect_list = [...this.static_ground.rect_list, ...this.moving_ground.rect_list];
   }
   enterFrame(payload: EnterFramePayload) {
-    this.static_ground.enterFrame(payload);
     this.moving_ground.enterFrame(payload);
     this.rect_list.forEach((rect) => {
       draw(rect.x - payload.viewport.x, rect.y, rect.w + 1, rect.h + 1, "#333");
