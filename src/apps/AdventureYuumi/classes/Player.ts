@@ -32,14 +32,18 @@ export class Player {
     });
     addEventListener("keyup", (e) => {
       switch (e.key) {
-        case "ArrowUp":
+        case "ArrowUp": {
           this.is_jump = false;
-        case "ArrowLeft":
+          break;
+        }
+        case "ArrowLeft": {
           this.is_left = false;
           break;
-        case "ArrowRight":
+        }
+        case "ArrowRight": {
           this.is_right = false;
           break;
+        }
       }
     });
   }
