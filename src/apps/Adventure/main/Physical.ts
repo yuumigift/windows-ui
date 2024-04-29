@@ -1,7 +1,7 @@
 import {EntityScript} from "@/gameScript/scripts/entityscript";
 
 export namespace AdventurePhysical {
-    export const GRAVITY = -10
+    export const GRAVITY = -8
 
     export const XPOWER = 0.5
 
@@ -45,24 +45,29 @@ export namespace AdventurePhysical {
             }
         }
 
+        public setGravity(){
+            // 考虑重力影响
+            this._velocityY += GRAVITY;
+            if (this.pos.y <= 0){
+                this._velocityY = GRAVITY;
+            }
+        }
         // 设置物体的初始速度
         public SetInitialVelocity(velocityX: number, velocityY: number = 0): void {
-            this._velocityX = velocityX;
-            this._velocityY = velocityY;
+            this._velocityX = velocityX || this._velocityX;
+            this._velocityY = velocityY || this._velocityY;
+            console.log(this._velocityY)
         }
 
         // 在每一帧更新物体的位置
         public UpdatePosition(): void {
             // 根据当前速度更新位置
             this._velocityX *= (1 - this.frictionCoefficient);
-            this._velocityY *= (1 - this.frictionCoefficient);
             this.pos.x += this._velocityX;
             this.pos.y += this._velocityY;
             this.savePos();
-            // 考虑重力影响
-            this._velocityY += GRAVITY;
+            this.setGravity()
             this.checkCollision()
-            console.log(this.pos)
         }
 
         public SetPosition(x: number, y: number): void {

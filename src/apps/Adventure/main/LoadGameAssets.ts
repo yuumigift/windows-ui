@@ -49,9 +49,6 @@ export class LoadGameAssets {
                 getPosition
             });
             s.pos = s.player.Physical.pos
-            s.player.DoPeriodicTask(1,()=>{
-                console.log(s.player.Physical.pos)
-            })
             return s;
         })()
     }
