@@ -1,4 +1,5 @@
 import type { Rect } from "./types";
+
 export const GRAVITY = 0.05;
 export const FRICTION = 0.97;
 export const PLAYER_WIDTH = 18;
