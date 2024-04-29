@@ -1,4 +1,5 @@
 import {EntityScript} from "@/gameScript/scripts/entityscript";
+import {Toward} from "@/gameScript/scripts/utils/MapEnum";
 
 export namespace AdventurePhysical {
     export const GRAVITY = -20
@@ -17,6 +18,13 @@ export namespace AdventurePhysical {
         private _frictionCoefficient: number = 0.1;
 
         public pos = reactive({x: 0, y: 0})
+
+        public toward:any = {
+            LEFT:false,
+            RIGHT:false,
+            UP:false,
+            DOWN:false,
+        }
 
         private savePos(){
             this.pos.x = Math.max(0, this.pos.x)
@@ -52,20 +60,24 @@ export namespace AdventurePhysical {
                 this._velocityY = GRAVITY;
             }
         }
-        public fn = () => {}
         // 设置物体的初始速度
-        public SetInitialVelocity(fn:any = null,velocityX: number, velocityY: number = 0): void {
-            const defaultFN = () => {
-                this._velocityX = velocityX || this._velocityX;
-                this._velocityY = velocityY || this._velocityY;
-            }
-            this.fn = fn || defaultFN
+        public SetInitialVelocity(velocityX: number, velocityY: number = 0): void {
+            this._velocityX = velocityX || this._velocityX;
+            this._velocityY = velocityY || this._velocityY;
         }
 
         // 在每一帧更新物体的位置
         public UpdatePosition(): void {
             // 根据当前速度更新位置
-            this.fn()
+            if (this.toward[Toward.UP]){
+                this.SetInitialVelocity(0 ,90)
+            }
+            if (this.toward[Toward.LEFT]){
+                this.SetInitialVelocity(-30 ,0)
+            }
+            if (this.toward[Toward.RIGHT]){
+                this.SetInitialVelocity(30 ,0)
+            }
             this._velocityX *= (1 - this.frictionCoefficient);
             this.pos.x += this._velocityX;
             this.pos.y += this._velocityY;

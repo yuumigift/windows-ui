@@ -3,6 +3,7 @@ import {Assets, Prefab} from "@/gameScript/scripts/prefabs";
 import {Health} from "@/apps/Adventure/components/Health";
 import type {EntityScript} from "@/gameScript/scripts/entityscript";
 import {AdventurePhysical} from "@/apps/Adventure/main/Physical";
+import {Toward} from "@/gameScript/scripts/utils/MapEnum";
 
 const assets = [
     new Assets("ANIM", "")
@@ -15,13 +16,13 @@ const RegisterKeyListen = (inst:ReturnType<typeof EntityScript>) => {
     const speed = AdventurePhysical.XPOWER
     const control: Control = {
         ArrowUp: () => {
-            phy.SetInitialVelocity(null, 0 ,90)
+            phy.toward[Toward.UP] = true
         },
         ArrowLeft: () => {
-            phy.SetInitialVelocity(null, -30 ,0)
+            phy.toward[Toward.LEFT] = true
         },
         ArrowRight: () => {
-            phy.SetInitialVelocity(null, 30 ,0)
+            phy.toward[Toward.RIGHT] = true
         },
     };
     const motion = (key: Direction) => {
@@ -38,20 +39,17 @@ const RegisterKeyListen = (inst:ReturnType<typeof EntityScript>) => {
         }
     });
     addEventListener("keyup", (e) => {
-        const fn = () => {
-            phy.SetInitialVelocity(()=>{}, 0, 0)
-        }
         switch (e.key) {
             case "ArrowUp": {
-                fn()
+                phy.toward[Toward.UP] = false
                 break;
             }
             case "ArrowLeft": {
-                fn()
+                phy.toward[Toward.LEFT] = false
                 break;
             }
             case "ArrowRight": {
-                fn()
+                phy.toward[Toward.RIGHT] = false
                 break;
             }
         }
