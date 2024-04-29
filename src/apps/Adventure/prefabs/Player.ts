@@ -15,13 +15,13 @@ const RegisterKeyListen = (inst:ReturnType<typeof EntityScript>) => {
     const speed = AdventurePhysical.XPOWER
     const control: Control = {
         ArrowUp: () => {
-            phy.SetInitialVelocity(0 ,1)
+            phy.SetInitialVelocity(0 ,80)
         },
         ArrowLeft: () => {
-            phy.SetInitialVelocity(1 ,0)
+            phy.SetInitialVelocity(-5 ,0)
         },
         ArrowRight: () => {
-            phy.SetInitialVelocity(-1 ,0)
+            phy.SetInitialVelocity(5 ,0)
         },
     };
     const motion = (key: Direction) => {
