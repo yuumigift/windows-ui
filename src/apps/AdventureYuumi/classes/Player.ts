@@ -19,15 +19,18 @@ export class Player {
   constructor() {
     addEventListener("keydown", (e) => {
       switch (e.key) {
-        case "ArrowUp":
+        case "ArrowUp": {
           this.is_jump = true;
           break;
-        case "ArrowLeft":
+        }
+        case "ArrowLeft": {
           this.is_left = true;
           break;
-        case "ArrowRight":
+        }
+        case "ArrowRight": {
           this.is_right = true;
           break;
+        }
       }
     });
     addEventListener("keyup", (e) => {
