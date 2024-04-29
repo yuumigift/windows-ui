@@ -57,6 +57,6 @@ export const apps = [
   {
     title: "大冒险",
     vuePath: "Adventure/index.vue",
-    icon: "GreedySnake.webp",
+    icon: "Adventure.webp",
   }
 ];
