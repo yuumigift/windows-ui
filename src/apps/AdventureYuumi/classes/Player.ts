@@ -1,5 +1,5 @@
 import type { EnterFramePayload, Rect } from "../types";
-import { FRICTION, GRAVITY, PLAYER_HEIGHT, PLAYER_SPEED_FORCE, PLAYER_SPEED_MAX, PLAYER_WIDTH, block, useCanvas } from "../common";
+import { FRICTION, GAME_WIDTH, GRAVITY, PLAYER_HEIGHT, PLAYER_SPEED_FORCE, PLAYER_SPEED_MAX, PLAYER_WIDTH, VIEWPORT_PADDING, block, useCanvas } from "../common";
 
 const { draw } = useCanvas();
 
@@ -7,7 +7,7 @@ export class Player {
   rect: Rect = {
     w: PLAYER_WIDTH,
     h: PLAYER_HEIGHT,
-    x: 0,
+    x: 300,
     y: 0,
   };
   ax = 0;
@@ -51,11 +51,21 @@ export class Player {
       }
     });
   }
-  enterFrame({ ground, scene }: EnterFramePayload) {
+  enterFrame({ ground, viewport }: EnterFramePayload) {
+    const moveRight = () => {
+      if (this.rect.x <= VIEWPORT_PADDING) {
+        this.rect.x += this.vx;
+      } else if (this.rect.x >= GAME_WIDTH - VIEWPORT_PADDING) {
+        this.rect.x = GAME_WIDTH - VIEWPORT_PADDING;
+        viewport.x += this.vx;
+      } else {
+        this.rect.x += this.vx;
+      }
+    };
+
     // 运动
     this.vx += this.ax;
     this.vy += GRAVITY;
-    this.rect.x += this.vx;
     this.rect.y += this.vy;
 
     // 摩擦力
@@ -81,17 +91,12 @@ export class Player {
       this.vx = -PLAYER_SPEED_MAX;
     }
 
-    // 边界
-    if (this.rect.x < 0) {
-      this.rect.x = 0;
-    } else if (this.rect.x + this.rect.w > 800) {
-      this.rect.x = 800 - this.rect.w;
-    }
-
     // 碰撞检测
     let is_understand_ground = false;
     ground.rect_list.map((ground_rect) => {
-      const block_info = block(this.rect, ground_rect);
+      const moved_ground_rect = { ...ground_rect };
+      moved_ground_rect.x -= viewport.x;
+      const block_info = block(this.rect, moved_ground_rect);
       this.rect = block_info.rect;
       if (block_info.direction === "up") {
         is_understand_ground = true;
@@ -105,7 +110,54 @@ export class Player {
           this.vy = 0;
         }
       }
+      if (block_info.direction === "left") {
+        if (this.vx < 0) {
+          this.ax = 0;
+          this.vx = 0;
+        }
+      }
+      if (block_info.direction === "right") {
+        if (this.vx > 0) {
+          this.ax = 0;
+          this.vx = 0;
+        }
+      }
     });
+
+    // 边界情况
+    if (viewport.x > 0) {
+      // 视口在中间
+      if (this.vx < 0) {
+        // 向左运动
+        if (this.rect.x <= VIEWPORT_PADDING) {
+          this.rect.x = VIEWPORT_PADDING;
+          viewport.x += this.vx;
+          if (viewport.x < 0) {
+            viewport.x = 0;
+          }
+        } else {
+          this.rect.x += this.vx;
+        }
+        // 向右运动
+      } else {
+        moveRight();
+      }
+    } else {
+      // 视口在最左边
+      if (this.vx < 0) {
+        this.rect.x += this.vx;
+        if (this.rect.x < 0) {
+          this.rect.x = 0;
+        }
+      } else {
+        moveRight();
+      }
+    }
+    if (this.rect.x < 0) {
+      this.rect.x = 0;
+    } else if (this.rect.x + this.rect.w > GAME_WIDTH) {
+      this.rect.x = GAME_WIDTH - this.rect.w;
+    }
 
     // 跳跃
     if (is_understand_ground && this.is_jump && this.vy > 0) {
