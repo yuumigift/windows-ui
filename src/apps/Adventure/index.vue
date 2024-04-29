@@ -1,9 +1,7 @@
 <template>
   <div class="outer-div">
     <div class="inner-div">
-      <div :style="{
-
-      }">1</div>
+      <div :style="Init?.getPosition">{{Init?.player}}</div>
     </div>
   </div>
 </template>
@@ -12,20 +10,13 @@
 
 import {LoadGameAssets} from "@/apps/Adventure/main/LoadGameAssets";
 
-const Init = (() => {
-
-  onMounted(async () => {
-
-    LoadGameAssets.load().then(() => {
-      const ThePlayer = inject("ThePlayer", LoadGameAssets.ThePlayer);
-      console.log(ThePlayer);
-    });
-  });
-
-  const s = reactive({
-  });
-  return s;
-})();
+let Init = null as any;
+const load = new LoadGameAssets()
+setInterval(()=> {
+  if (load.IsLoad()){
+    Init = load.Init()
+  }
+},100)
 </script>
 
 <style scoped lang="less">

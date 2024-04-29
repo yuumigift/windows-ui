@@ -19,6 +19,11 @@ export namespace AdventurePhysical {
         // 摩擦力系数
         private _frictionCoefficient: number = 0.1;
 
+        private pos = reactive({x: this.x, y: this.y})
+
+        public GetPosition(){
+            return this.pos
+        }
 
         get frictionCoefficient(): number {
             return this._frictionCoefficient;
@@ -53,7 +58,7 @@ export namespace AdventurePhysical {
             this._velocityY *= (1 - this.frictionCoefficient);
             this.x += this._velocityX;
             this.y += this._velocityY;
-
+            console.log(this.y)
             // 考虑重力影响
             this._velocityY += GRAVITY;
             this.checkCollision()
@@ -78,10 +83,6 @@ export namespace AdventurePhysical {
         public SetPosition(x: number, y: number): void {
             this.x = x;
             this.y = y;
-        }
-
-        public GetPosition() {
-            return {x: this.x, y: this.y}
         }
 
         constructor(inst: any) {

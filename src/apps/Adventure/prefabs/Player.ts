@@ -44,6 +44,7 @@ const fn = () => {
     const health = new Health()
     inst.AddComponent(health)
     inst.AddTag("player")
+    RegisterKeyListen(inst)
     return inst
 }
 
