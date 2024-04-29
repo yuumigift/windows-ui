@@ -1,5 +1,5 @@
 import type { EnterFramePayload, Rect } from "../types";
-import { FRICTION, GAME_WIDTH, GRAVITY, PLAYER_HEIGHT, PLAYER_SPEED_FORCE, PLAYER_SPEED_MAX, PLAYER_WIDTH, VIEWPORT_PADDING, block, useCanvas } from "../common";
+import { FRICTION, GAME_WIDTH, GRAVITY, PLAYER_HEIGHT, PLAYER_JUMP_FORCE, PLAYER_SPEED_FORCE, PLAYER_SPEED_MAX, PLAYER_WIDTH, VIEWPORT_PADDING, block, useCanvas } from "../common";
 
 const { draw } = useCanvas();
 
@@ -141,15 +141,10 @@ export class Player {
         moveRight();
       }
     }
-    if (this.rect.x < 0) {
-      this.rect.x = 0;
-    } else if (this.rect.x + this.rect.w > GAME_WIDTH) {
-      this.rect.x = GAME_WIDTH - this.rect.w;
-    }
 
     // 跳跃
     if (is_understand_ground && this.is_jump && this.vy > 0) {
-      this.vy = -3;
+      this.vy = -PLAYER_JUMP_FORCE;
     }
 
     draw(this.rect.x, this.rect.y, this.rect.w, this.rect.h, "red");
