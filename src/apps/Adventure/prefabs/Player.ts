@@ -15,13 +15,13 @@ const RegisterKeyListen = (inst:ReturnType<typeof EntityScript>) => {
     const speed = AdventurePhysical.XPOWER
     const control: Control = {
         ArrowUp: () => {
-            phy.SetInitialVelocity(0 ,90)
+            phy.SetInitialVelocity(null, 0 ,90)
         },
         ArrowLeft: () => {
-            phy.SetInitialVelocity(-30 ,0)
+            phy.SetInitialVelocity(null, -30 ,0)
         },
         ArrowRight: () => {
-            phy.SetInitialVelocity(30 ,0)
+            phy.SetInitialVelocity(null, 30 ,0)
         },
     };
     const motion = (key: Direction) => {
@@ -32,9 +32,28 @@ const RegisterKeyListen = (inst:ReturnType<typeof EntityScript>) => {
         return keys.includes(key);
     };
 
-    window.addEventListener("keydown", (e) => {
+    addEventListener("keydown", (e) => {
         if (isDirectionKey(e.key)) {
             motion(e.key);
+        }
+    });
+    addEventListener("keyup", (e) => {
+        const fn = () => {
+            phy.SetInitialVelocity(()=>{}, 0, 0)
+        }
+        switch (e.key) {
+            case "ArrowUp": {
+                fn()
+                break;
+            }
+            case "ArrowLeft": {
+                fn()
+                break;
+            }
+            case "ArrowRight": {
+                fn()
+                break;
+            }
         }
     });
 }
