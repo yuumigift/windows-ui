@@ -2,7 +2,7 @@ import {EntityScript} from "@/gameScript/scripts/entityscript";
 import {Toward} from "@/gameScript/scripts/utils/MapEnum";
 
 export namespace AdventurePhysical {
-    export const GRAVITY = -20
+    export const GRAVITY = -10
 
     export const XPOWER = 0.5
 
@@ -70,7 +70,7 @@ export namespace AdventurePhysical {
         public UpdatePosition(): void {
             // 根据当前速度更新位置
             if (this.toward[Toward.UP]){
-                this.SetInitialVelocity(0 ,90)
+                this.SetInitialVelocity(0 ,20)
             }
             if (this.toward[Toward.LEFT]){
                 this.SetInitialVelocity(-30 ,0)
