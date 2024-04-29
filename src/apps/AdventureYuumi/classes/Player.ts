@@ -17,7 +17,9 @@ export class Player {
   is_jump = false;
   is_left = false;
   is_right = false;
-  constructor() {
+  color = "red";
+  constructor(color: string = "red") {
+    this.color = color;
     addEventListener("keydown", (e) => {
       switch (e.key) {
         case "ArrowUp": {
@@ -91,27 +93,6 @@ export class Player {
       this.vx = -PLAYER_SPEED_MAX;
     }
 
-    // 碰撞检测
-    let is_understand_ground = false;
-    ground.rect_list.map((ground_rect) => {
-      const moved_ground_rect = { ...ground_rect };
-      moved_ground_rect.x -= viewport.x;
-      const block_info = block(this.rect, moved_ground_rect);
-      this.rect = block_info.rect;
-      if (block_info.direction === "up") {
-        is_understand_ground = true;
-        this.jumping = false;
-        if (this.vy > 1) {
-          this.vy = 1;
-        }
-      }
-      if (block_info.direction === "down") {
-        if (this.vy < 0) {
-          this.vy = 0;
-        }
-      }
-    });
-
     // 边界情况
     if (viewport.x > 0) {
       // 视口在中间
@@ -142,11 +123,32 @@ export class Player {
       }
     }
 
+    // 碰撞检测
+    let is_understand_ground = false;
+    ground.rect_list.map((ground_rect) => {
+      const moved_ground_rect = { ...ground_rect };
+      moved_ground_rect.x -= viewport.x;
+      const block_info = block(this.rect, moved_ground_rect);
+      this.rect = block_info.rect;
+      if (block_info.direction === "up") {
+        is_understand_ground = true;
+        this.jumping = false;
+        if (this.vy > 1) {
+          this.vy = 1;
+        }
+      }
+      if (block_info.direction === "down") {
+        if (this.vy < 0) {
+          this.vy = 0;
+        }
+      }
+    });
+
     // 跳跃
     if (is_understand_ground && this.is_jump && this.vy > 0) {
       this.vy = -PLAYER_JUMP_FORCE;
     }
 
-    draw(this.rect.x, this.rect.y, this.rect.w, this.rect.h, "red");
+    draw(this.rect.x, this.rect.y, this.rect.w, this.rect.h, this.color);
   }
 }
