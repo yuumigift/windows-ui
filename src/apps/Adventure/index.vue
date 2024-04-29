@@ -1,13 +1,14 @@
 <template>
   <div class="outer-div">
     <div class="inner-div">
-      <div>{{ Init?.getPosition }}</div>
+      <div :style="Init?.getPosition" class="player"></div>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
 import { LoadGameAssets } from "@/apps/Adventure/main/LoadGameAssets";
+import type {Ref} from "vue";
 
 let Init: Ref<ReturnType<typeof load.Init> | undefined> = ref();
 
@@ -26,5 +27,11 @@ const load = new LoadGameAssets(() => {
 
 .inner-div {
   display: inline-block;
+}
+
+.player{
+  border: 1px solid red;
+  width: 100px;
+  height: 100px;
 }
 </style>

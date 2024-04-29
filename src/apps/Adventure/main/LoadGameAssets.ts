@@ -39,8 +39,8 @@ export class LoadGameAssets {
         return (() => {
             const getPosition = computed(() :StyleValue=>{
                 return {
-                    marginLeft:s.pos.x,
-                    marginBottom:s.pos.y,
+                    marginLeft:`${s.pos.x}px`,
+                    marginBottom:`${s.pos.y}px`,
                 }
             })
             const s = reactive({
@@ -50,8 +50,7 @@ export class LoadGameAssets {
             });
             s.pos = s.player.Physical.pos
             s.player.DoPeriodicTask(1,()=>{
-                s.pos.x+=1
-                console.log(s.getPosition)
+                console.log(s.player.Physical.pos)
             })
             return s;
         })()
