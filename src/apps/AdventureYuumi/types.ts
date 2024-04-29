@@ -1,6 +1,6 @@
 import { Player } from "./classes/Player";
 import { Ground } from "./classes/Ground";
-import { Scene } from "./classes/Scene";
+import { Viewport } from "./classes/Viewport";
 
 export interface Rect {
   x: number;
@@ -12,5 +12,5 @@ export interface Rect {
 export type EnterFramePayload = {
   player: InstanceType<typeof Player>;
   ground: InstanceType<typeof Ground>;
-  scene: InstanceType<typeof Scene>;
+  viewport: InstanceType<typeof Viewport>;
 };

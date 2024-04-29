@@ -10,13 +10,13 @@ export class Ground {
     this.add({ x: 0, y: 500, w: 8000, h: 100 });
     let tail = 0;
     for (let index = 0; index < 20; index++) {
-      this.generateSteps(tail + index + 2, 0, 2 + index);
+      this.generateSteps(tail + index + 2, 0, 3);
       tail += index + 2 + 2;
     }
   }
-  enterFrame({ scene }: EnterFramePayload) {
+  enterFrame({ viewport }: EnterFramePayload) {
     this.rect_list.forEach((rect) => {
-      draw(rect.x, rect.y, rect.w, rect.h, "#333");
+      draw(rect.x - viewport.x - 1, rect.y - 1, rect.w + 1, rect.h + 1, "#333");
     });
   }
   add(rect: Rect) {
