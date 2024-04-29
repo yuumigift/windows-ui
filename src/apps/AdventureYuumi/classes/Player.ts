@@ -110,18 +110,6 @@ export class Player {
           this.vy = 0;
         }
       }
-      if (block_info.direction === "left") {
-        if (this.vx < 0) {
-          this.ax = 0;
-          this.vx = 0;
-        }
-      }
-      if (block_info.direction === "right") {
-        if (this.vx > 0) {
-          this.ax = 0;
-          this.vx = 0;
-        }
-      }
     });
 
     // 边界情况
