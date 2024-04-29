@@ -58,7 +58,6 @@ export namespace AdventurePhysical {
             this._velocityY *= (1 - this.frictionCoefficient);
             this.x += this._velocityX;
             this.y += this._velocityY;
-            console.log(this.y)
             // 考虑重力影响
             this._velocityY += GRAVITY;
             this.checkCollision()

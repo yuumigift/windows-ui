@@ -1,5 +1,6 @@
 import {SpawnPrefab} from "@/gameScript/scripts/prefabs";
 import type {EntityScript} from "@/gameScript/scripts/entityscript";
+import type {StyleValue} from "vue";
 
 
 export class LoadGameAssets {
@@ -8,14 +9,13 @@ export class LoadGameAssets {
     public IsLoad() {
         return this.isLoad;
     }
-
-    constructor() {
+    constructor(callback:()=>void) {
         this.load().then(() => {
             this.isLoad = true;
             this.enterFrame()
+            callback()
         })
     }
-
     async load() {
         // 异步加载所有模块
         const prefabs = import.meta.glob("@/apps/Adventure/prefabs/*.ts");
@@ -31,25 +31,24 @@ export class LoadGameAssets {
             console.error("Failed to load modules:", error);
         });
     }
-
     enterFrame() {
         requestAnimationFrame(() => this.enterFrame());
         this.ThePlayer.Physical.UpdatePosition()
     }
     public Init(){
         return (() => {
-            const getPosition = () => {
-                const pos = s.player.Physical.GetPosition()
+            const getPosition = computed(() :StyleValue=>{
                 return {
-                    marginLeft:pos.x,
-                    marginBottom:pos.y,
+                    marginLeft:s.pos.x,
+                    marginBottom:s.pos.y,
                 }
-            }
+            })
             const s = reactive({
                 player:this.ThePlayer as ReturnType<typeof EntityScript>,
+                pos:{} as any,
                 getPosition
             });
-
+            s.pos = s.player.Physical.GetPosition()
             return s;
         })()
     }

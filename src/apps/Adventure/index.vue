@@ -1,7 +1,7 @@
 <template>
   <div class="outer-div">
     <div class="inner-div">
-      <div :style="Init?.getPosition">{{Init?.player}}</div>
+      <div :style="Init?.getPosition">{{Init?.getPosition}}</div>
     </div>
   </div>
 </template>
@@ -10,13 +10,10 @@
 
 import {LoadGameAssets} from "@/apps/Adventure/main/LoadGameAssets";
 
-let Init = null as any;
-const load = new LoadGameAssets()
-setInterval(()=> {
-  if (load.IsLoad()){
-    Init = load.Init()
-  }
-},100)
+let Init = null as any
+const load = new LoadGameAssets(()=>{
+  Init = load.Init()
+})
 </script>
 
 <style scoped lang="less">
