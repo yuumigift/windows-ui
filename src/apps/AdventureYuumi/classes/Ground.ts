@@ -54,16 +54,16 @@ class MovingGround extends GroundBase {
 }
 
 export class Ground extends GroundBase {
-  ground: GroundBase;
+  static_ground: GroundBase;
   moving_ground: GroundBase;
   constructor() {
     super();
-    this.ground = new StaticGround();
+    this.static_ground = new StaticGround();
     this.moving_ground = new MovingGround();
-    this.rect_list = [...this.ground.rect_list, ...this.moving_ground.rect_list];
+    this.rect_list = [...this.static_ground.rect_list, ...this.moving_ground.rect_list];
   }
   enterFrame(payload: EnterFramePayload) {
-    this.ground.enterFrame(payload);
+    this.static_ground.enterFrame(payload);
     this.moving_ground.enterFrame(payload);
     this.rect_list.forEach((rect) => {
       draw(rect.x - payload.viewport.x, rect.y, rect.w + 1, rect.h + 1, "#333");
