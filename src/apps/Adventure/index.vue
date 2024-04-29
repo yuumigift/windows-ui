@@ -13,10 +13,15 @@
 import {LoadGameAssets} from "@/apps/Adventure/main/LoadGameAssets";
 
 const Init = (() => {
-  LoadGameAssets.load().then(()=>{
-    const ThePlayer = LoadGameAssets.ThePlayer
-    console.log(ThePlayer)
-  })
+
+  onMounted(async () => {
+
+    LoadGameAssets.load().then(() => {
+      const ThePlayer = inject("ThePlayer", LoadGameAssets.ThePlayer);
+      console.log(ThePlayer);
+    });
+  });
+
   const s = reactive({
   });
   return s;

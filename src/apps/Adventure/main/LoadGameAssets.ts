@@ -15,7 +15,6 @@ export class LoadGameAssets{
         Promise.resolve(importPromises).then(() => {
             // 在所有模块加载完成后执行后续代码
             this.ThePlayer = SpawnPrefab("player");
-            console.log(this.ThePlayer)
 
         }).catch((error) => {
             // 处理加载模块失败的情况

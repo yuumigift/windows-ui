@@ -72,7 +72,9 @@ export const EntityScript = () => {
         AddTag,
         RemoveTag,
         GetPosition,
-        Physical:new Physical(this)
+        Physical:null as Physical | null
     })
+
+    s.Physical = new Physical(s)!
     return s
 }
