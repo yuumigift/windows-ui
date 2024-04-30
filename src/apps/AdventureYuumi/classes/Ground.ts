@@ -94,9 +94,7 @@ class MovingGroundGroup extends GroundGroupBase {
 export class Ground extends GroundGroupBase {
   constructor() {
     super();
-    const static_ground_group = new StaticGroundGroup();
-    const moving_ground_group = new MovingGroundGroup();
-    this.fuseGroup(static_ground_group);
-    this.fuseGroup(moving_ground_group);
+    this.fuseGroup(new StaticGroundGroup());
+    this.fuseGroup(new MovingGroundGroup());
   }
 }
