@@ -46,7 +46,8 @@ export namespace AdventurePhysical {
         public checkCollision(): void {
             // 假设有一个碰撞检测逻辑，这里只是一个示例
             // 如果发生碰撞，可以根据具体情况更新物体的速度或位置
-            if (this.pos.x <= 0 || this.pos.x + this.width > 800) {
+            if (this.pos.x < 0 || this.pos.x + this.width + 80 > 800) {
+                this.pos.x = 800
                 this._velocityX = 0;
             }
             if (this.pos.y <= 0 || this.pos.y + this.height > 600) {
@@ -94,12 +95,13 @@ export namespace AdventurePhysical {
 
             //==================================移动部分===========================================
             this._velocityX *= (1 - this.frictionCoefficient);
+            this.checkCollision()
             this.pos.x += this._velocityX;
+
             this.lastTime = currentTime;
 
             this.savePos();
             this.setGravity()
-            this.checkCollision()
         }
 
         public SetPosition(x: number, y: number): void {
