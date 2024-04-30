@@ -13,7 +13,7 @@ const canvas = ref<HTMLCanvasElement>();
 
 const game = new Game();
 game.addViewport(new Viewport());
-game.addPlayer(new Player("red"));
+game.addPlayer(new Player("teal"));
 game.addGround(new Ground());
 
 game.start(canvas);
