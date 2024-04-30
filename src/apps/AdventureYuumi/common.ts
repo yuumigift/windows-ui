@@ -10,6 +10,8 @@ export const PLAYER_SPEED_FORCE = 0.1;
 export const PLAYER_SPEED_MAX = 1.5;
 export const PLAYER_JUMP_FORCE = 3;
 export const VIEWPORT_PADDING = 300;
+export const MONSTER_WIDTH = 18;
+export const MONSTER_HEIGHT = 18;
 
 let ctx: CanvasRenderingContext2D | undefined | null;
 export const useCanvas = () => {

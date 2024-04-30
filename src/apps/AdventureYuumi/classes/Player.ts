@@ -125,8 +125,8 @@ export class Player {
 
     // 碰撞检测
     let is_understand_ground = false;
-    ground.rect_list.map((ground_rect) => {
-      const moved_ground_rect = { ...ground_rect };
+    ground.list.map((ground_rect) => {
+      const moved_ground_rect = { ...ground_rect.rect };
       moved_ground_rect.x -= viewport.x;
       const block_info = block(this.rect, moved_ground_rect);
       this.rect = block_info.rect;

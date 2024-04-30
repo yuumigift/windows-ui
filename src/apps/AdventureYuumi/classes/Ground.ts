@@ -5,66 +5,94 @@ const { draw } = useCanvas();
 
 class GroundBase {
   #pixel_size = 20;
-  rect_list: Rect[] = [];
-  add(rect: Rect) {
-    this.rect_list.push(rect);
+  rect: Rect;
+  constructor() {
+    this.rect = { x: 0, y: 0, w: 0, h: 0 };
   }
-  addCube(x: number, y: number, w: number = 1, h: number = 1) {
-    this.add({ x: x * this.#pixel_size, y: 500 - this.#pixel_size - y * this.#pixel_size, w: this.#pixel_size * w, h: this.#pixel_size * h });
+  setCube(x: number, y: number, w: number = 1, h: number = 1) {
+    this.rect = { x: x * this.#pixel_size, y: 500 - this.#pixel_size - y * this.#pixel_size, w: this.#pixel_size * w, h: this.#pixel_size * h };
   }
-  generateSteps(x: number, y: number, step_num: number) {
-    for (let index = 0; index < step_num; index++) {
-      this.addCube(x + index, y + index, 1, index + 1);
-    }
+  enterFrame(payload: EnterFramePayload) {
+    draw(this.rect.x - payload.viewport.x, this.rect.y, this.rect.w + 1, this.rect.h + 1, "#333");
   }
 }
 
-class StaticGround extends GroundBase {
+class GroundGroupBase {
+  list: GroundBase[] = [];
+  enterFrame(payload: EnterFramePayload) {
+    this.list.forEach((ground) => {
+      ground.enterFrame(payload);
+    });
+  }
+}
+
+class StaticGroundGroup extends GroundGroupBase {
   constructor() {
     super();
-    this.add({ x: 0, y: 500, w: 1e5, h: 100 });
+    const underground = new GroundBase();
+    underground.rect = { x: 0, y: 500, w: 1e5, h: 100 };
+    this.list.push(underground);
     let tail = 0;
     for (let index = 0; index < 20; index++) {
       this.generateSteps(tail + index + 2, 0, 3 + index);
       tail += index + 2 + 2;
     }
   }
+  generateSteps(x: number, y: number, step_num: number) {
+    for (let index = 0; index < step_num; index++) {
+      const underground = new GroundBase();
+      underground.setCube(x + index, y + index, 1, index + 1);
+      this.list.push(underground);
+    }
+  }
 }
 
 class MovingGround extends GroundBase {
   vy = -1;
+  top = 0;
+  bottom = 0;
+  speed = 1;
   constructor() {
     super();
-    this.addCube(10, 10, 5, 1);
   }
-  enterFrame({ viewport }: EnterFramePayload) {
-    this.rect_list.forEach((rect) => {
-      if (rect.y < 200) {
-        rect.y = 200;
-        this.vy = 1;
-      }
-      if (rect.y > 360) {
-        rect.y = 360;
-        this.vy = -1;
-      }
-      rect.y += this.vy;
-    });
+  setMovingRange(top: number, bottom: number, speed: number = 1) {
+    this.top = top;
+    this.bottom = bottom;
+    this.speed = speed;
+  }
+  enterFrame(payload: EnterFramePayload) {
+    if (this.rect.y < this.top) {
+      this.rect.y = this.top;
+      this.vy = this.speed;
+    }
+    if (this.rect.y > this.bottom) {
+      this.rect.y = this.bottom;
+      this.vy = -this.speed;
+    }
+    this.rect.y += this.vy;
+    super.enterFrame(payload);
   }
 }
 
-export class Ground extends GroundBase {
-  static_ground: StaticGround;
-  moving_ground: MovingGround;
+class MovingGroundGroup extends GroundGroupBase {
+  list: MovingGround[] = [];
   constructor() {
     super();
-    this.static_ground = new StaticGround();
-    this.moving_ground = new MovingGround();
-    this.rect_list = [...this.static_ground.rect_list, ...this.moving_ground.rect_list];
+    const ground_1 = new MovingGround();
+    ground_1.setCube(10, 10, 3, 1);
+    ground_1.setMovingRange(200, 360, 1);
+    const ground_2 = new MovingGround();
+    ground_2.setCube(15, 15, 5, 1);
+    ground_2.setMovingRange(80, 260, 0.6);
+    this.list.push(ground_1, ground_2);
   }
-  enterFrame(payload: EnterFramePayload) {
-    this.moving_ground.enterFrame(payload);
-    this.rect_list.forEach((rect) => {
-      draw(rect.x - payload.viewport.x, rect.y, rect.w + 1, rect.h + 1, "#333");
-    });
+}
+
+export class Ground extends GroundGroupBase {
+  constructor() {
+    super();
+    const static_ground_group = new StaticGroundGroup();
+    const moving_ground_group = new MovingGroundGroup();
+    this.list = [...static_ground_group.list, ...moving_ground_group.list];
   }
 }
