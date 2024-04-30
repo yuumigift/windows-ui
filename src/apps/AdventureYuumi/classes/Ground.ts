@@ -24,6 +24,9 @@ class GroundGroupBase {
       ground.enterFrame(payload);
     });
   }
+  fuseGroup(group: GroundGroupBase) {
+    this.list.push(...group.list);
+  }
 }
 
 class StaticGroundGroup extends GroundGroupBase {
@@ -93,6 +96,7 @@ export class Ground extends GroundGroupBase {
     super();
     const static_ground_group = new StaticGroundGroup();
     const moving_ground_group = new MovingGroundGroup();
-    this.list = [...static_ground_group.list, ...moving_ground_group.list];
+    this.fuseGroup(static_ground_group);
+    this.fuseGroup(moving_ground_group);
   }
 }
