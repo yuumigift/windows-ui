@@ -60,6 +60,9 @@ export class Player {
       } else if (this.rect.x >= GAME_WIDTH - VIEWPORT_PADDING) {
         this.rect.x = GAME_WIDTH - VIEWPORT_PADDING;
         viewport.x += this.vx;
+        if (viewport.x > 1e5) {
+          viewport.x = 1e5;
+        }
       } else {
         this.rect.x += this.vx;
       }
