@@ -1,7 +1,9 @@
 <template>
   <div class="outer-div">
     <div class="inner-div">
-      <div :style="Init?.getPosition" class="player"></div>
+      <div class="world">
+        <div :style="Init?.getPosition" class="player"></div>
+      </div>
     </div>
   </div>
 </template>
@@ -29,9 +31,18 @@ const load = new LoadGameAssets(() => {
   display: inline-block;
 }
 
+.world{
+  width: 800px;
+  height: 600px;
+  border: 1px solid red;
+  display: flex;
+  justify-content: start;
+  align-items: end;
+}
+
 .player{
   border: 1px solid red;
-  width: 100px;
+  width: 80px;
   height: 100px;
 }
 </style>
