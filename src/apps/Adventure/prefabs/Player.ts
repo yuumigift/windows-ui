@@ -13,14 +13,15 @@ type Control = Record<Direction, () => void>;
 const RegisterKeyListen = (inst:ReturnType<typeof EntityScript>) => {
     const phy = inst.Physical
     const toward = phy.toward
-    const fn = (tow:string, x:number, y:number) => {
-        if (!toward[tow]){
-            phy.SetInitialVelocity(x ,y)
-            toward[tow] = true
-        }
-    }
     const control: Control = {
-        ArrowUp: () => fn(Toward.UP, 0, phy.playerJumpPower),
+        ArrowUp: () => {
+            if (!toward[Toward.UP]){
+                if (phy.isUnderstandGround()){
+                    phy.SetInitialVelocity(0 ,phy.playerJumpPower)
+                }
+                toward[Toward.UP] = true
+            }
+        },
         ArrowLeft: () => {
             toward[Toward.LEFT] = true
         },

@@ -56,7 +56,11 @@ export namespace AdventurePhysical {
             }
         }
 
-        public setGravity(){
+        public isUnderstandGround(){
+            return this.pos.y <= 0
+        }
+
+        private setGravity(){
             // 考虑重力影响
             this._velocityY += GRAVITY;
             if (this.pos.y <= 0){
@@ -83,10 +87,12 @@ export namespace AdventurePhysical {
                 this.lastTime = performance.now();
             }
             const deltaTime = (currentTime - this.lastTime) / 1000; // 转换为秒
+
+            //==================================跳跃部分===========================================
             this.pos.y += this._velocityY * deltaTime + 0.5 * GRAVITY * deltaTime * deltaTime;
             this._velocityY += GRAVITY * deltaTime;
 
-
+            //==================================移动部分===========================================
             this._velocityX *= (1 - this.frictionCoefficient);
             this.pos.x += this._velocityX;
             this.lastTime = currentTime;
