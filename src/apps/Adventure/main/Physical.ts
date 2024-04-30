@@ -2,22 +2,25 @@ import {EntityScript} from "@/gameScript/scripts/entityscript";
 import {Toward} from "@/gameScript/scripts/utils/MapEnum";
 
 export namespace AdventurePhysical {
-    export const GRAVITY = -10
-
-    export const XPOWER = 0.5
+    export const GRAVITY = -9.8
 
     export class Physical {
         inst: ReturnType<typeof EntityScript>
         public width: number = 0;
         public height: number = 0;
 
+        public XPOWER: number = 30
+
         private _velocityX: number = 0;
         private _velocityY: number = 0;
 
-        // 摩擦力系数
-        private _frictionCoefficient: number = 0.1;
+        public playerJumpPower: number = 400;
 
+        // 摩擦力系数
+        private _frictionCoefficient: number = 0.05;
+        //位置
         public pos = reactive({x: 0, y: 0})
+        private lastTime:number = -1
 
         public toward:any = {
             LEFT:false,
@@ -67,20 +70,27 @@ export namespace AdventurePhysical {
         }
 
         // 在每一帧更新物体的位置
-        public UpdatePosition(): void {
+        public UpdatePosition(currentTime:number): void {
             // 根据当前速度更新位置
-            if (this.toward[Toward.UP]){
-                this.SetInitialVelocity(0 ,300)
-            }
             if (this.toward[Toward.LEFT]){
-                this.SetInitialVelocity(-30 ,0)
+                this.SetInitialVelocity(-this.XPOWER ,0)
             }
             if (this.toward[Toward.RIGHT]){
-                this.SetInitialVelocity(30 ,0)
+                this.SetInitialVelocity(this.XPOWER ,0)
             }
+
+            if(this.lastTime === -1){
+                this.lastTime = performance.now();
+            }
+            const deltaTime = (currentTime - this.lastTime) / 1000; // 转换为秒
+            this.pos.y += this._velocityY * deltaTime + 0.5 * GRAVITY * deltaTime * deltaTime;
+            this._velocityY += GRAVITY * deltaTime;
+
+
             this._velocityX *= (1 - this.frictionCoefficient);
             this.pos.x += this._velocityX;
-            this.pos.y = this._velocityY;
+            this.lastTime = currentTime;
+
             this.savePos();
             this.setGravity()
             this.checkCollision()

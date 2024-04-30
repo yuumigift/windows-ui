@@ -2,7 +2,6 @@ import {CreateEntity} from "@/gameScript/scripts/mainfunctions";
 import {Assets, Prefab} from "@/gameScript/scripts/prefabs";
 import {Health} from "@/apps/Adventure/components/Health";
 import type {EntityScript} from "@/gameScript/scripts/entityscript";
-import {AdventurePhysical} from "@/apps/Adventure/main/Physical";
 import {Toward} from "@/gameScript/scripts/utils/MapEnum";
 
 const assets = [
@@ -13,16 +12,20 @@ type Control = Record<Direction, () => void>;
 
 const RegisterKeyListen = (inst:ReturnType<typeof EntityScript>) => {
     const phy = inst.Physical
-    const speed = AdventurePhysical.XPOWER
+    const toward = phy.toward
+    const fn = (tow:string, x:number, y:number) => {
+        if (!toward[tow]){
+            phy.SetInitialVelocity(x ,y)
+            toward[tow] = true
+        }
+    }
     const control: Control = {
-        ArrowUp: () => {
-            phy.toward[Toward.UP] = true
-        },
+        ArrowUp: () => fn(Toward.UP, 0, phy.playerJumpPower),
         ArrowLeft: () => {
-            phy.toward[Toward.LEFT] = true
+            toward[Toward.LEFT] = true
         },
         ArrowRight: () => {
-            phy.toward[Toward.RIGHT] = true
+            toward[Toward.RIGHT] = true
         },
     };
     const motion = (key: Direction) => {

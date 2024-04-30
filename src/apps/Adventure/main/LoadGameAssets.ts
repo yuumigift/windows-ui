@@ -12,7 +12,7 @@ export class LoadGameAssets {
     constructor(callback:()=>void) {
         this.load().then(() => {
             this.isLoad = true;
-            this.enterFrame()
+            this.enterFrame(performance.now())
             callback()
         })
     }
@@ -31,9 +31,9 @@ export class LoadGameAssets {
             console.error("Failed to load modules:", error);
         });
     }
-    enterFrame() {
-        requestAnimationFrame(() => this.enterFrame());
-        this.ThePlayer.Physical.UpdatePosition()
+    enterFrame(timestamp:number) {
+        requestAnimationFrame(timestamp => this.enterFrame(timestamp));
+        this.ThePlayer.Physical.UpdatePosition(timestamp)
     }
     public Init(){
         return (() => {
