@@ -18,7 +18,7 @@ class MonsterBase extends Entity {
     if (this.move_waiting < 0) {
       // 计算下一次移动等待时间
       this.move_waiting = Math.random() * MONSTER_MOVE_WAITING + MONSTER_MOVE_WAITING / 2;
-      // 停止移动时，重置左右移动方向
+      // 停止移动
       this.is_left = false;
       this.is_right = false;
       if (this.is_moving) {
