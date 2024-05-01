@@ -80,10 +80,10 @@ class MonsterBaseGroup {
 }
 
 export class Monster extends MonsterBaseGroup {
-  constructor(color: string = "red") {
+  constructor() {
     super();
     for (let index = 0; index < 5; index++) {
-      const monster = new MonsterBase(color, Math.random() * GAME_WIDTH - MONSTER_WIDTH, -MONSTER_HEIGHT);
+      const monster = new MonsterBase("red", Math.random() * GAME_WIDTH - MONSTER_WIDTH, -MONSTER_HEIGHT);
       this.list.push(monster);
     }
   }

@@ -16,7 +16,7 @@ const game = new Game();
 
 game.viewport = new Viewport();
 game.player = new Player("teal");
-game.monster = new Monster("red");
+game.monster = new Monster();
 game.ground = new Ground();
 
 game.start(canvas);
