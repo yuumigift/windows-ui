@@ -87,8 +87,8 @@ export class Player extends Entity {
         // 调用向右移动的函数
         moveRight();
       }
-    } else {
       // 如果视口在最左边
+    } else {
       // 如果矩形速度向左，则继续向左移动
       if (this.vx < 0) {
         this.rect.x += this.vx;
