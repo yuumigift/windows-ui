@@ -22,10 +22,6 @@ export class Game {
   enterFrame() {
     requestAnimationFrame(() => this.enterFrame());
     clear();
-    if (!this.viewport) return;
-    if (!this.player) return;
-    if (!this.ground) return;
-    if (!this.monster) return;
     const enterFramePayload: EnterFramePayload = {
       viewport: this.viewport,
       player: this.player,
