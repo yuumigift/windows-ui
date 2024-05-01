@@ -9,10 +9,16 @@ import { Viewport } from "./Viewport";
 const { clear, setContext } = useCanvas();
 
 export class Game {
-  monster: Monster | null = null;
-  player: Player | null = null;
-  ground: Ground | null = null;
-  viewport: Viewport | null = null;
+  viewport: Viewport;
+  player: Player;
+  monster: Monster;
+  ground: Ground;
+  constructor(payload: EnterFramePayload) {
+    this.viewport = payload.viewport;
+    this.player = payload.player;
+    this.monster = payload.monster;
+    this.ground = payload.ground;
+  }
   enterFrame() {
     requestAnimationFrame(() => this.enterFrame());
     clear();

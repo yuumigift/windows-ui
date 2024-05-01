@@ -12,12 +12,12 @@ import { Monster } from "./classes/Monster";
 
 const canvas = ref<HTMLCanvasElement>();
 
-const game = new Game();
-
-game.viewport = new Viewport();
-game.player = new Player("teal");
-game.monster = new Monster();
-game.ground = new Ground();
+const game = new Game({
+  viewport: new Viewport(),
+  player: new Player("teal"),
+  monster: new Monster(),
+  ground: new Ground(),
+});
 
 game.start(canvas);
 </script>
