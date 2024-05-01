@@ -63,13 +63,12 @@ export class Player extends Entity {
     };
 
     // 边界情况处理
-    // 如果视口左边界大于0
+
+    // 如果视口在中间
     if (payload.viewport.x > 0) {
-      // 如果视口在中间
-      // 视口在中间
+      // 向左运动
       if (this.vx < 0) {
         // 如果矩形速度向左
-        // 向左运动
         if (this.rect.x <= VIEWPORT_PADDING) {
           // 如果矩形左边界小于等于视口内边距，则矩形左边界设置为视口内边距
           this.rect.x = VIEWPORT_PADDING;
@@ -83,8 +82,8 @@ export class Player extends Entity {
           // 否则，继续向左移动
           this.rect.x += this.vx;
         }
-        // 向右运动
       } else {
+        // 向右运动
         // 调用向右移动的函数
         moveRight();
       }
