@@ -64,7 +64,6 @@ export class Player extends Entity {
 
     // 边界情况处理
     // 如果视口左边界大于0
-    // 边界情况
     if (payload.viewport.x > 0) {
       // 如果视口在中间
       // 视口在中间
