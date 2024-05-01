@@ -13,18 +13,6 @@ export class Game {
   player: Player | null = null;
   ground: Ground | null = null;
   viewport: Viewport | null = null;
-  addViewport(viewport: Viewport) {
-    this.viewport = viewport;
-  }
-  addPlayer(player: Player) {
-    this.player = player;
-  }
-  addMonster(monster: Monster) {
-    this.monster = monster;
-  }
-  addGround(ground: Ground) {
-    this.ground = ground;
-  }
   enterFrame() {
     requestAnimationFrame(() => this.enterFrame());
     clear();

@@ -13,10 +13,11 @@ import { Monster } from "./classes/Monster";
 const canvas = ref<HTMLCanvasElement>();
 
 const game = new Game();
-game.addViewport(new Viewport());
-game.addPlayer(new Player("teal"));
-game.addMonster(new Monster("red"));
-game.addGround(new Ground());
+
+game.viewport = new Viewport();
+game.player = new Player("teal");
+game.monster = new Monster("red");
+game.ground = new Ground();
 
 game.start(canvas);
 </script>
