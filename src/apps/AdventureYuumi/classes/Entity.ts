@@ -78,6 +78,7 @@ export class Entity {
       this.vy = -jump_force;
     }
 
+    // 边界
     if (this.rect.x < 0) {
       this.rect.x = 0;
     }
