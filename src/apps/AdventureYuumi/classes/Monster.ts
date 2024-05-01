@@ -16,8 +16,10 @@ class MonsterBase extends Entity {
   enterFrame(payload: EnterFramePayload) {
     // 随机移动
     if (this.move_waiting < 0) {
+      // 计算下一次移动等待时间
       this.move_waiting = Math.random() * MONSTER_MOVE_WAITING + MONSTER_MOVE_WAITING / 2;
       if (this.is_moving) {
+        // 随机选择左右移动方向
         if (Math.random() < 0.5) {
           this.is_left = true;
           this.is_right = false;
@@ -26,26 +28,34 @@ class MonsterBase extends Entity {
           this.is_right = true;
         }
       } else {
+        // 停止移动时，重置左右移动方向
         this.is_left = false;
         this.is_right = false;
       }
+      // 切换移动状态
       this.is_moving = !this.is_moving;
     } else {
+      // 移动等待时间递减
       this.move_waiting--;
     }
 
     // 随机跳跃
     if (this.jump_waiting < 0) {
+      // 计算下一次跳跃等待时间
       this.jump_waiting = Math.random() * MONSTER_JUMP_WAITING + MONSTER_JUMP_WAITING / 2;
+      // 设置跳跃状态为 true
       this.is_jump = true;
     } else {
+      // 跳跃等待时间递减
       this.is_jump = false;
       this.jump_waiting--;
     }
 
+    // 更新位置
     this.rect.x += this.vx;
     this.rect.y += this.vy;
 
+    // 定义移动配置
     const move_config: MoveConfig = {
       jump_force: MONSTER_JUMP_FORCE,
       speed_max: MONSTER_SPEED_MAX,
@@ -53,7 +63,9 @@ class MonsterBase extends Entity {
       is_control_viewport: false,
     };
 
+    // 执行移动操作
     this.move(payload, move_config);
+    // 执行绘制操作
     this.draw(payload, move_config);
   }
 }
