@@ -43,42 +43,60 @@ export class Player extends Entity {
   }
   enterFrame(payload: EnterFramePayload) {
     const moveRight = () => {
+      // 向右移动
       if (this.rect.x <= VIEWPORT_PADDING) {
+        // 如果矩形左边界小于等于视口内边距，则向右移动
         this.rect.x += this.vx;
       } else if (this.rect.x >= GAME_WIDTH - VIEWPORT_PADDING) {
+        // 如果矩形右边界大于等于游戏宽度减去视口内边距，则矩形右边界设置为游戏宽度减去视口内边距
         this.rect.x = GAME_WIDTH - VIEWPORT_PADDING;
+        // 视口左边界向右移动
         payload.viewport.x += this.vx;
         if (payload.viewport.x > 1e5) {
+          // 如果视口左边界大于1e5，则设置为1e5
           payload.viewport.x = 1e5;
         }
       } else {
+        // 否则，继续向右移动
         this.rect.x += this.vx;
       }
     };
 
+    // 边界情况处理
+    // 如果视口左边界大于0
     // 边界情况
     if (payload.viewport.x > 0) {
+      // 如果视口在中间
       // 视口在中间
       if (this.vx < 0) {
+        // 如果矩形速度向左
         // 向左运动
         if (this.rect.x <= VIEWPORT_PADDING) {
+          // 如果矩形左边界小于等于视口内边距，则矩形左边界设置为视口内边距
           this.rect.x = VIEWPORT_PADDING;
+          // 视口左边界向右移动
           payload.viewport.x += this.vx;
           if (payload.viewport.x < 0) {
+            // 如果视口左边界小于0，则设置为0
             payload.viewport.x = 0;
           }
         } else {
+          // 否则，继续向左移动
           this.rect.x += this.vx;
         }
         // 向右运动
       } else {
+        // 调用向右移动的函数
         moveRight();
       }
     } else {
+      // 如果视口在最左边
       // 视口在最左边
       if (this.vx < 0) {
+        // 如果矩形速度向左，则继续向左移动
         this.rect.x += this.vx;
       } else {
+        // 否则，调用向右移动的函数
         moveRight();
       }
     }
