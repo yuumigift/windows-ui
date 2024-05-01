@@ -1,6 +1,7 @@
 import { Player } from "./classes/Player";
 import { Ground } from "./classes/Ground";
 import { Viewport } from "./classes/Viewport";
+import { Monster } from "./classes/Monster";
 
 export interface Rect {
   x: number;
@@ -10,7 +11,15 @@ export interface Rect {
 }
 
 export type EnterFramePayload = {
-  player: InstanceType<typeof Player>;
-  ground: InstanceType<typeof Ground>;
-  viewport: InstanceType<typeof Viewport>;
+  player: Player;
+  monster: Monster;
+  ground: Ground;
+  viewport: Viewport;
+};
+
+export type MoveConfig = {
+  speed_force: number;
+  speed_max: number;
+  jump_force: number;
+  is_control_viewport: boolean;
 };

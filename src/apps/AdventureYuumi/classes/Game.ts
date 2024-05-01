@@ -1,24 +1,29 @@
-import type { EnterFramePayload } from "../types";
 import type { Ref } from "vue";
+import { useCanvas } from "../common";
+import type { EnterFramePayload } from "../types";
 import { Ground } from "./Ground";
+import { Monster } from "./Monster";
 import { Player } from "./Player";
 import { Viewport } from "./Viewport";
-import { useCanvas } from "../common";
 
 const { clear, setContext } = useCanvas();
 
 export class Game {
-  player: InstanceType<typeof Player> | null = null;
-  ground: InstanceType<typeof Ground> | null = null;
-  viewport: InstanceType<typeof Viewport> | null = null;
-  addPlayer(player: InstanceType<typeof Player>) {
+  monster: Monster | null = null;
+  player: Player | null = null;
+  ground: Ground | null = null;
+  viewport: Viewport | null = null;
+  addViewport(viewport: Viewport) {
+    this.viewport = viewport;
+  }
+  addPlayer(player: Player) {
     this.player = player;
   }
-  addGround(ground: InstanceType<typeof Ground>) {
-    this.ground = ground;
+  addMonster(monster: Monster) {
+    this.monster = monster;
   }
-  addViewport(viewport: InstanceType<typeof Viewport>) {
-    this.viewport = viewport;
+  addGround(ground: Ground) {
+    this.ground = ground;
   }
   enterFrame() {
     requestAnimationFrame(() => this.enterFrame());
@@ -26,13 +31,16 @@ export class Game {
     if (!this.viewport) return;
     if (!this.player) return;
     if (!this.ground) return;
+    if (!this.monster) return;
     const enterFramePayload: EnterFramePayload = {
       viewport: this.viewport,
       player: this.player,
+      monster: this.monster,
       ground: this.ground,
     };
     this.player.enterFrame(enterFramePayload);
     this.ground.enterFrame(enterFramePayload);
+    this.monster.enterFrame(enterFramePayload);
   }
   start(cvs: Ref<HTMLCanvasElement | undefined>) {
     const init = () => {

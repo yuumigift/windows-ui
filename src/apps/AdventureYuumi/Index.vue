@@ -8,12 +8,14 @@ import { Game } from "./classes/Game";
 import { Viewport } from "./classes/Viewport";
 import { Player } from "./classes/Player";
 import { Ground } from "./classes/Ground";
+import { Monster } from "./classes/Monster";
 
 const canvas = ref<HTMLCanvasElement>();
 
 const game = new Game();
 game.addViewport(new Viewport());
 game.addPlayer(new Player("teal"));
+game.addMonster(new Monster("red"));
 game.addGround(new Ground());
 
 game.start(canvas);
