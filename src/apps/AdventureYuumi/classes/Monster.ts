@@ -18,19 +18,16 @@ class MonsterBase extends Entity {
     if (this.move_waiting < 0) {
       // 计算下一次移动等待时间
       this.move_waiting = Math.random() * MONSTER_MOVE_WAITING + MONSTER_MOVE_WAITING / 2;
+      // 停止移动时，重置左右移动方向
+      this.is_left = false;
+      this.is_right = false;
       if (this.is_moving) {
         // 随机选择左右移动方向
         if (Math.random() < 0.5) {
           this.is_left = true;
-          this.is_right = false;
         } else {
-          this.is_left = false;
           this.is_right = true;
         }
-      } else {
-        // 停止移动时，重置左右移动方向
-        this.is_left = false;
-        this.is_right = false;
       }
       // 切换移动状态
       this.is_moving = !this.is_moving;
