@@ -83,8 +83,8 @@ export class Entity {
       this.rect.x = 0;
     }
   }
-  draw(payload: EnterFramePayload, { is_control_viewport }: MoveConfig) {
-    const x = is_control_viewport ? this.rect.x : this.rect.x - payload.viewport.x;
+  draw({ viewport }: EnterFramePayload, { is_control_viewport }: MoveConfig) {
+    const x = is_control_viewport ? this.rect.x : this.rect.x - viewport.x;
     draw(x, this.rect.y, this.rect.w, this.rect.h, this.color);
   }
 }
