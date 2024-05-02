@@ -1,10 +1,11 @@
 export const apps = [
-  {
-    title: "AI助手",
-    vuePath: "AiTool/Index.vue",
-    width:400,height:90,
-    icon: "ai-icon2.gif",
-  },
+  // {
+  //   title: "AI助手",
+  //   vuePath: "AiTool/Index.vue",
+  //   width: 400,
+  //   height: 90,
+  //   icon: "ai-icon2.gif",
+  // },
   {
     title: "测试程序",
     vuePath: "MyTest/Index.vue",
@@ -19,8 +20,6 @@ export const apps = [
     title: "大冒险（悠米）",
     vuePath: "AdventureYuumi/Index.vue",
     icon: "garden.png",
-    width: 800,
-    height: 640,
   },
   {
     title: "星空闪耀",
@@ -37,7 +36,7 @@ export const apps = [
     vuePath: "PlantVSZombie/Stage.vue",
     icon: "pvz.png",
     width: 1200,
-    height: 640,
+    height: 600,
   },
   {
     title: "植物大战僵尸（小圆限定）",
@@ -62,6 +61,6 @@ export const apps = [
   {
     title: "随机色图",
     vuePath: "HumanNature/index.vue",
-    icon: "humanNature.gif"
-  }
+    icon: "humanNature.gif",
+  },
 ];

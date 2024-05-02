@@ -73,7 +73,7 @@ const Window = reactive({
         left: `${Window.x}px`,
         top: `${Window.y}px`,
         width: `${Window.width}px`,
-        height: `${Window.height}px`,
+        height: `${Window.height + 40}px`,
         zIndex: props.isActive ? 60 : 50,
       };
     }
