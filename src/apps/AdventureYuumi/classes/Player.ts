@@ -1,4 +1,4 @@
-import { GAME_WIDTH, PLAYER_HEIGHT, PLAYER_JUMP_FORCE, PLAYER_SPEED_FORCE, PLAYER_SPEED_MAX, PLAYER_WIDTH, VIEWPORT_PADDING } from "../common";
+import { PLAYER_HEIGHT, PLAYER_JUMP_FORCE, PLAYER_SPEED_FORCE, PLAYER_SPEED_MAX, PLAYER_WIDTH } from "../common";
 import type { EnterFramePayload, MoveConfig } from "../types";
 import { Entity } from "./Entity";
 
