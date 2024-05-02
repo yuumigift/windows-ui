@@ -41,8 +41,6 @@ export const useCanvas = () => {
 
 export const block = (a: Rect, b: Rect): { rect: Rect; direction: string } => {
   // 计算a和b的边界
-  a = { ...a };
-  b = { ...b };
   const a_right = a.x + a.w;
   const a_bottom = a.y + a.h;
   const b_right = b.x + b.w;
