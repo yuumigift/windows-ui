@@ -52,7 +52,7 @@ export class Entity {
 
     // 碰撞检测
     let is_understand_ground = false;
-    payload.ground.list.map((ground_rect: any) => {
+    payload.ground.list.map((ground_rect) => {
       const moved_ground_rect = { ...ground_rect.rect };
       if (is_control_viewport) {
         moved_ground_rect.x -= payload.viewport.x;
