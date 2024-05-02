@@ -1,5 +1,6 @@
 import type { Rect } from "./types";
 
+// game
 export const GAME_WIDTH = 800;
 export const GAME_HEIGHT = 600;
 export const GRAVITY = 0.05;
