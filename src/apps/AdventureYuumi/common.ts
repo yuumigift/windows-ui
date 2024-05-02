@@ -33,7 +33,7 @@ export const useCanvas = () => {
   };
   const clear = () => {
     if (!checkCtx(ctx)) return;
-    ctx.clearRect(0, 0, 800, 600);
+    ctx.clearRect(0, 0, GAME_WIDTH, GAME_HEIGHT);
   };
   return { draw, clear, setContext };
 };
