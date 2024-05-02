@@ -43,58 +43,58 @@ export const block = (a: Rect, b: Rect): { rect: Rect; direction: string } => {
   // 计算a和b的边界
   a = { ...a };
   b = { ...b };
-  const aRight = a.x + a.w;
-  const aBottom = a.y + a.h;
-  const bRight = b.x + b.w;
-  const bBottom = b.y + b.h;
+  const a_right = a.x + a.w;
+  const a_bottom = a.y + a.h;
+  const b_right = b.x + b.w;
+  const b_bottom = b.y + b.h;
   let direction = "";
 
   // 判断a和b是否有重叠
-  if (aRight <= b.x || a.x >= bRight || aBottom <= b.y || a.y >= bBottom) {
+  if (a_right <= b.x || a.x >= b_right || a_bottom <= b.y || a.y >= b_bottom) {
     return { rect: a, direction }; // 没有重叠，直接返回原位置
   }
 
   // 计算重叠区域的宽度和高度
-  const overlapWidth = Math.min(aRight, bRight) - Math.max(a.x, b.x);
-  const overlapHeight = Math.min(aBottom, bBottom) - Math.max(a.y, b.y);
+  const overlap_width = Math.min(a_right, b_right) - Math.max(a.x, b.x);
+  const overlap_height = Math.min(a_bottom, b_bottom) - Math.max(a.y, b.y);
 
   // 确定推开的方向：如果重叠宽度较小，则左右推开；如果重叠高度较小，则上下推开
-  const pushVertically = overlapHeight < overlapWidth;
+  const push_vertically = overlap_height < overlap_width;
 
   // 计算a和b的中心点
-  const centerA = { x: a.x + a.w / 2, y: a.y + a.h / 2 };
-  const centerB = { x: b.x + b.w / 2, y: b.y + b.h / 2 };
+  const center_a = { x: a.x + a.w / 2, y: a.y + a.h / 2 };
+  const center_b = { x: b.x + b.w / 2, y: b.y + b.h / 2 };
 
   // 计算新的位置
-  let newX = a.x;
-  let newY = a.y;
-  if (pushVertically) {
+  let new_x = a.x;
+  let new_y = a.y;
+  if (push_vertically) {
     // 上下推开
-    if (centerA.y < centerB.y) {
+    if (center_a.y < center_b.y) {
       // a中心点在上方，向上推开
-      newY = b.y - a.h;
+      new_y = b.y - a.h;
       direction = "up";
     } else {
       // a中心点在下方或重合，向下推开
-      newY = bBottom;
+      new_y = b_bottom;
       direction = "down";
     }
   } else {
     // 左右推开
-    if (centerA.x < centerB.x) {
+    if (center_a.x < center_b.x) {
       // a中心点在左侧，向左推开
-      newX = b.x - a.w;
+      new_x = b.x - a.w;
       direction = "left";
     } else {
       // a中心点在右侧或重合，向右推开
-      newX = bRight;
+      new_x = b_right;
       direction = "right";
     }
   }
 
   const rect = {
-    x: newX,
-    y: newY,
+    x: new_x,
+    y: new_y,
     w: a.w,
     h: a.h,
   };
