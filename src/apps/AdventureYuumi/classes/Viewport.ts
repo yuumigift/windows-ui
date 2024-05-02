@@ -2,12 +2,8 @@ import { GAME_WIDTH, VIEWPORT_MOVE_FORCE, VIEWPORT_PADDING } from "../common";
 import type { EnterFramePayload } from "../types";
 
 export class Viewport {
-  ax = 0;
-  vx = 0;
   x = 0;
   enterFrame({ player }: EnterFramePayload) {
-    this.x += this.vx;
-    this.vx += this.ax;
     // 玩家处于视口右侧区域（触发视口右移区域）
     if (player.rect.x > this.x + GAME_WIDTH - VIEWPORT_PADDING) {
       this.x += (player.rect.x - (this.x + GAME_WIDTH - VIEWPORT_PADDING)) * VIEWPORT_MOVE_FORCE;
