@@ -48,22 +48,18 @@ class MonsterBase extends Entity {
       this.jump_waiting--;
     }
 
-    // 更新位置
-    this.rect.x += this.vx;
-    this.rect.y += this.vy;
 
     // 定义移动配置
     const move_config: MoveConfig = {
       jump_force: MONSTER_JUMP_FORCE,
       speed_max: MONSTER_SPEED_MAX,
       speed_force: MONSTER_SPEED_FORCE,
-      is_control_viewport: false,
     };
 
     // 执行移动操作
     this.move(payload, move_config);
     // 执行绘制操作
-    this.draw(payload, move_config);
+    this.draw(payload);
   }
 }
 

@@ -21,5 +21,4 @@ export type MoveConfig = {
   speed_force: number;
   speed_max: number;
   jump_force: number;
-  is_control_viewport: boolean;
 };

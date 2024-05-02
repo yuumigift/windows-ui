@@ -21,10 +21,11 @@ export class Entity {
   constructor(color: string) {
     this.color = color;
   }
-  move(payload: EnterFramePayload, { is_control_viewport, jump_force, speed_force, speed_max }: MoveConfig) {
+  move(payload: EnterFramePayload, { jump_force, speed_force, speed_max }: MoveConfig) {
     // 运动
     this.vx += this.ax;
     this.vy += GRAVITY;
+    this.rect.x += this.vx;
     this.rect.y += this.vy;
 
     // 摩擦力
@@ -54,9 +55,6 @@ export class Entity {
     let is_understand_ground = false;
     payload.ground.list.map((ground_rect) => {
       const moved_ground_rect = { ...ground_rect.rect };
-      if (is_control_viewport) {
-        moved_ground_rect.x -= payload.viewport.x;
-      }
       const block_info = block(this.rect, moved_ground_rect);
       this.rect = block_info.rect;
       if (block_info.direction === "up") {
@@ -83,8 +81,7 @@ export class Entity {
       this.rect.x = 0;
     }
   }
-  draw({ viewport }: EnterFramePayload, { is_control_viewport }: MoveConfig) {
-    const x = is_control_viewport ? this.rect.x : this.rect.x - viewport.x;
-    draw(x, this.rect.y, this.rect.w, this.rect.h, this.color);
+  draw({ viewport }: EnterFramePayload) {
+    draw(this.rect.x - viewport.x, this.rect.y, this.rect.w, this.rect.h, this.color);
   }
 }

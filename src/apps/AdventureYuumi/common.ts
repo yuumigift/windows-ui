@@ -5,13 +5,16 @@ export const GAME_WIDTH = 800;
 export const GAME_HEIGHT = 600;
 export const GRAVITY = 0.05;
 export const FRICTION = 0.95;
-export const VIEWPORT_PADDING = 300;
+export const VIEWPORT_PADDING = 350;
+export const VIEWPORT_MOVE_FORCE = 0.02;
+
 // player
 export const PLAYER_WIDTH = 18;
 export const PLAYER_HEIGHT = 38;
 export const PLAYER_SPEED_FORCE = 0.1;
 export const PLAYER_SPEED_MAX = 5;
 export const PLAYER_JUMP_FORCE = 3;
+
 // monster
 export const MONSTER_MOVE_WAITING = 300;
 export const MONSTER_JUMP_WAITING = 200;

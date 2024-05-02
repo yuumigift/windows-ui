@@ -28,9 +28,10 @@ export class Game {
       monster: this.monster,
       ground: this.ground,
     };
+    this.viewport.enterFrame(enterFramePayload);
     this.player.enterFrame(enterFramePayload);
-    this.ground.enterFrame(enterFramePayload);
     this.monster.enterFrame(enterFramePayload);
+    this.ground.enterFrame(enterFramePayload);
   }
   start(cvs: Ref<HTMLCanvasElement | undefined>) {
     const init = () => {
