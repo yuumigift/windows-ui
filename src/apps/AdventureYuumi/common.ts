@@ -66,25 +66,28 @@ export const block = (a: Rect, b: Rect): { rect: Rect; direction: string } => {
   // 计算新的位置
   let new_x = a.x;
   let new_y = a.y;
+  // 上下推开
   if (push_vertically) {
-    // 上下推开
+    // a中心点在上方，向上推开
     if (center_a.y < center_b.y) {
-      // a中心点在上方，向上推开
       new_y = b.y - a.h;
       direction = "up";
-    } else {
-      // a中心点在下方或重合，向下推开
+    }
+    // a中心点在下方或重合，向下推开
+    else {
       new_y = b_bottom;
       direction = "down";
     }
-  } else {
-    // 左右推开
+  }
+  // 左右推开
+  else {
+    // a中心点在左侧，向左推开
     if (center_a.x < center_b.x) {
-      // a中心点在左侧，向左推开
       new_x = b.x - a.w;
       direction = "left";
-    } else {
-      // a中心点在右侧或重合，向右推开
+    }
+    // a中心点在右侧或重合，向右推开
+    else {
       new_x = b_right;
       direction = "right";
     }
