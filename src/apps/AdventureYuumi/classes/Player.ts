@@ -48,8 +48,9 @@ export class Player extends Entity {
       if (this.rect.x <= VIEWPORT_PADDING) {
         // 向右移动实体
         this.rect.x += this.vx;
-        // 如果实体触碰右侧视口
-      } else if (this.rect.x >= GAME_WIDTH - VIEWPORT_PADDING) {
+      }
+      // 如果实体触碰右侧视口
+      else if (this.rect.x >= GAME_WIDTH - VIEWPORT_PADDING) {
         // 实体不动（固定在视口右侧）
         this.rect.x = GAME_WIDTH - VIEWPORT_PADDING;
         // 视口向右移动
@@ -58,8 +59,9 @@ export class Player extends Entity {
         if (payload.viewport.x > 1e5) {
           payload.viewport.x = 1e5;
         }
-        // 如果在视口内部（没有触碰边界）
-      } else {
+      }
+      // 如果在视口内部（没有触碰边界）
+      else {
         // 向右移动实体
         this.rect.x += this.vx;
       }
@@ -81,24 +83,28 @@ export class Player extends Entity {
           if (payload.viewport.x < 0) {
             payload.viewport.x = 0;
           }
-          // 如果实体在视口内部（没有碰到视口左边界）
-        } else {
+        }
+        // 如果实体在视口内部（没有碰到视口左边界）
+        else {
           // 实体向左移动
           this.rect.x += this.vx;
         }
-        // 如果实体向右运动
-      } else {
+      }
+      // 如果实体向右运动
+      else {
         // 调用向右移动的函数
         moveRight();
       }
-      // 如果视口在最左边
-    } else {
+    }
+    // 如果视口在最左边
+    else {
       // 如果实体向左移动
       if (this.vx < 0) {
         // 实体向左移动
         this.rect.x += this.vx;
-        // 如果实体向右移动
-      } else {
+      }
+      // 如果实体向右移动
+      else {
         moveRight();
       }
     }
