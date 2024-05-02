@@ -11,11 +11,11 @@ export const apps = [
     vuePath: "MyTest/Index.vue",
     icon: "garden.png",
   },
-  {
-    title: "拖拽测试",
-    vuePath: "DragTest/Index.vue",
-    icon: "garden.png",
-  },
+  // {
+  //   title: "拖拽测试",
+  //   vuePath: "DragTest/Index.vue",
+  //   icon: "garden.png",
+  // },
   {
     title: "大冒险（悠米）",
     vuePath: "AdventureYuumi/Index.vue",
@@ -43,24 +43,24 @@ export const apps = [
     vuePath: "PlantVsZombieMadoka/index.vue",
     icon: "pvzMadoka.png",
   },
-  {
-    title: "贪吃蛇",
-    vuePath: "GreedySnake/index.vue",
-    icon: "GreedySnake.webp",
-  },
-  {
-    title: "贪吃蛇",
-    vuePath: "Snake/Index.vue",
-    icon: "GreedySnake.webp",
-  },
+  // {
+  //   title: "贪吃蛇",
+  //   vuePath: "GreedySnake/index.vue",
+  //   icon: "GreedySnake.webp",
+  // },
+  // {
+  //   title: "贪吃蛇",
+  //   vuePath: "Snake/Index.vue",
+  //   icon: "GreedySnake.webp",
+  // },
   {
     title: "大冒险",
     vuePath: "Adventure/index.vue",
     icon: "Adventure.webp",
   },
-  {
-    title: "随机色图",
-    vuePath: "HumanNature/index.vue",
-    icon: "humanNature.gif",
-  },
+  // {
+  //   title: "随机色图",
+  //   vuePath: "HumanNature/index.vue",
+  //   icon: "humanNature.gif",
+  // },
 ];
