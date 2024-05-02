@@ -14,7 +14,7 @@ const canvas = ref<HTMLCanvasElement>();
 
 const game = new Game({
   viewport: new Viewport(),
-  player: new Player("teal"),
+  player: new Player(),
   monster: new Monster(),
   ground: new Ground(),
 });
