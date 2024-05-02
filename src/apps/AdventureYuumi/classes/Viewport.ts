@@ -8,11 +8,11 @@ export class Viewport {
   enterFrame({ player }: EnterFramePayload) {
     this.x += this.vx;
     this.vx += this.ax;
-    // 玩家处于视口右侧区域（触发视口右移）
+    // 玩家处于视口右侧区域（触发视口右移区域）
     if (player.rect.x > this.x + GAME_WIDTH - VIEWPORT_PADDING) {
       this.x += (player.rect.x - (this.x + GAME_WIDTH - VIEWPORT_PADDING)) * VIEWPORT_MOVE_FORCE;
     }
-    // 玩家处于视口左侧区域（触发视口左移）
+    // 玩家处于视口左侧区域（触发视口左移区域）
     if (player.rect.x < this.x + VIEWPORT_PADDING) {
       this.x -= (this.x + VIEWPORT_PADDING - player.rect.x) * VIEWPORT_MOVE_FORCE;
     }
