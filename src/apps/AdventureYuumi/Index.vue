@@ -29,7 +29,7 @@ game.start(canvas);
   position: absolute;
   inset: 0;
   z-index: 10;
-  background: #0003;
+  background: #0009;
   display: flex;
   align-items: center;
   justify-content: center;
