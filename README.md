@@ -1,6 +1,6 @@
 # windows-ui
 
-![介绍](https://gitee.com/yuumigift/windows-ui/raw/master/public/img/intro.png)
+![介绍](https://raw.githubusercontent.com/yuumigift/windows-ui/master/public/img/intro.png)
 
 本项目基于 Vue3+ts 开发，模仿 Windows 界面，将原本的路由模式，改为桌面的应用程序模式，每个应用程序都可以最大化、最小化、关闭，窗口拖动等。
 
