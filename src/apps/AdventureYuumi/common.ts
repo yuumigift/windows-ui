@@ -12,16 +12,16 @@ export const VIEWPORT_MOVE_FORCE = 0.02;
 export const PLAYER_WIDTH = 18;
 export const PLAYER_HEIGHT = 38;
 export const PLAYER_SPEED_FORCE = 0.1;
-export const PLAYER_SPEED_MAX = 5;
+export const PLAYER_SPEED_MAX = 2;
 export const PLAYER_JUMP_FORCE = 3;
 
 // monster
-export const MONSTER_MOVE_WAITING = 300;
-export const MONSTER_JUMP_WAITING = 200;
+export const MONSTER_MOVE_WAITING = 200;
+export const MONSTER_JUMP_WAITING = 800;
 export const MONSTER_WIDTH = 18;
 export const MONSTER_HEIGHT = 18;
-export const MONSTER_SPEED_FORCE = 0.1;
-export const MONSTER_SPEED_MAX = 1;
+export const MONSTER_SPEED_FORCE = 0.02;
+export const MONSTER_SPEED_MAX = 0.5;
 export const MONSTER_JUMP_FORCE = 2;
 
 let ctx: CanvasRenderingContext2D | undefined | null;
