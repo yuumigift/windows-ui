@@ -1,7 +1,7 @@
-import { Player } from "./classes/Player";
 import { Ground } from "./classes/Ground";
-import { Viewport } from "./classes/Viewport";
 import { Monster } from "./classes/Monster";
+import { Player } from "./classes/Player";
+import { Viewport } from "./classes/Viewport";
 
 export interface Rect {
   x: number;
