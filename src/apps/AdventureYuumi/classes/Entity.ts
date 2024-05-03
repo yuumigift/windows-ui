@@ -57,10 +57,10 @@ export class Entity {
     payload.ground.list.map((ground_rect) => {
       const moved_ground_rect = { ...ground_rect.rect };
       const block_info = block(this.rect, moved_ground_rect);
+      this.rect = block_info.rect;
       if (block_info.direction !== "") {
         this.onGroundBlocked(block_info);
       }
-      this.rect = block_info.rect;
       if (block_info.direction === "up") {
         is_understand_ground = true;
         this.jumping = false;
