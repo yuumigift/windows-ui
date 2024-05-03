@@ -24,7 +24,6 @@ game.start(canvas);
 </script>
 
 <style lang="less" scoped>
-//
 .game_over {
   position: absolute;
   inset: 0;
