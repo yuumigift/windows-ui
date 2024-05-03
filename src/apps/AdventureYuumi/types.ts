@@ -1,3 +1,4 @@
+import type { Ref } from "vue";
 import { Ground } from "./classes/Ground";
 import { Monster } from "./classes/Monster";
 import { Player } from "./classes/Player";
@@ -10,12 +11,19 @@ export interface Rect {
   h: number;
 }
 
-export type EnterFramePayload = {
+export interface GameInitInfo {
   player: Player;
   monster: Monster;
   ground: Ground;
   viewport: Viewport;
-};
+}
+
+export interface EnterFramePayload extends GameInitInfo {
+  global: {
+    over: Ref<boolean>;
+    win: Ref<boolean>;
+  };
+}
 
 export type MoveConfig = {
   speed_force: number;

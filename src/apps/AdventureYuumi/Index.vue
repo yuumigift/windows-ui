@@ -1,6 +1,7 @@
 <template>
   <div class="c__game">
     <canvas ref="canvas" width="800" height="600"></canvas>
+    <div class="game_over" v-if="game.global.over.value">你失败了！</div>
   </div>
 </template>
 <script lang="ts" setup>
@@ -24,4 +25,15 @@ game.start(canvas);
 
 <style lang="less" scoped>
 //
+.game_over {
+  position: absolute;
+  inset: 0;
+  z-index: 10;
+  background: #0003;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  font-size: 30px;
+}
 </style>

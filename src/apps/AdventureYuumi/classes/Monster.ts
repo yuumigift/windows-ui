@@ -4,10 +4,17 @@ import { Entity } from "./Entity";
 
 class MonsterBase extends Entity {
   is_moving = false;
+  is_removed = false;
   move_waiting = 0;
   jump_waiting = 0;
   constructor(color: string = "red", x: number, y: number) {
-    super(color);
+    // 定义移动配置
+    const move_config: MoveConfig = {
+      jump_force: MONSTER_JUMP_FORCE,
+      speed_max: MONSTER_SPEED_MAX,
+      speed_force: MONSTER_SPEED_FORCE,
+    };
+    super(color, move_config);
     this.rect.x = x;
     this.rect.y = y;
     this.rect.w = MONSTER_WIDTH;
@@ -55,15 +62,8 @@ class MonsterBase extends Entity {
       this.jump_waiting--;
     }
 
-    // 定义移动配置
-    const move_config: MoveConfig = {
-      jump_force: MONSTER_JUMP_FORCE,
-      speed_max: MONSTER_SPEED_MAX,
-      speed_force: MONSTER_SPEED_FORCE,
-    };
-
     // 执行移动操作
-    this.move(payload, move_config);
+    this.move(payload);
     // 执行绘制操作
     this.draw(payload);
   }
@@ -72,17 +72,21 @@ class MonsterBase extends Entity {
 class MonsterBaseGroup {
   list = [] as MonsterBase[];
   enterFrame(payload: EnterFramePayload) {
+    this.list = this.list.filter((monster) => !monster.is_removed);
     this.list.forEach((monster) => {
       monster.enterFrame(payload);
     });
+  }
+  remove(monster: MonsterBase) {
+    monster.is_removed = true;
   }
 }
 
 export class Monster extends MonsterBaseGroup {
   constructor() {
     super();
-    for (let index = 0; index < 5; index++) {
-      const monster = new MonsterBase("red", Math.random() * GAME_WIDTH - MONSTER_WIDTH, -MONSTER_HEIGHT);
+    for (let index = 0; index < 50; index++) {
+      const monster = new MonsterBase("red", Math.random() * 1e4 + 500 - MONSTER_WIDTH, -MONSTER_HEIGHT);
       this.list.push(monster);
     }
   }

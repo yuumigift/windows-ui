@@ -10,6 +10,11 @@ export class Entity {
     x: 0,
     y: 0,
   };
+  move_config: MoveConfig = {
+    speed_force: 0,
+    speed_max: 0,
+    jump_force: 0,
+  };
   ax = 0;
   vx = 0;
   vy = 0;
@@ -18,11 +23,14 @@ export class Entity {
   is_left = false;
   is_right = false;
   color = "red";
-  constructor(color: string) {
+  constructor(color: string, move_config: MoveConfig) {
     this.color = color;
+    this.move_config = move_config;
   }
   onGroundBlocked(_: ReturnType<typeof block>) {}
-  move(payload: EnterFramePayload, { jump_force, speed_force, speed_max }: MoveConfig) {
+  move(payload: EnterFramePayload) {
+    const { speed_force, speed_max } = this.move_config;
+    
     // 运动
     this.vx += this.ax;
     this.vy += GRAVITY;
@@ -77,13 +85,16 @@ export class Entity {
 
     // 跳跃
     if (is_understand_ground && this.is_jump && this.vy > 0) {
-      this.vy = -jump_force;
+      this.jump();
     }
 
     // 边界
     if (this.rect.x < 0) {
       this.rect.x = 0;
     }
+  }
+  jump() {
+    this.vy = -this.move_config.jump_force;
   }
   draw({ viewport }: EnterFramePayload) {
     draw(this.rect.x - viewport.x, this.rect.y, this.rect.w, this.rect.h, this.color);
