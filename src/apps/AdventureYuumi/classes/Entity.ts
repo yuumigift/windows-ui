@@ -30,7 +30,7 @@ export class Entity {
   onGroundBlocked(_: ReturnType<typeof block>) {}
   move(payload: EnterFramePayload) {
     const { speed_force, speed_max } = this.move_config;
-    
+
     // 运动
     this.vx += this.ax;
     this.vy += GRAVITY;
@@ -38,10 +38,12 @@ export class Entity {
     this.rect.y += this.vy;
 
     // 摩擦力
-    if (Math.abs(this.vx) > 1e-5) {
-      this.vx *= FRICTION;
-    } else {
-      this.vx = 0;
+    if (this.ax === 0) {
+      if (Math.abs(this.vx) > 1e-5) {
+        this.vx *= FRICTION;
+      } else {
+        this.vx = 0;
+      }
     }
 
     // 方向
