@@ -22,3 +22,5 @@ export type MoveConfig = {
   speed_max: number;
   jump_force: number;
 };
+
+export type PushDirection = "left" | "right" | "up" | "down" | "";

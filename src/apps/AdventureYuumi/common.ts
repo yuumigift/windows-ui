@@ -1,4 +1,4 @@
-import type { Rect } from "./types";
+import type { PushDirection, Rect } from "./types";
 
 // game
 export const GAME_WIDTH = 800;
@@ -42,13 +42,13 @@ export const useCanvas = () => {
   return { draw, clear, setContext };
 };
 
-export const block = (a: Rect, b: Rect): { rect: Rect; direction: string } => {
+export const block = (a: Rect, b: Rect): { rect: Rect; direction: PushDirection } => {
   // 计算a和b的边界
   const a_right = a.x + a.w;
   const a_bottom = a.y + a.h;
   const b_right = b.x + b.w;
   const b_bottom = b.y + b.h;
-  let direction = "";
+  let direction: PushDirection = "";
 
   // 判断a和b是否有重叠
   if (a_right <= b.x || a.x >= b_right || a_bottom <= b.y || a.y >= b_bottom) {

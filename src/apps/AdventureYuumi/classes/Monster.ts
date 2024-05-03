@@ -1,4 +1,4 @@
-import { GAME_WIDTH, MONSTER_HEIGHT, MONSTER_JUMP_FORCE, MONSTER_JUMP_WAITING, MONSTER_MOVE_WAITING, MONSTER_SPEED_FORCE, MONSTER_SPEED_MAX, MONSTER_WIDTH } from "../common";
+import { GAME_WIDTH, MONSTER_HEIGHT, MONSTER_JUMP_FORCE, MONSTER_JUMP_WAITING, MONSTER_MOVE_WAITING, MONSTER_SPEED_FORCE, MONSTER_SPEED_MAX, MONSTER_WIDTH, block } from "../common";
 import type { EnterFramePayload, MoveConfig } from "../types";
 import { Entity } from "./Entity";
 
@@ -13,6 +13,13 @@ class MonsterBase extends Entity {
     this.rect.w = MONSTER_WIDTH;
     this.rect.h = MONSTER_HEIGHT;
   }
+  onGroundBlocked(block_info: ReturnType<typeof block>) {
+    // 如果碰到墙边就跳跃
+    if (["left", "right"].includes(block_info.direction)) {
+      this.is_jump = true;
+    }
+  }
+
   enterFrame(payload: EnterFramePayload) {
     // 随机移动
     if (this.move_waiting < 0) {
@@ -47,7 +54,6 @@ class MonsterBase extends Entity {
       this.is_jump = false;
       this.jump_waiting--;
     }
-
 
     // 定义移动配置
     const move_config: MoveConfig = {

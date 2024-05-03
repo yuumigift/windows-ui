@@ -21,6 +21,7 @@ export class Entity {
   constructor(color: string) {
     this.color = color;
   }
+  onGroundBlocked(_: ReturnType<typeof block>) {}
   move(payload: EnterFramePayload, { jump_force, speed_force, speed_max }: MoveConfig) {
     // 运动
     this.vx += this.ax;
@@ -56,6 +57,9 @@ export class Entity {
     payload.ground.list.map((ground_rect) => {
       const moved_ground_rect = { ...ground_rect.rect };
       const block_info = block(this.rect, moved_ground_rect);
+      if (block_info.direction !== "") {
+        this.onGroundBlocked(block_info);
+      }
       this.rect = block_info.rect;
       if (block_info.direction === "up") {
         is_understand_ground = true;
