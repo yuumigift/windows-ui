@@ -1,9 +1,9 @@
 import type { Ref } from "vue";
-import { Ground } from "./classes/Ground";
-import { Monster } from "./classes/Monster";
-import { Player } from "./classes/Player";
-import { Spark } from "./classes/Spark.";
-import { Viewport } from "./classes/Viewport";
+import type { Ground } from "./classes/Ground";
+import type { Monster } from "./classes/Monster";
+import type { Player } from "./classes/Player";
+import type { Spark } from "./classes/Spark.";
+import type { Viewport } from "./classes/Viewport";
 
 export interface Rect {
   x: number;
