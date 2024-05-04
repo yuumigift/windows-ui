@@ -86,7 +86,7 @@ export class Monster extends MonsterBaseGroup {
   constructor() {
     super();
     for (let index = 0; index < 50; index++) {
-      const monster = new MonsterBase("red", Math.random() * 1e4 + 500 - MONSTER_WIDTH, -MONSTER_HEIGHT);
+      const monster = new MonsterBase("red", Math.random() * 5e3 + 500 - MONSTER_WIDTH, -MONSTER_HEIGHT);
       this.list.push(monster);
     }
   }
