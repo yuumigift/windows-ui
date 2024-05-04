@@ -19,12 +19,12 @@ export class Game {
     over: ref(false),
     win: ref(false),
   };
-  constructor(info: GameInitInfo) {
-    this.viewport = info.viewport;
-    this.player = info.player;
-    this.monster = info.monster;
-    this.ground = info.ground;
-    this.spark = info.spark;
+  constructor() {
+    this.viewport = new Viewport();
+    this.player = new Player();
+    this.monster = new Monster();
+    this.ground = new Ground();
+    this.spark = new Spark();
   }
   enterFrame() {
     requestAnimationFrame(() => this.enterFrame());

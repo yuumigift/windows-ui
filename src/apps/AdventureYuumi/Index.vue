@@ -6,22 +6,9 @@
 </template>
 <script lang="ts" setup>
 import { Game } from "./classes/Game";
-import { Viewport } from "./classes/Viewport";
-import { Player } from "./classes/Player";
-import { Ground } from "./classes/Ground";
-import { Monster } from "./classes/Monster";
-import { Spark } from "./classes/Spark.";
 
 const canvas = ref<HTMLCanvasElement>();
-
-const game = new Game({
-  viewport: new Viewport(),
-  player: new Player(),
-  monster: new Monster(),
-  ground: new Ground(),
-  spark: new Spark(),
-});
-
+const game = new Game();
 game.start(canvas);
 </script>
 
