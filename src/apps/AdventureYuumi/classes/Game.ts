@@ -32,11 +32,11 @@ export class Game {
     if (this.global.win.value) return;
     clear();
     const enterFramePayload: EnterFramePayload = {
+      global: this.global,
       viewport: this.viewport,
       player: this.player,
       monster: this.monster,
       ground: this.ground,
-      global: this.global,
       spark: this.spark,
     };
     this.viewport.enterFrame(enterFramePayload);
