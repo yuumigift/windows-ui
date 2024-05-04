@@ -65,6 +65,7 @@ export class Player extends Entity {
         }
       }
     });
+    
     this.move(payload);
     this.draw(payload);
   }
