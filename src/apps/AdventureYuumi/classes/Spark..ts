@@ -31,8 +31,8 @@ class SparkBase {
   enterFrame({ viewport }: EnterFramePayload) {
     this.x += this.vx;
     this.y += this.vy;
-    this.vx *= 0.98;
-    this.vy *= 0.98;
+    this.vx *= 0.96;
+    this.vy *= 0.96;
     this.opacity -= 0.01;
     if (this.opacity < 0) {
       this.is_removed = true;
