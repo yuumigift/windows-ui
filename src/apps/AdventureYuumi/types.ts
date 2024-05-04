@@ -2,6 +2,7 @@ import type { Ref } from "vue";
 import { Ground } from "./classes/Ground";
 import { Monster } from "./classes/Monster";
 import { Player } from "./classes/Player";
+import { Spark } from "./classes/Spark.";
 import { Viewport } from "./classes/Viewport";
 
 export interface Rect {
@@ -16,6 +17,7 @@ export interface GameInitInfo {
   monster: Monster;
   ground: Ground;
   viewport: Viewport;
+  spark: Spark;
 }
 
 export interface EnterFramePayload extends GameInitInfo {
@@ -32,3 +34,9 @@ export type MoveConfig = {
 };
 
 export type PushDirection = "left" | "right" | "up" | "down" | "";
+
+export type Color = {
+  r: number;
+  g: number;
+  b: number;
+};

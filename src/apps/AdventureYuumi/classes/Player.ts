@@ -55,6 +55,7 @@ export class Player extends Entity {
         if (monster_block_info.direction === "up") {
           // 怪物消失，玩家跳跃
           payload.monster.remove(monster);
+          payload.spark.add(monster.rect, 1.5, { r: 255, g: 0, b: 0 }, 30);
           this.jump();
         }
         // 如果身体碰到怪物

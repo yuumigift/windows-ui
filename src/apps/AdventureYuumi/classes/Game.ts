@@ -4,6 +4,7 @@ import type { EnterFramePayload, GameInitInfo } from "../types";
 import { Ground } from "./Ground";
 import { Monster } from "./Monster";
 import { Player } from "./Player";
+import { Spark } from "./Spark.";
 import { Viewport } from "./Viewport";
 
 const { clear, setContext } = useCanvas();
@@ -13,6 +14,7 @@ export class Game {
   player: Player;
   monster: Monster;
   ground: Ground;
+  spark: Spark;
   global = {
     over: ref(false),
     win: ref(false),
@@ -22,11 +24,12 @@ export class Game {
     this.player = info.player;
     this.monster = info.monster;
     this.ground = info.ground;
+    this.spark = info.spark;
   }
   enterFrame() {
     requestAnimationFrame(() => this.enterFrame());
-    if(this.global.over.value) return;
-    if(this.global.win.value) return;
+    if (this.global.over.value) return;
+    if (this.global.win.value) return;
     clear();
     const enterFramePayload: EnterFramePayload = {
       viewport: this.viewport,
@@ -34,11 +37,13 @@ export class Game {
       monster: this.monster,
       ground: this.ground,
       global: this.global,
+      spark: this.spark,
     };
     this.viewport.enterFrame(enterFramePayload);
     this.player.enterFrame(enterFramePayload);
     this.monster.enterFrame(enterFramePayload);
     this.ground.enterFrame(enterFramePayload);
+    this.spark.enterFrame(enterFramePayload);
   }
   start(cvs: Ref<HTMLCanvasElement | undefined>) {
     const init = () => {
