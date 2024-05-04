@@ -1,6 +1,6 @@
 import type { Ref } from "vue";
 import { useCanvas } from "../common";
-import type { EnterFramePayload, GameInitInfo } from "../types";
+import type { EnterFramePayload } from "../types";
 import { Ground } from "./Ground";
 import { Monster } from "./Monster";
 import { Player } from "./Player";
