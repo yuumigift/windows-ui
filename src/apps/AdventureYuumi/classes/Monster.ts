@@ -62,9 +62,7 @@ class MonsterBase extends Entity {
       this.jump_waiting--;
     }
 
-    // 执行移动操作
     this.move(payload);
-    // 执行绘制操作
     this.draw(payload);
   }
 }
