@@ -16,7 +16,7 @@ class SparkBase {
   };
   opacity = 1;
   is_removed = false;
-  add(rect: Rect, speed: number, color: Color, opacity: number) {
+  constructor(rect: Rect, speed: number, color: Color, opacity: number) {
     const center = { x: rect.x + rect.w / 2, y: rect.y + rect.h / 2 };
     const x = center.x;
     const y = center.y;
@@ -46,9 +46,8 @@ class SparkBaseGroup {
   list = [] as SparkBase[];
   add(rect: Rect, speed: number, color: Color, count: number) {
     for (let i = 0; i < count; ++i) {
-      const spark = new SparkBase();
       const opacity = Math.random() * 0.5 + 0.5;
-      spark.add(rect, speed, color, opacity);
+      const spark = new SparkBase(rect, speed, color, opacity);
       this.list.push(spark);
     }
   }
