@@ -10,15 +10,16 @@ import { Viewport } from "./Viewport";
 const { clear, setContext } = useCanvas();
 
 export class Game {
+  global = {
+    over: ref(false),
+    win: ref(false),
+  };
   viewport: Viewport;
   player: Player;
   monster: Monster;
   ground: Ground;
   spark: Spark;
-  global = {
-    over: ref(false),
-    win: ref(false),
-  };
+
   constructor() {
     this.viewport = new Viewport();
     this.player = new Player();
