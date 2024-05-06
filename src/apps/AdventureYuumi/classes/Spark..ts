@@ -4,16 +4,21 @@ import type { Color, EnterFramePayload, Rect } from "../types";
 const { draw } = useCanvas();
 
 class SparkBase {
-  x = 0;
-  y = 0;
-  vx = 0;
-  vy = 0;
-  size = 5;
+  rect: Rect = {
+    x: 0,
+    y: 0,
+    w: 5,
+    h: 5,
+  };
   color: Color = {
     r: 0,
     g: 0,
     b: 0,
   };
+  x = 0;
+  y = 0;
+  vx = 0;
+  vy = 0;
   opacity = 1;
   is_removed = false;
   constructor(rect: Rect, speed: number, color: Color, opacity: number) {
@@ -23,8 +28,8 @@ class SparkBase {
     const angle = Math.random() * 2 * Math.PI;
     this.vx = Math.cos(angle) * Math.random() * speed;
     this.vy = Math.sin(angle) * Math.random() * speed;
-    this.x = x - this.size / 2;
-    this.y = y - this.size / 2;
+    this.x = x - this.rect.x / 2;
+    this.y = y - this.rect.y / 2;
     this.color = color;
     this.opacity = opacity;
   }
@@ -38,7 +43,7 @@ class SparkBase {
       this.is_removed = true;
     }
     const { r, g, b } = this.color;
-    draw(this.x - viewport.x, this.y, this.size, this.size, `rgba(${r},${g},${b},${this.opacity}`);
+    draw(this.x - viewport.x, this.y, this.rect.w, this.rect.h, `rgba(${r},${g},${b},${this.opacity}`);
   }
 }
 
