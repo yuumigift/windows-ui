@@ -83,6 +83,7 @@ class MonsterBaseGroup {
 export class Monster extends MonsterBaseGroup {
   constructor() {
     super();
+    // 开局生成50个怪物
     for (let index = 0; index < 50; index++) {
       const monster = new MonsterBase("red", Math.random() * 5e3 + 500 - MONSTER_WIDTH, -MONSTER_HEIGHT);
       this.list.push(monster);
