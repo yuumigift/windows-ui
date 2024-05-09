@@ -1,17 +1,18 @@
 import {SpawnPrefab} from "@/gameScript/scripts/prefabs";
 import type {EntityScript} from "@/gameScript/scripts/entityscript";
-import type {StyleValue} from "vue";
-
+import type {Ref, StyleValue} from "vue";
+import {AllActivePrefabs} from "@/gameScript/scripts/main";
+export let ThePlayer: Ref<ReturnType<typeof EntityScript> | undefined> = ref()
 
 export class LoadGameAssets {
     public ThePlayer: ReturnType<typeof EntityScript> = {} as any
-    private isLoad = false
+    private isLoad = ref(false)
     public IsLoad() {
         return this.isLoad;
     }
     constructor(callback:()=>void) {
         this.load().then(() => {
-            this.isLoad = true;
+            this.isLoad.value = true;
             this.enterFrame(performance.now())
             callback()
         })
@@ -26,6 +27,7 @@ export class LoadGameAssets {
         await Promise.all(importPromises).then(() => {
             // 在所有模块加载完成后执行后续代码
             this.ThePlayer = SpawnPrefab("player");
+            ThePlayer.value = this.ThePlayer;
         }).catch((error) => {
             // 处理加载模块失败的情况
             console.error("Failed to load modules:", error);
@@ -34,6 +36,9 @@ export class LoadGameAssets {
     enterFrame(timestamp:number) {
         requestAnimationFrame(timestamp => this.enterFrame(timestamp));
         this.ThePlayer.Physical.UpdatePosition(timestamp)
+    }
+    generateBuild(){
+        SpawnPrefab("build");
     }
     public Init(){
         return (() => {

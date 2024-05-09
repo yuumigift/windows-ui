@@ -1,22 +1,52 @@
 <template>
   <div class="outer-div">
     <div class="inner-div">
-      <div class="world">
+      <div class="world" v-if="load.IsLoad()">
         <div :style="Init?.getPosition" class="player"></div>
+        {{ Player.getPosition }}
       </div>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { LoadGameAssets } from "@/apps/Adventure/main/LoadGameAssets";
-import type {Ref} from "vue";
+import {LoadGameAssets, ThePlayer} from "@/apps/Adventure/main/LoadGameAssets";
+import type {Ref, StyleValue} from "vue";
+import {AllActivePrefabs} from "@/gameScript/scripts/main";
 
 let Init: Ref<ReturnType<typeof load.Init> | undefined> = ref();
-
+const widthPx = (prop: number = 0) => `${prop}px`
 const load = new LoadGameAssets(() => {
   Init.value = load.Init();
 });
+
+watch(() => load.IsLoad(), () => {
+
+})
+
+
+const Player = (() => {
+
+  const getPosition = computed((): StyleValue => ({marginLeft: `${s.pos?.x}px`, marginBottom: `${s.pos?.y}px`,}))
+  const s = reactive({
+    inst: ThePlayer,
+    pos: {} as { x: number, y: number } | undefined,
+    getPosition
+  })
+  s.pos = s.inst?.Physical.pos
+
+  return s;
+})();
+
+const Build = (() => {
+
+
+  const s = reactive({
+    inst: AllActivePrefabs.find(item => item.HasTag("build"))
+  })
+
+  return s
+})()
 </script>
 
 <style scoped lang="less">
@@ -31,7 +61,7 @@ const load = new LoadGameAssets(() => {
   display: inline-block;
 }
 
-.world{
+.world {
   width: 800px;
   height: 600px;
   border: 1px solid red;
@@ -40,9 +70,9 @@ const load = new LoadGameAssets(() => {
   align-items: end;
 }
 
-.player{
+.player {
   border: 1px solid red;
-  width: 80px;
+  width: v-bind("widthPx(Init?.player.width)");
   height: 100px;
 }
 </style>
