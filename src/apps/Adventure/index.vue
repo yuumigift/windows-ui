@@ -2,58 +2,66 @@
   <div class="outer-div">
     <div class="inner-div">
       <div class="world" v-if="game.IsLoad()">
-        <div :style="Player.getPosition" class="player"></div>
-        <div :style="Thorn.getStyle(item)" v-for="(item, index) in Thorn.insts">2</div>
+        <div :style="Player.getPosition" class="player">{{ Player.inst?.data.name }}</div>
+        <div style="position:relative;display: flex">
+          <div :style="Thorn.getStyle(item)" v-for="(item, index) in Thorn.insts">
+            {{ item.width }}
+          </div>
+        </div>
+
       </div>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import {LoadGameAssets, ThePlayer} from "@/apps/Adventure/main/LoadGameAssets";
-import type {StyleValue} from "vue";
-import {AllActivePrefabs, type ent} from "@/gameScript/scripts/main";
-import type {EntityScript} from "@/gameScript/scripts/entityscript";
-const widthPx = (prop: number = 0) => `${prop}px`
+import { LoadGameAssets, ThePlayer } from "@/apps/Adventure/main/LoadGameAssets";
+import type { StyleValue } from "vue";
+import { AllActivePrefabs, type ent } from "@/gameScript/scripts/main";
+import type { EntityScript } from "@/gameScript/scripts/entityscript";
+
+const widthPx = (prop: number = 0) => `${prop}px`;
 const game = new LoadGameAssets(() => {
 });
 
 watch(() => game.IsLoad().value, () => {
-  Player.init()
-  Thorn.init()
-})
+  Player.init();
+  Thorn.init();
+});
 
 const Player = (() => {
   const init = () => {
-    Player.pos = Player.inst?.Physical.pos
-  }
-  const getPosition = computed((): StyleValue => ({marginLeft: `${s.pos?.x}px`, marginBottom: `${s.pos?.y}px`,}))
+    Player.pos = Player.inst?.Physical.pos;
+  };
+  const getPosition = computed((): StyleValue => ({ marginLeft: `${s.pos?.x}px`, marginBottom: `${s.pos?.y}px` }));
   const s = reactive({
     inst: ThePlayer,
     pos: {} as { x: number, y: number } | undefined,
     getPosition,
     init
-  })
+  });
 
   return s;
 })();
 
 const Thorn = (() => {
   const init = () => {
-    s.insts = AllActivePrefabs.filter(item => item.data.name = "thorn")
-  }
+    s.insts = AllActivePrefabs.filter(item => item.data.name = "thorn");
+  };
 
-  const getStyle = (inst:ent) => {
-    console.log(inst)
-  }
+  const getStyle = (inst: ent): StyleValue => ({
+    width: `${inst.width}px`,
+    height: `${inst.height}px`,
+    border: "1px solid"
+  });
   const s = reactive({
     insts: AllActivePrefabs as ent[] | undefined,
     init,
     getStyle
-  })
+  });
 
-  return s
-})()
+  return s;
+})();
 </script>
 
 <style scoped lang="less">
@@ -78,6 +86,7 @@ const Thorn = (() => {
 }
 
 .player {
+  position: relative;
   border: 1px solid red;
   width: v-bind("widthPx(Player.inst?.width)");
   height: v-bind("widthPx(Player.inst?.height)");
