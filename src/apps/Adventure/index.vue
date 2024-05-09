@@ -3,7 +3,7 @@
     <div class="inner-div">
       <div class="world" v-if="game.IsLoad()">
         <div :style="Player.getPosition" class="player"></div>
-        <div v-for="(item, index) in Build.insts">2</div>
+        <div :style="Thorn.getStyle(item)" v-for="(item, index) in Thorn.insts">2</div>
       </div>
     </div>
   </div>
@@ -12,15 +12,15 @@
 <script setup lang="ts">
 import {LoadGameAssets, ThePlayer} from "@/apps/Adventure/main/LoadGameAssets";
 import type {StyleValue} from "vue";
-import {AllActivePrefabs} from "@/gameScript/scripts/main";
+import {AllActivePrefabs, type ent} from "@/gameScript/scripts/main";
 import type {EntityScript} from "@/gameScript/scripts/entityscript";
-
 const widthPx = (prop: number = 0) => `${prop}px`
 const game = new LoadGameAssets(() => {
 });
 
 watch(() => game.IsLoad().value, () => {
   Player.init()
+  Thorn.init()
 })
 
 const Player = (() => {
@@ -38,12 +38,18 @@ const Player = (() => {
   return s;
 })();
 
-const Build = (() => {
+const Thorn = (() => {
   const init = () => {
-    s.insts = AllActivePrefabs.find(item => item.HasTag("build"))
+    s.insts = AllActivePrefabs.filter(item => item.data.name = "thorn")
+  }
+
+  const getStyle = (inst:ent) => {
+    console.log(inst)
   }
   const s = reactive({
-    insts: {} as ReturnType<typeof EntityScript>[],
+    insts: AllActivePrefabs as ent[] | undefined,
+    init,
+    getStyle
   })
 
   return s

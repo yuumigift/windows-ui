@@ -1,11 +1,11 @@
 import {SpawnPrefab} from "@/gameScript/scripts/prefabs";
 import type {EntityScript} from "@/gameScript/scripts/entityscript";
 import type {Ref, StyleValue} from "vue";
-import {AllActivePrefabs} from "@/gameScript/scripts/main";
+import {ent} from "@/gameScript/scripts/main";
 export let ThePlayer: Ref<ReturnType<typeof EntityScript> | undefined> = ref()
 
 export class LoadGameAssets {
-    public ThePlayer: ReturnType<typeof EntityScript> = {} as any
+    public ThePlayer: ent = {} as any
     private isLoad = ref(false)
     public IsLoad() {
         return this.isLoad;
