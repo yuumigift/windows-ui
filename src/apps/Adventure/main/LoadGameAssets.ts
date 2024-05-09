@@ -14,6 +14,7 @@ export class LoadGameAssets {
         this.load().then(() => {
             this.isLoad.value = true;
             this.enterFrame(performance.now())
+            this.generateThorns()
             callback()
         })
     }
@@ -37,24 +38,11 @@ export class LoadGameAssets {
         requestAnimationFrame(timestamp => this.enterFrame(timestamp));
         this.ThePlayer.Physical.UpdatePosition(timestamp)
     }
-    generateBuild(){
-        SpawnPrefab("build");
-    }
-    public Init(){
-        return (() => {
-            const getPosition = computed(() :StyleValue=>{
-                return {
-                    marginLeft:`${s.pos.x}px`,
-                    marginBottom:`${s.pos.y}px`,
-                }
-            })
-            const s = reactive({
-                player:this.ThePlayer as ReturnType<typeof EntityScript>,
-                pos:{} as any,
-                getPosition
-            });
-            s.pos = s.player.Physical.pos
-            return s;
-        })()
+    //生成尖刺
+    generateThorns(){
+        const num = Math.random() * 10
+        for (let i = 0; i < num; i++) {
+            SpawnPrefab("thorn");
+        }
     }
 }

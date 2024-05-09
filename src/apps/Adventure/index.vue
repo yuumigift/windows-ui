@@ -1,9 +1,9 @@
 <template>
   <div class="outer-div">
     <div class="inner-div">
-      <div class="world" v-if="load.IsLoad()">
-        <div :style="Init?.getPosition" class="player"></div>
-        {{ Player.getPosition }}
+      <div class="world" v-if="game.IsLoad()">
+        <div :style="Player.getPosition" class="player"></div>
+        <div v-for="(item, index) in Build.insts">2</div>
       </div>
     </div>
   </div>
@@ -11,38 +11,39 @@
 
 <script setup lang="ts">
 import {LoadGameAssets, ThePlayer} from "@/apps/Adventure/main/LoadGameAssets";
-import type {Ref, StyleValue} from "vue";
+import type {StyleValue} from "vue";
 import {AllActivePrefabs} from "@/gameScript/scripts/main";
+import type {EntityScript} from "@/gameScript/scripts/entityscript";
 
-let Init: Ref<ReturnType<typeof load.Init> | undefined> = ref();
 const widthPx = (prop: number = 0) => `${prop}px`
-const load = new LoadGameAssets(() => {
-  Init.value = load.Init();
+const game = new LoadGameAssets(() => {
 });
 
-watch(() => load.IsLoad(), () => {
-
+watch(() => game.IsLoad().value, () => {
+  Player.init()
 })
 
-
 const Player = (() => {
-
+  const init = () => {
+    Player.pos = Player.inst?.Physical.pos
+  }
   const getPosition = computed((): StyleValue => ({marginLeft: `${s.pos?.x}px`, marginBottom: `${s.pos?.y}px`,}))
   const s = reactive({
     inst: ThePlayer,
     pos: {} as { x: number, y: number } | undefined,
-    getPosition
+    getPosition,
+    init
   })
-  s.pos = s.inst?.Physical.pos
 
   return s;
 })();
 
 const Build = (() => {
-
-
+  const init = () => {
+    s.insts = AllActivePrefabs.find(item => item.HasTag("build"))
+  }
   const s = reactive({
-    inst: AllActivePrefabs.find(item => item.HasTag("build"))
+    insts: {} as ReturnType<typeof EntityScript>[],
   })
 
   return s
@@ -72,7 +73,7 @@ const Build = (() => {
 
 .player {
   border: 1px solid red;
-  width: v-bind("widthPx(Init?.player.width)");
-  height: 100px;
+  width: v-bind("widthPx(Player.inst?.width)");
+  height: v-bind("widthPx(Player.inst?.height)");
 }
 </style>
