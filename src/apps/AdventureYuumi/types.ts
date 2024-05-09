@@ -1,9 +1,9 @@
 import type { Ref } from "vue";
-import { Ground } from "./classes/Ground";
-import { Monster } from "./classes/Monster";
-import { Player } from "./classes/Player";
-import { Spark } from "./classes/Spark.";
-import { Viewport } from "./classes/Viewport";
+import type { Ground } from "./classes/Ground";
+import type { Monster } from "./classes/Monster";
+import type { Player } from "./classes/Player";
+import type { Spark } from "./classes/Spark.";
+import type { Viewport } from "./classes/Viewport";
 
 export interface Rect {
   x: number;
@@ -12,19 +12,16 @@ export interface Rect {
   h: number;
 }
 
-export interface GameInitInfo {
+export interface EnterFramePayload {
+  global: {
+    over: Ref<boolean>;
+    win: Ref<boolean>;
+  };
   player: Player;
   monster: Monster;
   ground: Ground;
   viewport: Viewport;
   spark: Spark;
-}
-
-export interface EnterFramePayload extends GameInitInfo {
-  global: {
-    over: Ref<boolean>;
-    win: Ref<boolean>;
-  };
 }
 
 export type MoveConfig = {

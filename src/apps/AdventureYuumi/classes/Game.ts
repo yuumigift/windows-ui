@@ -1,6 +1,6 @@
 import type { Ref } from "vue";
 import { useCanvas } from "../common";
-import type { EnterFramePayload, GameInitInfo } from "../types";
+import type { EnterFramePayload } from "../types";
 import { Ground } from "./Ground";
 import { Monster } from "./Monster";
 import { Player } from "./Player";
@@ -10,21 +10,22 @@ import { Viewport } from "./Viewport";
 const { clear, setContext } = useCanvas();
 
 export class Game {
+  global = {
+    over: ref(false),
+    win: ref(false),
+  };
   viewport: Viewport;
   player: Player;
   monster: Monster;
   ground: Ground;
   spark: Spark;
-  global = {
-    over: ref(false),
-    win: ref(false),
-  };
-  constructor(info: GameInitInfo) {
-    this.viewport = info.viewport;
-    this.player = info.player;
-    this.monster = info.monster;
-    this.ground = info.ground;
-    this.spark = info.spark;
+
+  constructor() {
+    this.viewport = new Viewport();
+    this.player = new Player();
+    this.monster = new Monster();
+    this.ground = new Ground();
+    this.spark = new Spark();
   }
   enterFrame() {
     requestAnimationFrame(() => this.enterFrame());
@@ -32,11 +33,11 @@ export class Game {
     if (this.global.win.value) return;
     clear();
     const enterFramePayload: EnterFramePayload = {
+      global: this.global,
       viewport: this.viewport,
       player: this.player,
       monster: this.monster,
       ground: this.ground,
-      global: this.global,
       spark: this.spark,
     };
     this.viewport.enterFrame(enterFramePayload);

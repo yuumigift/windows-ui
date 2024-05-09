@@ -1,4 +1,4 @@
-import { GAME_WIDTH, MONSTER_HEIGHT, MONSTER_JUMP_FORCE, MONSTER_JUMP_WAITING, MONSTER_MOVE_WAITING, MONSTER_SPEED_FORCE, MONSTER_SPEED_MAX, MONSTER_WIDTH, block } from "../common";
+import { MONSTER_HEIGHT, MONSTER_JUMP_FORCE, MONSTER_JUMP_WAITING, MONSTER_MOVE_WAITING, MONSTER_SPEED_FORCE, MONSTER_SPEED_MAX, MONSTER_WIDTH, block } from "../common";
 import type { EnterFramePayload, MoveConfig } from "../types";
 import { Entity } from "./Entity";
 
@@ -62,9 +62,7 @@ class MonsterBase extends Entity {
       this.jump_waiting--;
     }
 
-    // 执行移动操作
     this.move(payload);
-    // 执行绘制操作
     this.draw(payload);
   }
 }
@@ -85,6 +83,7 @@ class MonsterBaseGroup {
 export class Monster extends MonsterBaseGroup {
   constructor() {
     super();
+    // 开局生成50个怪物
     for (let index = 0; index < 50; index++) {
       const monster = new MonsterBase("red", Math.random() * 5e3 + 500 - MONSTER_WIDTH, -MONSTER_HEIGHT);
       this.list.push(monster);
