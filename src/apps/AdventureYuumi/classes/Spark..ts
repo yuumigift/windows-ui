@@ -1,5 +1,9 @@
 import { useCanvas } from "../common";
-import type { Color, EnterFramePayload, Rect } from "../types";
+import type {
+  Color,
+  EnterFramePayload,
+  Rect,
+} from "../types";
 
 const { draw } = useCanvas();
 
@@ -21,8 +25,16 @@ class SparkBase {
   vy = 0;
   opacity = 1;
   is_removed = false;
-  constructor(rect: Rect, speed: number, color: Color, opacity: number) {
-    const center = { x: rect.x + rect.w / 2, y: rect.y + rect.h / 2 };
+  constructor(
+    rect: Rect,
+    speed: number,
+    color: Color,
+    opacity: number
+  ) {
+    const center = {
+      x: rect.x + rect.w / 2,
+      y: rect.y + rect.h / 2,
+    };
     const x = center.x;
     const y = center.y;
     const angle = Math.random() * 2 * Math.PI;
@@ -43,21 +55,47 @@ class SparkBase {
       this.is_removed = true;
     }
     const { r, g, b } = this.color;
-    draw(this.x - viewport.x, this.y, this.rect.w, this.rect.h, `rgba(${r},${g},${b},${this.opacity}`);
+    draw(
+      this.x - viewport.x,
+      this.y,
+      this.rect.w,
+      this.rect.h,
+      `rgba(${r},${g},${b},${this.opacity}`
+    );
   }
 }
 
 class SparkBaseGroup {
   list = [] as SparkBase[];
-  add(rect: Rect, speed: number, color: Color, count: number) {
+  /**
+   * 添加火花效果
+   *
+   * @param rect 矩形区域
+   * @param speed 火花速度
+   * @param color 火花颜色
+   * @param count 火花数量
+   */
+  add(
+    rect: Rect,
+    speed: number,
+    color: Color,
+    count: number
+  ) {
     for (let i = 0; i < count; ++i) {
       const opacity = Math.random() * 0.5 + 0.5;
-      const spark = new SparkBase(rect, speed, color, opacity);
+      const spark = new SparkBase(
+        rect,
+        speed,
+        color,
+        opacity
+      );
       this.list.push(spark);
     }
   }
   enterFrame(payload: EnterFramePayload) {
-    this.list = this.list.filter((spark) => !spark.is_removed);
+    this.list = this.list.filter(
+      (spark) => !spark.is_removed
+    );
     this.list.forEach((spark) => {
       spark.enterFrame(payload);
     });
