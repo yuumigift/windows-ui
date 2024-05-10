@@ -27,6 +27,10 @@ export class Entity {
     this.color = color;
     this.move_config = move_config;
   }
+  /**
+   * 触碰地面时的回调函数
+   * @param _ 触碰信息
+   */
   onGroundBlocked(_: ReturnType<typeof block>) {}
   move(payload: EnterFramePayload) {
     const { speed_force, speed_max } = this.move_config;
