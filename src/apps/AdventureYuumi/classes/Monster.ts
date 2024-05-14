@@ -70,7 +70,6 @@ class MonsterBase extends Entity {
 class MonsterBaseGroup {
   list: MonsterBase[] = [];
   enterFrame(payload: EnterFramePayload) {
-    ``;
     this.list = this.list.filter((monster) => !monster.is_removed);
     this.list.forEach((monster) => {
       monster.enterFrame(payload);
