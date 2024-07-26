@@ -1,6 +1,6 @@
 <template>
   <div v-if="visible" ref="ref_right_menu" class="c__right_menu" :style="{ left: `${menuX}px`, top: `${menuY}px` }" @click="handleClick">
-    <div class="menu" v-for="item in menu" :key="item.title" @click="item.handler">{{ item.title }}</div>
+    <div class="menu" v-for="item in menu" :key="item.title" @click="() => item.handler">{{ item.title }}</div>
   </div>
 </template>
 <script setup lang="ts">
