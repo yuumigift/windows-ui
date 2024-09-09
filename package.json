@@ -18,7 +18,7 @@
     "dayjs": "^1.11.10",
     "element-plus": "^2.7.0",
     "lodash": "^4.17.21",
-    "vue": "^3.4.33",
+    "vue": "latest",
     "vue-router": "^4.3.0"
   },
   "devDependencies": {
