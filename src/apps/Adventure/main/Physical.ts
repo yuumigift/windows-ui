@@ -29,8 +29,7 @@ export namespace AdventurePhysical {
         }
 
         private savePos() {
-            this.pos.x = Math.max(0, this.pos.x)
-            this.pos.y = Math.max(0, this.pos.y)
+            this.SetPosition(Math.max(0, this.pos.x), Math.max(0, this.pos.y))
         }
 
         get frictionCoefficient(): number {
@@ -47,8 +46,7 @@ export namespace AdventurePhysical {
             const pos = this.pos
 
             watch(() => pos, () => {
-
-                AllActivePrefabs.map(ent => {
+/*                AllActivePrefabs.map(ent => {
                     if (ent.HasTag("build")) {
                         const p = ent.Physical.pos
                         if ((pos.x + inst.width >= p.x || pos.x <= p.x + ent.width) && pos.y === p.y + ent.height) {
@@ -56,7 +54,7 @@ export namespace AdventurePhysical {
                             this._velocityX = 0;
                         }
                     }
-                })
+                })*/
                 // 假设有一个碰撞检测逻辑，这里只是一个示例
                 // 如果发生碰撞，可以根据具体情况更新物体的速度或位置
 
@@ -72,6 +70,27 @@ export namespace AdventurePhysical {
 
             }, {deep: true})
 
+        }
+
+        public isColliding(): { xColliding: boolean, yColliding: boolean } {
+            let xColliding = false
+            let yColliding = false
+            const inst = this.inst
+            const pos = this.pos
+            AllActivePrefabs.forEach(ent => {
+                if (ent.HasTag("build")) {
+                    if (xColliding && yColliding) return
+                    const p = ent.Physical.pos
+                    if (pos.x + inst.width > p.x || pos.x < p.x + ent.width) {
+                        xColliding = true
+                    }
+                    if (pos.y === p.y + ent.height) {
+                        this._velocityY = 0;
+                        this._velocityX = 0;
+                    }
+                }
+            })
+            return { xColliding, yColliding }
         }
 
         public isUnderstandGround() {
@@ -108,13 +127,14 @@ export namespace AdventurePhysical {
             const deltaTime = (currentTime - this.lastTime) / 1000; // 转换为秒
 
             //==================================跳跃部分===========================================
-            this.pos.y += this._velocityY * deltaTime + 0.5 * GRAVITY * deltaTime * deltaTime;
+            const addY = this._velocityY * deltaTime + 0.5 * GRAVITY * deltaTime * deltaTime;
             this._velocityY += GRAVITY * deltaTime;
 
             //==================================移动部分===========================================
             this._velocityX *= (1 - this.frictionCoefficient);
-            this.pos.x += this._velocityX;
+            const addX = this._velocityX;
 
+            this.SetPosition(this.pos.x + addX, this.pos.y + addY);
             this.lastTime = currentTime;
 
             this.savePos();
@@ -122,10 +142,15 @@ export namespace AdventurePhysical {
         }
 
         public SetPosition(x: number, y: number): void {
-            this.pos.x = x
-            this.pos.y = y
+            const { xColliding, yColliding } = this.isColliding()
+            const isBuild = this.inst.tags.includes('build')
+            if (!xColliding || isBuild) {
+                this.pos.x = x
+            }
+            if (!yColliding || isBuild) {
+                this.pos.y = y
+            }
         }
-
         constructor(inst: any) {
             this.inst = inst;
             this.inst.ListenForEvent("changePosition", () => {
@@ -133,7 +158,6 @@ export namespace AdventurePhysical {
                 const y = Math.floor(this.pos.y);
             })
             this.checkCollision()
-
         }
     }
 

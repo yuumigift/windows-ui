@@ -41,6 +41,7 @@ export class LoadGameAssets {
 
   enterFrame(timestamp: number) {
     requestAnimationFrame(timestamp => this.enterFrame(timestamp));
+    if (!this.ThePlayer) return;
     this.ThePlayer.Physical.UpdatePosition(timestamp);
   }
 
@@ -48,7 +49,8 @@ export class LoadGameAssets {
   generateThorns() {
     const num = Math.random() * 10;
     for (let i = 0; i < num; i++) {
-      SpawnPrefab("thorn");
+      const inst = SpawnPrefab("thorn");
+      inst.Physical.SetPosition(200, 0)
     }
   }
 }
