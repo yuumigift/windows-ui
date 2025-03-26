@@ -81,7 +81,7 @@ export namespace AdventurePhysical {
                 if (ent.HasTag("build")) {
                     if (xColliding && yColliding) return
                     const p = ent.Physical.pos
-                    if (pos.x + inst.width > p.x || pos.x < p.x + ent.width) {
+                    if (pos.x + inst.width > p.x && pos.x < p.x + ent.width) {
                         xColliding = true
                     }
                     if (pos.y === p.y + ent.height) {
