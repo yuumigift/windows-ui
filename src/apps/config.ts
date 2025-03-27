@@ -11,6 +11,11 @@ export const apps = [
     vuePath: "MyTest/Index.vue",
     icon: "garden.png",
   },
+  {
+    title: "小飞机",
+    vuePath: "Plane/Index.vue",
+    icon: "plane.png",
+  },
   // {
   //   title: "拖拽测试",
   //   vuePath: "DragTest/Index.vue",
