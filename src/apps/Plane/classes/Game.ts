@@ -2,8 +2,9 @@ import { useCanvas } from "@/gameScript/tools/canvas";
 import { type Ref } from "vue";
 import { Gas } from "./Gas";
 import { Player } from "./Player";
+import { GAME_HEIGHT, GAME_WIDTH } from "../common";
 
-const { clear, setContext } = useCanvas(800, 600);
+const { clear, setContext } = useCanvas(GAME_WIDTH, GAME_HEIGHT);
 
 export class Game {
   player: Player;
