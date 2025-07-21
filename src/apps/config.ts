@@ -43,11 +43,11 @@ export const apps = [
     width: 1200,
     height: 600,
   },
-  {
-    title: "植物大战僵尸（小圆限定）",
-    vuePath: "PlantVsZombieMadoka/index.vue",
-    icon: "pvzMadoka.png",
-  },
+  // {
+  //   title: "植物大战僵尸（小圆限定）",
+  //   vuePath: "PlantVsZombieMadoka/index.vue",
+  //   icon: "pvzMadoka.png",
+  // },
   // {
   //   title: "贪吃蛇",
   //   vuePath: "GreedySnake/index.vue",
@@ -58,11 +58,11 @@ export const apps = [
   //   vuePath: "Snake/Index.vue",
   //   icon: "GreedySnake.webp",
   // },
-  {
-    title: "大冒险",
-    vuePath: "Adventure/index.vue",
-    icon: "Adventure.webp",
-  },
+  // {
+  //   title: "大冒险",
+  //   vuePath: "Adventure/index.vue",
+  //   icon: "Adventure.webp",
+  // },
   // {
   //   title: "随机色图",
   //   vuePath: "HumanNature/index.vue",
