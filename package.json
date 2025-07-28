@@ -16,7 +16,7 @@
     "ant-design-vue": "4.x",
     "axios": "^1.6.7",
     "dayjs": "^1.11.10",
-    "element-plus": "^2.7.0",
+    "element-plus": "^2.10.4",
     "lodash": "^4.17.21",
     "vue": "latest",
     "vue-router": "^4.3.0"
