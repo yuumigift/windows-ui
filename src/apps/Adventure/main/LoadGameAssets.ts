@@ -50,7 +50,7 @@ export class LoadGameAssets {
     const num = Math.random() * 10;
     for (let i = 0; i < num; i++) {
       const inst = SpawnPrefab("thorn");
-      inst.Physical.SetPosition(200, 0)
+      inst.Physical?.SetPosition(200, 0)
     }
   }
 }
