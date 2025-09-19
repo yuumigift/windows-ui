@@ -53,9 +53,13 @@ export const EntityScript = () => {
 
     const RemoveTag = (tags: string[]) => s.tags = s.tags.filter(item => !tags.includes(item))
 
+    const HasTag = (tag:string) => s.tags.includes(tag)
+
     const GetPosition = () => s.components.locomotor.position
 
     const s = reactive({
+        width:0,
+        height:0,
         entity: {} as any,
         events: {} as Record<string, (...args: any[]) => any>,
         data: {
@@ -71,6 +75,7 @@ export const EntityScript = () => {
         ListenForEvent,
         AddTag,
         RemoveTag,
+        HasTag,
         GetPosition,
         Physical:{} as Physical
     })

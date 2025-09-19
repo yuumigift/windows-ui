@@ -28,9 +28,9 @@ export const Task = reactive({
   },
   setDefaultActive() {
     const foundTask = Task.list.find((item) => item.isActive);
-    const showedTask = Task.list.filter((item) => !item.isMinimize);
-    if (!foundTask && showedTask.length) {
-      Task.handleActive.call(null, showedTask[showedTask.length - 1]);
+    const showedTasks = Task.list.filter((item) => !item.isMinimize);
+    if (!foundTask && showedTasks.length) {
+      Task.handleActive.call(null, showedTasks[showedTasks.length - 1]);
     }
   },
 });
