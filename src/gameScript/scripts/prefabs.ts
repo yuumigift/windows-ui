@@ -1,4 +1,4 @@
-import {AllPrefabs} from "@/gameScript/scripts/main";
+import {AllActivePrefabs, AllPrefabs} from "@/gameScript/scripts/main";
 import type {EntityScript} from "@/gameScript/scripts/entityscript";
 
 export const Prefab = (name:string, fn:() => {}, assets:Assets[]) => {
@@ -24,5 +24,6 @@ export class Assets {
 
 export const SpawnPrefab = (name:string):ReturnType<typeof EntityScript> => {
     const inst = AllPrefabs[name]?.fn()
+    AllActivePrefabs.push(inst)
     return inst
 }

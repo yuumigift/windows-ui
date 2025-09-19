@@ -22,7 +22,10 @@ class SparkBase {
   opacity = 1;
   is_removed = false;
   constructor(rect: Rect, speed: number, color: Color, opacity: number) {
-    const center = { x: rect.x + rect.w / 2, y: rect.y + rect.h / 2 };
+    const center = {
+      x: rect.x + rect.w / 2,
+      y: rect.y + rect.h / 2,
+    };
     const x = center.x;
     const y = center.y;
     const angle = Math.random() * 2 * Math.PI;
@@ -49,6 +52,14 @@ class SparkBase {
 
 class SparkBaseGroup {
   list = [] as SparkBase[];
+  /**
+   * 添加火花效果
+   *
+   * @param rect 矩形区域
+   * @param speed 火花速度
+   * @param color 火花颜色
+   * @param count 火花数量
+   */
   add(rect: Rect, speed: number, color: Color, count: number) {
     for (let i = 0; i < count; ++i) {
       const opacity = Math.random() * 0.5 + 0.5;

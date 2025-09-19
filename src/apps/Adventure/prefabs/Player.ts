@@ -62,6 +62,8 @@ const RegisterKeyListen = (inst:ReturnType<typeof EntityScript>) => {
 
 const fn = () => {
     const inst = CreateEntity("player")
+    inst.width = 80
+    inst.height = 100
     const health = new Health()
     inst.AddComponent(health)
     inst.AddTag("player")
