@@ -1,4 +1,4 @@
-import { useCanvas } from "@/gameScript/tools/canvas";
+import { useCanvas } from "@/apps/Adventure/gameScript/tools/canvas";
 import { GAME_HEIGHT, GAME_WIDTH, GRAVITY } from "../common";
 import type { Rect, RenderConfig } from "../types";
 

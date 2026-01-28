@@ -22,11 +22,27 @@ export class Player extends Entity {
           this.is_flying = true;
           break;
         }
+        case " ": {
+          this.is_flying = true;
+          break;
+        }
+        case "w": {
+          this.is_flying = true;
+          break;
+        }
       }
     });
     addEventListener("keyup", (e) => {
       switch (e.key) {
         case "ArrowUp": {
+          this.is_flying = false;
+          break;
+        }
+        case " ": {
+          this.is_flying = false;
+          break;
+        }
+        case "w": {
           this.is_flying = false;
           break;
         }

@@ -1,6 +1,6 @@
-import {EntityScript} from "@/gameScript/scripts/entityscript";
-import {generateGUID} from "@/gameScript/scripts/utils/StringUtils";
-import {Ents} from "@/gameScript/scripts/main";
+import {EntityScript} from "@/apps/Adventure/gameScript/scripts/entityscript";
+import {generateGUID} from "@/apps/Adventure/gameScript/scripts/utils/StringUtils";
+import {Ents} from "@/apps/Adventure/gameScript/scripts/main";
 import {getUuid} from "ant-design-vue/es/vc-notification/HookNotification";
 
 

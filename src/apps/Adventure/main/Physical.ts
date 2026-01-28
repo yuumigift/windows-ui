@@ -1,6 +1,6 @@
-import { EntityScript } from "@/gameScript/scripts/entityscript";
-import { Toward } from "@/gameScript/scripts/utils/MapEnum";
-import { AllActivePrefabs } from "@/gameScript/scripts/main";
+import { EntityScript } from "@/apps/Adventure/gameScript/scripts/entityscript";
+import { Toward } from "@/apps/Adventure/gameScript/scripts/utils/MapEnum";
+import { AllActivePrefabs } from "@/apps/Adventure/gameScript/scripts/main";
 import { isEqual } from "lodash";
 
 export namespace AdventurePhysical {

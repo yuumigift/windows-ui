@@ -58,12 +58,17 @@ export const apps = [
     vuePath: "Snake/Index.vue",
     icon: "GreedySnake.webp",
   },
+  {
+    title: "打雪仗",
+    vuePath: "Snowball/Index.vue",
+    icon: "showball.png",
+  },
   // {
   //   title: "大冒险",
   //   vuePath: "Adventure/index.vue",
   //   icon: "Adventure.webp",
   // },
-/*  {
+  /*  {
     title: "随机色图",
     vuePath: "HumanNature/index.vue",
     icon: "humanNature.gif",

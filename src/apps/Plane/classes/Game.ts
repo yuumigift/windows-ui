@@ -1,4 +1,4 @@
-import { useCanvas } from "@/gameScript/tools/canvas";
+import { useCanvas } from "@/apps/Adventure/gameScript/tools/canvas";
 import { type Ref } from "vue";
 import { Gas } from "./Gas";
 import { Player } from "./Player";

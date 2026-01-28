@@ -1,5 +1,5 @@
-import {AllActivePrefabs, AllPrefabs} from "@/gameScript/scripts/main";
-import type {EntityScript} from "@/gameScript/scripts/entityscript";
+import {AllActivePrefabs, AllPrefabs} from "@/apps/Adventure/gameScript/scripts/main";
+import type {EntityScript} from "@/apps/Adventure/gameScript/scripts/entityscript";
 
 export const Prefab = (name:string, fn:() => {}, assets:Assets[]) => {
 

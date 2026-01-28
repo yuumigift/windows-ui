@@ -1,4 +1,4 @@
-import {EntityScript} from "@/gameScript/scripts/entityscript";
+import {EntityScript} from "@/apps/Adventure/gameScript/scripts/entityscript";
 
 export const Ents = <any>{}
 export const AllPrefabs = <any>{}

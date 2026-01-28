@@ -1,8 +1,8 @@
-import {CreateEntity} from "@/gameScript/scripts/mainfunctions";
-import {Assets, Prefab} from "@/gameScript/scripts/prefabs";
+import {CreateEntity} from "@/apps/Adventure/gameScript/scripts/mainfunctions";
+import {Assets, Prefab} from "@/apps/Adventure/gameScript/scripts/prefabs";
 import {Health} from "@/apps/Adventure/components/Health";
-import type {EntityScript} from "@/gameScript/scripts/entityscript";
-import {Toward} from "@/gameScript/scripts/utils/MapEnum";
+import type {EntityScript} from "@/apps/Adventure/gameScript/scripts/entityscript";
+import {Toward} from "@/apps/Adventure/gameScript/scripts/utils/MapEnum";
 
 const assets = [
     new Assets("ANIM", "")

@@ -1,4 +1,4 @@
-import {RegisterComponent} from "@/gameScript/scripts/entityscript";
+import {RegisterComponent} from "@/apps/Adventure/gameScript/scripts/entityscript";
 
 export class Locomotor extends RegisterComponent{
     get position(): { x: number; y: number } {

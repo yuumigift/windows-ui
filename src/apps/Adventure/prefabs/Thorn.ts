@@ -1,5 +1,5 @@
-import {CreateEntity} from "@/gameScript/scripts/mainfunctions";
-import {Assets, Prefab} from "@/gameScript/scripts/prefabs";
+import {CreateEntity} from "@/apps/Adventure/gameScript/scripts/mainfunctions";
+import {Assets, Prefab} from "@/apps/Adventure/gameScript/scripts/prefabs";
 
 const assets = [
     new Assets("ANIM", "")

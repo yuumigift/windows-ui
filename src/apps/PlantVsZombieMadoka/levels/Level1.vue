@@ -8,7 +8,7 @@
 <script setup lang="ts">
 
 import MapTemplate from "@/apps/PlantVsZombieMadoka/components/MapTemplate.vue";
-import {Lawn} from "@/gameScript/scripts/map/Lawn";
+import {Lawn} from "@/apps/Adventure/gameScript/scripts/map/Lawn";
 const map = Lawn
 </script>
 <style scoped lang="less">

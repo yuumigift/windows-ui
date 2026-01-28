@@ -17,7 +17,7 @@
 <script setup lang="ts">
 import { LoadGameAssets, ThePlayer } from "@/apps/Adventure/main/LoadGameAssets";
 import type { StyleValue } from "vue";
-import { AllActivePrefabs, type ent } from "@/gameScript/scripts/main";
+import { AllActivePrefabs, type ent } from "@/apps/Adventure/gameScript/scripts/main";
 
 const widthPx = (prop: number = 0) => `${prop}px`;
 const game = new LoadGameAssets(() => {

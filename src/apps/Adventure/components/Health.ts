@@ -1,4 +1,4 @@
-import {RegisterComponent} from "@/gameScript/scripts/entityscript";
+import {RegisterComponent} from "@/apps/Adventure/gameScript/scripts/entityscript";
 
 export class Health extends RegisterComponent {
     get maxHealth(): number {

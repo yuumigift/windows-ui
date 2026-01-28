@@ -1,7 +1,7 @@
-import { SpawnPrefab } from "@/gameScript/scripts/prefabs";
-import type { EntityScript } from "@/gameScript/scripts/entityscript";
+import { SpawnPrefab } from "@/apps/Adventure/gameScript/scripts/prefabs";
+import type { EntityScript } from "@/apps/Adventure/gameScript/scripts/entityscript";
 import type { Ref, StyleValue } from "vue";
-import type { ent } from "@/gameScript/scripts/main";
+import type { ent } from "@/apps/Adventure/gameScript/scripts/main";
 
 export let ThePlayer: Ref<ReturnType<typeof EntityScript> | undefined> = ref();
 
