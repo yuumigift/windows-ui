@@ -179,7 +179,7 @@ setInterval(() => {
 
 const PORT = process.env.PORT ? Number(process.env.PORT) : 3001;
 server.listen(PORT, () => {
-  // eslint-disable-next-line no-console
+  // 启动服务：pnpm snowball-server
   console.log(`Snowball WS server running on http://localhost:${PORT}/ws`);
 });
 
