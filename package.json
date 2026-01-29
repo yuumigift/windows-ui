@@ -8,7 +8,8 @@
     "build": "run-p type-check \"build-only {@}\" --",
     "preview": "vite preview",
     "build-only": "vite build",
-    "type-check": "vue-tsc --build --force"
+    "type-check": "vue-tsc --build --force",
+    "snowball-server": "ts-node src/apps/Snowball/server/index.ts"
   },
   "dependencies": {
     "@ant-design/icons-vue": "^7.0.0",
@@ -23,18 +24,24 @@
   },
   "devDependencies": {
     "@tsconfig/node20": "^20.1.2",
+    "@types/koa": "^3.0.1",
     "@types/lodash": "^4.14.202",
     "@types/node": "^20.11.28",
+    "@types/ws": "^8.18.1",
     "@vitejs/plugin-vue": "^5.1.4",
     "@vitejs/plugin-vue-jsx": "^4.0.1",
     "@vue/tsconfig": "^0.5.1",
+    "http": "0.0.1-security",
+    "koa": "^3.1.1",
     "less": "^4.2.0",
     "npm-run-all2": "^6.1.2",
+    "ts-node": "^10.9.2",
     "typescript": "~5.4.0",
     "unplugin-auto-import": "^0.17.5",
     "unplugin-vue-components": "^0.26.0",
     "vite": "^5.4.10",
     "vite-plugin-vue-devtools": "^7.6.1",
-    "vue-tsc": "^2.1.10"
+    "vue-tsc": "^2.1.10",
+    "ws": "^8.19.0"
   }
 }

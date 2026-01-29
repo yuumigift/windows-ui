@@ -1,15 +1,21 @@
 import type { useTemplateRef } from "vue";
+import { onMounted } from "vue";
 import { useCanvas } from "../common";
 import type { EnterFramePayload } from "../types";
 import { Bullet } from "./Bullet";
 import { Player } from "./Player";
+import { connect, onState, sendJoin, sendUpdate } from "../client/ws";
 
-const { clear, setContext } = useCanvas();
+const { clear, setContext, draw } = useCanvas();
 
 export class Game {
   player: Player;
   bullet: Bullet;
   canvas: ReturnType<typeof useTemplateRef<HTMLCanvasElement>> | undefined;
+  // remote entities received from server
+  remotePlayers: Array<any> = [];
+  remoteBullets: Array<any> = [];
+  clientId = "";
 
   constructor() {
     this.player = new Player();
@@ -18,6 +24,14 @@ export class Game {
   enterFrame() {
     requestAnimationFrame(() => this.enterFrame());
     clear();
+    // draw remote players
+    this.remotePlayers.forEach((p) => {
+      draw(p.x, p.y, 20, 20, "red");
+    });
+    // draw remote bullets
+    this.remoteBullets.forEach((b) => {
+      draw(b.x, b.y, 10, 10, "gray");
+    });
     const enterFramePayload: EnterFramePayload = {
       player: this.player,
       bullet: this.bullet,
@@ -29,7 +43,27 @@ export class Game {
     const init = () => {
       // 设置
       setContext(cvs.value?.getContext("2d"));
-      this.player.addMouseListener(cvs.value!, this.bullet);
+
+      // connect to websocket server
+      const ws = connect();
+      // create a client id (can be replaced by server-assigned id later)
+      this.clientId = `p_${Math.random().toString(36).slice(2, 9)}`;
+      // announce join as player
+      sendJoin("player", this.clientId, this.player.rect.x, this.player.rect.y);
+      // attach mouse listener after clientId exists so bullets can carry owner id
+      this.player.addMouseListener(cvs.value!, this.bullet, this.clientId);
+
+      // handle incoming state from server
+      onState((state) => {
+        this.remotePlayers = state.players.filter((p) => p.id !== this.clientId);
+        this.remoteBullets = (state.bullets || []).filter((b) => !(typeof b.id === 'string' && b.id.startsWith(this.clientId)));
+      });
+
+      // periodic update of our player position (20Hz)
+      setInterval(() => {
+        sendUpdate("player", this.clientId, this.player.rect.x, this.player.rect.y);
+      }, 1000 / 20);
+
       this.enterFrame();
     };
     onMounted(init);

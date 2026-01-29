@@ -57,13 +57,13 @@ export class Player extends Entity {
       }
     });
   }
-  addMouseListener(canvas: HTMLCanvasElement, bullet: Bullet) {
+  addMouseListener(canvas: HTMLCanvasElement, bullet: Bullet, ownerId?: string) {
     canvas.addEventListener("mousedown", (e) => {
       // 发射雪球
       const mouseX = e.offsetX;
       const mouseY = e.offsetY;
       const bulletAngle = Math.atan2(mouseY - this.rect.y, mouseX - this.rect.x);
-      bullet.add(this.rect.x, this.rect.y, bulletAngle);
+      bullet.add(this.rect.x, this.rect.y, bulletAngle, ownerId);
     });
   }
   computeDirection() {
