@@ -4,7 +4,7 @@ import { useCanvas } from "../common";
 import type { EnterFramePayload } from "../types";
 import { Bullet } from "./Bullet";
 import { Player } from "./Player";
-import { connect, onState, sendJoin, sendUpdate } from "../client/ws";
+import { connect, onState, sendJoin, sendLeave, sendUpdate } from "../client/ws";
 
 const { clear, setContext, draw } = useCanvas();
 
@@ -16,6 +16,7 @@ export class Game {
   remotePlayers: Array<any> = [];
   remoteBullets: Array<any> = [];
   clientId = "";
+  updateTimer: any;
 
   constructor() {
     this.player = new Player();
@@ -56,16 +57,21 @@ export class Game {
       // handle incoming state from server
       onState((state) => {
         this.remotePlayers = state.players.filter((p) => p.id !== this.clientId);
-        this.remoteBullets = (state.bullets || []).filter((b) => !(typeof b.id === 'string' && b.id.startsWith(this.clientId)));
+        this.remoteBullets = (state.bullets || []).filter((b) => !(typeof b.id === "string" && b.id.startsWith(this.clientId)));
       });
 
-      // periodic update of our player position (20Hz)
-      setInterval(() => {
+      // periodic update of our player position (60Hz)
+      this.updateTimer = setInterval(() => {
         sendUpdate("player", this.clientId, this.player.rect.x, this.player.rect.y);
-      }, 1000 / 20);
+      }, 1000 / 60);
 
       this.enterFrame();
     };
     onMounted(init);
+  }
+  close() {
+    console.log(this);
+    clearInterval(this.updateTimer);
+    this.player.close();
   }
 }

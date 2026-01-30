@@ -4,67 +4,83 @@ import type { Bullet } from "./Bullet";
 import { Entity } from "./Entity";
 
 export class Player extends Entity {
+  private boundKeydown: (e: KeyboardEvent) => void;
+  private boundKeyup: (e: KeyboardEvent) => void;
+  private boundMousedown?: (e: MouseEvent) => void;
+  private canvas?: HTMLCanvasElement;
   is_left = false;
   is_right = false;
   is_up = false;
   is_down = false;
   speed = 2;
   size = 20;
+  bullet: Bullet | undefined;
+  owner_id: string | undefined;
+
   constructor(color: string = "teal") {
     super(color);
     this.rect.x = Math.random() * GAME_WIDTH;
     this.rect.y = Math.random() * GAME_HEIGHT;
     this.rect.w = this.size;
     this.rect.h = this.size;
-    addEventListener("keydown", (e) => {
-      switch (e.key) {
-        case "w": {
-          this.is_up = true;
-          break;
-        }
-        case "s": {
-          this.is_down = true;
-          break;
-        }
-        case "a": {
-          this.is_left = true;
-          break;
-        }
-        case "d": {
-          this.is_right = true;
-          break;
-        }
-      }
-    });
-    addEventListener("keyup", (e) => {
-      switch (e.key) {
-        case "w": {
-          this.is_up = false;
-          break;
-        }
-        case "s": {
-          this.is_down = false;
-          break;
-        }
-        case "a": {
-          this.is_left = false;
-          break;
-        }
-        case "d": {
-          this.is_right = false;
-          break;
-        }
-      }
-    });
+    this.boundKeydown = this.keydownHandler.bind(this);
+    this.boundKeyup = this.keyupHandler.bind(this);
+    addEventListener("keydown", this.boundKeydown);
+    addEventListener("keyup", this.boundKeyup);
   }
-  addMouseListener(canvas: HTMLCanvasElement, bullet: Bullet, ownerId?: string) {
-    canvas.addEventListener("mousedown", (e) => {
-      // 发射雪球
-      const mouseX = e.offsetX;
-      const mouseY = e.offsetY;
-      const bulletAngle = Math.atan2(mouseY - this.rect.y, mouseX - this.rect.x);
-      bullet.add(this.rect.x, this.rect.y, bulletAngle, ownerId);
-    });
+  keydownHandler(e: KeyboardEvent) {
+    switch (e.key) {
+      case "w": {
+        this.is_up = true;
+        break;
+      }
+      case "s": {
+        this.is_down = true;
+        break;
+      }
+      case "a": {
+        this.is_left = true;
+        break;
+      }
+      case "d": {
+        this.is_right = true;
+        break;
+      }
+    }
+  }
+  keyupHandler(e: KeyboardEvent) {
+    switch (e.key) {
+      case "w": {
+        this.is_up = false;
+        break;
+      }
+      case "s": {
+        this.is_down = false;
+        break;
+      }
+      case "a": {
+        this.is_left = false;
+        break;
+      }
+      case "d": {
+        this.is_right = false;
+        break;
+      }
+    }
+  }
+  mousedownHandler(e: MouseEvent) {
+    // 发射雪球
+    const mouseX = e.offsetX;
+    const mouseY = e.offsetY;
+    const bullet_angle = Math.atan2(mouseY - this.rect.y, mouseX - this.rect.x);
+    this.bullet?.add(this.rect.x, this.rect.y, bullet_angle, this.owner_id);
+  }
+  addMouseListener(canvas: HTMLCanvasElement, bullet: Bullet, owner_id?: string) {
+    this.bullet = bullet;
+    this.owner_id = owner_id;
+    this.canvas = canvas;
+    this.boundMousedown = this.mousedownHandler.bind(this);
+    canvas.addEventListener("mousedown", this.boundMousedown);
   }
   computeDirection() {
     const is_left = this.is_left;
@@ -104,5 +120,12 @@ export class Player extends Entity {
     this.computeDirection();
     this.move();
     this.draw();
+  }
+  close() {
+    if (this.boundKeydown) removeEventListener("keydown", this.boundKeydown);
+    if (this.boundKeyup) removeEventListener("keyup", this.boundKeyup);
+    if (this.canvas && this.boundMousedown) {
+      this.canvas.removeEventListener("mousedown", this.boundMousedown);
+    }
   }
 }

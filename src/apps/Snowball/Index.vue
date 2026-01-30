@@ -10,4 +10,5 @@ import { Game } from "./classes/Game";
 const canvas = useTemplateRef("canvas");
 const game = new Game();
 game.start(canvas);
+onBeforeUnmount(game.close.bind(game));
 </script>

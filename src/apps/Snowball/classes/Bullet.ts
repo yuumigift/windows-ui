@@ -20,14 +20,14 @@ class BulletSpirit extends Entity {
   opacity = 1;
   is_removed = false;
   speed = 5;
-  constructor(x: number, y: number, angle: number, ownerId?: string) {
+  constructor(x: number, y: number, angle: number, owner_id?: string) {
     super("black");
     this.vx = Math.cos(angle) * this.speed;
     this.vy = Math.sin(angle) * this.speed;
     this.x = x;
     this.y = y;
     const rand = Math.random().toString(36).slice(2, 9);
-    this.id = ownerId ? `${ownerId}_b_${rand}` : `b_${rand}`;
+    this.id = owner_id ? `${owner_id}_b_${rand}` : `b_${rand}`;
     // announce bullet to server
     try {
       sendJoin("bullet", this.id, this.x, this.y);
@@ -52,8 +52,8 @@ class BulletSpirit extends Entity {
 
 export class Bullet {
   list = [] as BulletSpirit[];
-  add(x: number, y: number, angle: number, ownerId?: string) {
-    const bullet = new BulletSpirit(x, y, angle, ownerId);
+  add(x: number, y: number, angle: number, owner_id?: string) {
+    const bullet = new BulletSpirit(x, y, angle, owner_id);
     this.list.push(bullet);
   }
   enterFrame(payload: EnterFramePayload) {

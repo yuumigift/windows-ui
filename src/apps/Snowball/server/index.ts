@@ -150,8 +150,8 @@ wss.on("connection", (ws: WebSocket) => {
   });
 });
 
-// Broadcast 20 times per second
-const TICK_MS = 1000 / 20;
+// 60fps
+const TICK_MS = 1000 / 60;
 setInterval(broadcastState, TICK_MS);
 
 // Remove players that haven't sent updates for more than 2 seconds
