@@ -15,10 +15,9 @@ export class Player extends Entity {
   speed = 2;
   size = 20;
   bullet: Bullet | undefined;
-  owner_id: string | undefined;
 
-  constructor(color: string = "teal") {
-    super(color);
+  constructor(owner_id: string, color: string = "teal") {
+    super(owner_id, color);
     this.rect.x = Math.random() * GAME_WIDTH;
     this.rect.y = Math.random() * GAME_HEIGHT;
     this.rect.w = this.size;
@@ -75,7 +74,7 @@ export class Player extends Entity {
     const bullet_angle = Math.atan2(mouseY - this.rect.y, mouseX - this.rect.x);
     this.bullet?.add(this.rect.x, this.rect.y, bullet_angle, this.owner_id);
   }
-  addMouseListener(canvas: HTMLCanvasElement, bullet: Bullet, owner_id?: string) {
+  addMouseListener(canvas: HTMLCanvasElement, bullet: Bullet, owner_id: string) {
     this.bullet = bullet;
     this.owner_id = owner_id;
     this.canvas = canvas;

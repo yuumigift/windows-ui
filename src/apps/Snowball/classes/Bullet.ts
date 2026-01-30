@@ -20,8 +20,8 @@ class BulletSpirit extends Entity {
   opacity = 1;
   is_removed = false;
   speed = 5;
-  constructor(x: number, y: number, angle: number, owner_id?: string) {
-    super("black");
+  constructor(x: number, y: number, angle: number, owner_id: string) {
+    super(owner_id, "black");
     this.vx = Math.cos(angle) * this.speed;
     this.vy = Math.sin(angle) * this.speed;
     this.x = x;
@@ -51,8 +51,12 @@ class BulletSpirit extends Entity {
 }
 
 export class Bullet {
+  owner_id: string;
+  constructor(owner_id: string) {
+    this.owner_id = owner_id;
+  }
   list = [] as BulletSpirit[];
-  add(x: number, y: number, angle: number, owner_id?: string) {
+  add(x: number, y: number, angle: number, owner_id: string) {
     const bullet = new BulletSpirit(x, y, angle, owner_id);
     this.list.push(bullet);
   }

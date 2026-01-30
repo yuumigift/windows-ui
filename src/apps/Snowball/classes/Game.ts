@@ -15,12 +15,13 @@ export class Game {
   // remote entities received from server
   remotePlayers: Array<any> = [];
   remoteBullets: Array<any> = [];
-  clientId = "";
+  clientId: string;
   updateTimer: any;
 
   constructor() {
-    this.player = new Player();
-    this.bullet = new Bullet();
+    this.clientId = `p_${Math.random().toString(36).slice(2, 9)}`;
+    this.player = new Player(this.clientId);
+    this.bullet = new Bullet(this.clientId);
   }
   enterFrame() {
     requestAnimationFrame(() => this.enterFrame());
@@ -36,22 +37,19 @@ export class Game {
     const enterFramePayload: EnterFramePayload = {
       player: this.player,
       bullet: this.bullet,
+      remotePlayers: this.remotePlayers,
+      remoteBullets: this.remoteBullets,
     };
     this.player.enterFrame(enterFramePayload);
     this.bullet.enterFrame(enterFramePayload);
   }
   start(cvs: ReturnType<typeof useTemplateRef<HTMLCanvasElement>>) {
     const init = () => {
-      // 设置
       setContext(cvs.value?.getContext("2d"));
 
       // connect to websocket server
       const ws = connect();
-      // create a client id (can be replaced by server-assigned id later)
-      this.clientId = `p_${Math.random().toString(36).slice(2, 9)}`;
-      // announce join as player
       sendJoin("player", this.clientId, this.player.rect.x, this.player.rect.y);
-      // attach mouse listener after clientId exists so bullets can carry owner id
       this.player.addMouseListener(cvs.value!, this.bullet, this.clientId);
 
       // handle incoming state from server
@@ -70,8 +68,8 @@ export class Game {
     onMounted(init);
   }
   close() {
-    console.log(this);
     clearInterval(this.updateTimer);
     this.player.close();
+    sendLeave(this.clientId);
   }
 }

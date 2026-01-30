@@ -92,12 +92,7 @@ function handleMessage(ws: WebSocket, msg: any) {
         playerLastSeen.delete(id);
         // if id corresponds to a bullet id, delete that bullet
         if (bullets.has(id)) {
-          console.log("*****");
-          console.log(bullets);
-
           bullets.delete(id);
-          console.log(bullets);
-
           bulletLastSeen.delete(id);
         }
         // also remove any bullets owned by this id (if id is a player id)

@@ -4,6 +4,7 @@ import type { Rect } from "../types";
 const { draw } = useCanvas();
 
 export class Entity {
+  owner_id: string;
   rect: Rect = {
     w: 0,
     h: 0,
@@ -13,7 +14,8 @@ export class Entity {
   vx = 0;
   vy = 0;
   color = "black";
-  constructor(color: string) {
+  constructor(owner_id: string, color: string) {
+    this.owner_id = owner_id;
     this.color = color;
   }
   move() {

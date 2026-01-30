@@ -11,6 +11,8 @@ export interface Rect {
 export interface EnterFramePayload {
   player: Player;
   bullet: Bullet;
+  remotePlayers: any[];
+  remoteBullets: any[];
 }
 
 export type MoveConfig = {
