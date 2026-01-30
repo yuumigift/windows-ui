@@ -1,5 +1,4 @@
 import Koa from "koa";
-import http from "http";
 import { WebSocketServer, type RawData, type WebSocket } from "ws";
 
 type Kind = "player" | "bullet";
@@ -12,7 +11,11 @@ interface Entity {
 }
 
 const app = new Koa();
-const server = http.createServer(app.callback());
+
+const PORT = process.env.PORT ? Number(process.env.PORT) : 3001;
+const server = app.listen(PORT, () => {
+  console.log(`Snowball WS server running on http://localhost:${PORT}/ws`);
+});
 
 const wss = new WebSocketServer({ server, path: "/ws" });
 
@@ -61,7 +64,7 @@ function handleMessage(ws: WebSocket, msg: any) {
         playerLastSeen.set(id, Date.now());
       } else if (msg.kind === "bullet") {
         // try to derive owner from id (format owner_b_xxx) or fallback to client's id
-        const owner = typeof id === 'string' && id.includes('_b_') ? id.split('_b_')[0] : clients.get(ws);
+        const owner = typeof id === "string" && id.includes("_b_") ? id.split("_b_")[0] : clients.get(ws);
         bullets.set(id, { id, x: Number(msg.x) || 0, y: Number(msg.y) || 0, kind: "bullet", owner });
         bulletLastSeen.set(id, Date.now());
       }
@@ -78,7 +81,7 @@ function handleMessage(ws: WebSocket, msg: any) {
       } else if (msg.kind === "bullet") {
         // preserve owner if exists
         const existing = bullets.get(id);
-        const owner = existing?.owner || (typeof id === 'string' && id.includes('_b_') ? id.split('_b_')[0] : clients.get(ws));
+        const owner = existing?.owner || (typeof id === "string" && id.includes("_b_") ? id.split("_b_")[0] : clients.get(ws));
         bullets.set(id, { id, x: Number(msg.x) || 0, y: Number(msg.y) || 0, kind: "bullet", owner });
         bulletLastSeen.set(id, Date.now());
       }
@@ -171,11 +174,5 @@ setInterval(() => {
     }
   }
 }, 1000);
-
-const PORT = process.env.PORT ? Number(process.env.PORT) : 3001;
-server.listen(PORT, () => {
-  // 启动服务：pnpm snowball-server
-  console.log(`Snowball WS server running on http://localhost:${PORT}/ws`);
-});
 
 export {};
