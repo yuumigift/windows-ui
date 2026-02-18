@@ -36,6 +36,8 @@
   import { Task, App } from "@/system";
 
   const contextMenu = ref();
+  const sortMode = ref('');
+  const originalAppOrder = [...App.list];
 
   const handleContextMenu = (event: MouseEvent) => {
     // 阻止在窗口和图标上显示右键菜单
@@ -53,8 +55,25 @@
 
   const handleMenuClick = (action: string) => {
     console.log('菜单点击:', action);
-
     switch (action) {
+      case 'sort-default': {
+        sortMode.value = '';
+        App.list.splice(0, App.list.length, ...originalAppOrder);
+        console.log('恢复默认排序');
+        break;
+      }
+      case 'sort-name-asc': {
+        sortMode.value = 'name-asc';
+        App.list.sort((a: any, b: any) => a.title.localeCompare(b.title, 'zh-CN'));
+        console.log('按名称升序排序');
+        break;
+      }
+      case 'sort-name-desc': {
+        sortMode.value = 'name-desc';
+        App.list.sort((a: any, b: any) => b.title.localeCompare(a.title, 'zh-CN'));
+        console.log('按名称降序排序');
+        break;
+      }
       case 'refresh':
         // 刷新桌面
         console.log('刷新桌面');

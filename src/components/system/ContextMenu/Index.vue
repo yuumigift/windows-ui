@@ -12,10 +12,15 @@
             <span>查看</span>
             <span class="arrow">▶</span>
         </div>
-        <div class="menu-item" @click="handleMenuClick('sort')">
+        <div class="menu-item has-submenu">
             <span class="menu-icon">📊</span>
             <span>排序方式</span>
             <span class="arrow">▶</span>
+            <div class="submenu">
+                <div class="submenu-item" @click.stop="handleMenuClick('sort-default')">默认排序</div>
+                <div class="submenu-item" @click.stop="handleMenuClick('sort-name-asc')">按名称升序</div>
+                <div class="submenu-item" @click.stop="handleMenuClick('sort-name-desc')">按名称降序</div>
+            </div>
         </div>
         <div class="menu-item" @click="handleMenuClick('refresh')">
             <span class="menu-icon">🔄</span>
@@ -145,5 +150,39 @@
         height: 1px;
         background: rgba(0, 0, 0, 0.1);
         margin: 4px 0;
+    }
+
+    .has-submenu {
+        position: relative;
+
+        .submenu {
+            position: absolute;
+            top: 0;
+            left: 100%;
+            min-width: 160px;
+            background: rgba(255,255,255,0.98);
+            border: 1px solid rgba(0,0,0,0.06);
+            box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+            border-radius: 6px;
+            display: none;
+            z-index: 1001;
+            padding: 6px 0;
+        }
+
+        &:hover {
+            .submenu {
+                display: block;
+            }
+        }
+
+        .submenu-item {
+            padding: 8px 12px;
+            cursor: pointer;
+            white-space: nowrap;
+
+            &:hover {
+                background: rgba(0,0,0,0.04);
+            }
+        }
     }
 </style>
