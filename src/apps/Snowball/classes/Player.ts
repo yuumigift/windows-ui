@@ -16,8 +16,8 @@ export class Player extends Entity {
   size = 20;
   bullet: Bullet | undefined;
 
-  constructor(owner_id: string, color: string = "teal") {
-    super(owner_id, color);
+  constructor(owner_id: string, name: string = "", color: string = "teal") {
+    super(owner_id, name, color);
     this.rect.x = Math.random() * GAME_WIDTH;
     this.rect.y = Math.random() * GAME_HEIGHT;
     this.rect.w = this.size;

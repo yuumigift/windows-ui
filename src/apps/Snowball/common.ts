@@ -15,11 +15,29 @@ export const useCanvas = () => {
     ctx.fillStyle = color;
     ctx.fillRect(x - width / 2, y - height / 2, width, height);
   };
+  const stroke = (x: number, y: number, width: number, height: number, color: string = "black", lineWidth: number = 1) => {
+    if (!checkCtx(ctx)) return;
+    ctx.save();
+    ctx.strokeStyle = color;
+    ctx.lineWidth = lineWidth;
+    ctx.strokeRect(x - width / 2, y - height / 2, width, height);
+    ctx.restore();
+  };
   const clear = () => {
     if (!checkCtx(ctx)) return;
     ctx.clearRect(0, 0, GAME_WIDTH, GAME_HEIGHT);
   };
-  return { draw, clear, setContext };
+  const text = (x: number, y: number, content: string, color: string = "black", font: string = "12px Arial") => {
+    if (!checkCtx(ctx)) return;
+    ctx.save();
+    ctx.fillStyle = color;
+    ctx.font = font;
+    ctx.textAlign = "center";
+    ctx.textBaseline = "middle";
+    ctx.fillText(content, x, y);
+    ctx.restore();
+  };
+  return { draw, stroke, clear, setContext, text };
 };
 
 export const block = (a: Rect, b: Rect): { rect: Rect; direction: PushDirection } => {

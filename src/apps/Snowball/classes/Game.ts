@@ -9,6 +9,7 @@ import { connect, onState, sendJoin, sendLeave, sendUpdate } from "../client/ws"
 const { clear, setContext, draw } = useCanvas();
 
 export class Game {
+  name: string;
   player: Player;
   bullet: Bullet;
   canvas: ReturnType<typeof useTemplateRef<HTMLCanvasElement>> | undefined;
@@ -18,9 +19,10 @@ export class Game {
   clientId: string;
   updateTimer: any;
 
-  constructor() {
+  constructor(name: string) {
+    this.name = name;
     this.clientId = `p_${Math.random().toString(36).slice(2, 9)}`;
-    this.player = new Player(this.clientId);
+    this.player = new Player(this.clientId, name);
     this.bullet = new Bullet(this.clientId);
   }
   enterFrame() {
