@@ -73,4 +73,9 @@ export const apps = [
     vuePath: "HumanNature/index.vue",
     icon: "humanNature.gif",
   },*/
+  {
+    title: "我的世界",
+    vuePath: "Minecraft/Index.vue",
+    icon: "minecraft.svg",
+  }
 ];
