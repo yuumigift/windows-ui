@@ -17,6 +17,10 @@ class GasEntity extends Entity {
     this.move();
     this.draw();
   }
+
+  isOffScreen() {
+    return this.rect.x + this.rect.w / 2 < 0;
+  }
 }
 
 export class Gas {
@@ -29,5 +33,9 @@ export class Gas {
     this.list.forEach((gas) => {
       gas.enterFrame();
     });
+    this.list = this.list.filter((gas) => !gas.isOffScreen());
+  }
+  reset() {
+    this.list = [];
   }
 }

@@ -1,5 +1,4 @@
-import type { Gas } from "./classes/Gas";
-import type { Player } from "./classes/Player";
+import type { WallEntity } from "./classes/Wall";
 
 export interface Rect {
   x: number;
@@ -7,6 +6,12 @@ export interface Rect {
   w: number;
   h: number;
 }
+
+export type WallPair = {
+  top: WallEntity;
+  bottom: WallEntity;
+  passed: boolean;
+};
 
 interface RenderConfigRect {
   type: "rect";
