@@ -9,8 +9,11 @@ import {
   CHUNK_BUILD_TIME_BUDGET,
   CHUNK_RENDER_DISTANCE,
   CHUNK_SIZE,
+  FOREST_OUTER_SECONDARY_THRESHOLD,
   FOREST_OUTER_RADIUS,
+  FOREST_OUTER_TREE_THRESHOLD,
   FOREST_RING_RADIUS,
+  FOREST_RING_TREE_THRESHOLD,
   GROUND_SNAP_HEIGHT,
   MAX_RAYCAST_DISTANCE,
   PATH_LENGTH,
@@ -41,6 +44,9 @@ const BLOCK_OPACITY: Partial<Record<BlockType, number>> = {
   glass: 0.4,
   leaf: 0.6,
 };
+
+/** 这类方块允许玩家看穿，因此不应该把后方实体方块的面完全裁掉。 */
+const TRANSPARENT_BLOCK_TYPES = new Set<BlockType>(["glass", "leaf"]);
 
 /** 破坏粒子的重力与阻尼，用于做出“碎块掉落”的视觉反馈。 */
 const BREAK_PARTICLE_GRAVITY = BLOCK_SIZE * 2;
@@ -75,8 +81,16 @@ const createBlockMaterial = (type: BlockType) => {
 /** 已渲染方块在运行时保存的附加信息。 */
 type WorldBlock = {
   chunkKey: string;
+  faceMask: number;
   type: BlockType;
   mesh: THREE.Mesh;
+};
+
+/** 当前已加载到内存中的逻辑方块信息，包含不可见但仍然存在的方块。 */
+type LoadedBlock = {
+  chunkKey: string;
+  position: BlockPosition;
+  type: BlockType;
 };
 
 /** 单个破坏粒子的瞬时状态。 */
@@ -98,10 +112,32 @@ type PendingChunkTask = {
 /** 射线命中的方块交点类型别名，便于后续复用。 */
 type BlockHit = THREE.Intersection<THREE.Object3D<THREE.Object3DEventMap>>;
 
+type FaceDirection = {
+  bit: number;
+  offset: BlockPosition;
+};
+
 /** 逻辑坐标转字符串 key，用于 Map 快速索引。 */
 const getBlockKey = ({ x, y, z }: BlockPosition) => `${x},${y},${z}`;
 const getChunkKey = (x: number, z: number) => `${x},${z}`;
 const getColumnKey = (x: number, z: number) => `${x},${z}`;
+const parseBlockKey = (key: string): BlockPosition => {
+  const [x = 0, y = 0, z = 0] = key.split(",").map(Number);
+  return { x, y, z };
+};
+
+/**
+ * 顺序与 `THREE.BoxGeometry` 的 6 个面分组保持一致：
+ * +X、-X、+Y、-Y、+Z、-Z。
+ */
+const FACE_DIRECTIONS: FaceDirection[] = [
+  { bit: 1 << 0, offset: { x: 1, y: 0, z: 0 } },
+  { bit: 1 << 1, offset: { x: -1, y: 0, z: 0 } },
+  { bit: 1 << 2, offset: { x: 0, y: 1, z: 0 } },
+  { bit: 1 << 3, offset: { x: 0, y: -1, z: 0 } },
+  { bit: 1 << 4, offset: { x: 0, y: 0, z: 1 } },
+  { bit: 1 << 5, offset: { x: 0, y: 0, z: -1 } },
+];
 
 /** 把世界坐标转换到最近的逻辑方块坐标。 */
 const normalizeBlockPosition = (point: THREE.Vector3) => ({
@@ -137,9 +173,11 @@ const withinCabinPlot = (x: number, z: number) =>
 export class World {
   /** 射线检测器，用于准星选中与交互。 */
   private raycaster = new THREE.Raycaster();
+  /** 逻辑坐标 -> 已加载逻辑方块信息，包含不可见内部方块。 */
+  private loadedBlocks = new Map<string, LoadedBlock>();
   /** 逻辑坐标 -> 已渲染方块信息。 */
   private blockMap = new Map<string, WorldBlock>();
-  /** 区块 key -> 属于该区块的所有逻辑方块 key。 */
+  /** 区块 key -> 属于该区块的所有已加载逻辑方块 key。 */
   private chunkBlocks = new Map<string, Set<string>>();
   /** 玩家手动改动过的方块覆盖表，`null` 表示删除原生生成方块。 */
   private overrides = new Map<string, BlockType | null>();
@@ -157,8 +195,16 @@ export class World {
   private surfaceHeightCache = new Map<string, number>();
   /** 树木原点缓存，保证树生成稳定且查询更快。 */
   private treeOriginCache = new Map<string, boolean>();
-  /** 主方块网格复用同一个几何体，减少内存占用。 */
-  private readonly blockGeometry = new THREE.BoxGeometry(BLOCK_SIZE, BLOCK_SIZE, BLOCK_SIZE);
+  /** 当前世界的随机种子偏移，同一轮世界生命周期内保持稳定。 */
+  private terrainSeedOffset = new THREE.Vector2();
+  /** 树木分布单独使用一组偏移，避免与地表起伏完全同步。 */
+  private treeSeedOffset = new THREE.Vector2();
+  /** 控制树高细节的偏移量，让不同世界的树形也略有差异。 */
+  private treeDetailSeedOffset = new THREE.Vector2();
+  /** 标准立方体模板，按 face mask 裁剪时会以它为蓝本生成缓存几何体。 */
+  private readonly blockGeometryTemplate = new THREE.BoxGeometry(BLOCK_SIZE, BLOCK_SIZE, BLOCK_SIZE);
+  /** face mask -> 仅包含可见面的几何体缓存。 */
+  private readonly blockGeometryCache = new Map<number, THREE.BufferGeometry | null>();
   /** 粒子几何体比普通方块小很多，模拟碎块。 */
   private readonly particleGeometry = new THREE.BoxGeometry(BLOCK_SIZE * 0.18, BLOCK_SIZE * 0.18, BLOCK_SIZE * 0.18);
   /** 每种方块类型对应一份共享材质。 */
@@ -177,14 +223,15 @@ export class World {
   );
 
   constructor(private scene: THREE.Scene) {
+    this.randomizeWorldSeed();
     this.raycaster.far = MAX_RAYCAST_DISTANCE;
     this.highlight.visible = false;
     this.scene.add(this.highlight);
   }
 
-  /** 对外暴露当前世界中的已渲染方块总数。 */
+  /** 对外暴露当前世界中的已加载方块总数。 */
   get count() {
-    return this.blockMap.size;
+    return this.loadedBlocks.size;
   }
 
   update(delta: number, cameraPosition: THREE.Vector3) {
@@ -223,12 +270,12 @@ export class World {
 
     const mesh = hit.object as THREE.Mesh;
     const position = mesh.userData.blockPosition as BlockPosition;
-    const block = this.blockMap.get(getBlockKey(position));
+    const block = this.loadedBlocks.get(getBlockKey(position));
     if (!block) return false;
 
     this.spawnBreakParticles(position, block.type);
     this.overrides.set(getBlockKey(position), null);
-    return this.removeRenderedBlock(position);
+    return this.removeLoadedBlock(position);
   }
 
   /** 在准星命中面的外侧尝试放置一个新方块。 */
@@ -256,7 +303,7 @@ export class World {
     if (this.blockIntersectsPlayer(position, (camera as THREE.PerspectiveCamera).position)) return false;
 
     this.overrides.set(getBlockKey(position), type);
-    return this.addRenderedBlock(position, type);
+    return this.addLoadedBlock(position, type);
   }
 
   /** 使用近似圆柱碰撞体检测玩家是否与任意方块重叠。 */
@@ -346,9 +393,24 @@ export class World {
     this.pendingChunkQueue = [];
     this.chunkBlocks.clear();
     this.overrides.clear();
+    this.surfaceHeightCache.clear();
+    this.treeOriginCache.clear();
+    this.randomizeWorldSeed();
     this.highlight.visible = false;
     this.ensureChunks(cameraPosition, true);
     this.processChunkQueue(true);
+  }
+
+  /** 为新的世界生命周期生成一组随机偏移，让每次打开/重置地形都不同。 */
+  private randomizeWorldSeed() {
+    this.terrainSeedOffset.set(Math.random() * 10_000 - 5_000, Math.random() * 10_000 - 5_000);
+    this.treeSeedOffset.set(Math.random() * 10_000 - 5_000, Math.random() * 10_000 - 5_000);
+    this.treeDetailSeedOffset.set(Math.random() * 10_000 - 5_000, Math.random() * 10_000 - 5_000);
+  }
+
+  /** 将当前世界种子映射到噪声采样坐标，使同一世界稳定、不同世界随机。 */
+  private sampleSeededNoise(x: number, z: number, offset: THREE.Vector2) {
+    return hashNoise(x + offset.x, z + offset.y);
   }
 
   /** 彻底释放世界持有的场景对象和 GPU 资源。 */
@@ -360,7 +422,9 @@ export class World {
     this.chunkBlocks.clear();
     this.overrides.clear();
     this.scene.remove(this.highlight);
-    this.blockGeometry.dispose();
+    this.blockGeometryTemplate.dispose();
+    this.blockGeometryCache.forEach((geometry) => geometry?.dispose());
+    this.blockGeometryCache.clear();
     this.particleGeometry.dispose();
     Object.values(this.blockMaterials).forEach((material) => material.dispose());
     this.highlight.geometry.dispose();
@@ -426,25 +490,25 @@ export class World {
 
   /** 卸载区块时，同步移除它关联的所有已渲染方块。 */
   private unloadChunk(key: string) {
-      this.pendingChunkTasks.delete(key);
+    this.pendingChunkTasks.delete(key);
 
-      const blockKeys = this.chunkBlocks.get(key);
-      if (blockKeys) {
-        for (const blockKey of blockKeys) {
-          const block = this.blockMap.get(blockKey);
-          if (!block) continue;
-          this.removeMesh(block.mesh);
-          this.scene.remove(block.mesh);
-          this.blockMap.delete(blockKey);
-        }
-      }
+    const blockKeys = [...(this.chunkBlocks.get(key) ?? [])];
+    const positions = blockKeys.map((blockKey) => this.loadedBlocks.get(blockKey)?.position ?? parseBlockKey(blockKey));
 
-      if (this.pendingChunkQueue.length) {
-        this.pendingChunkQueue = this.pendingChunkQueue.filter((task) => task.key !== key);
-      }
-
-      this.chunkBlocks.delete(key);
+    for (const blockKey of blockKeys) {
+      this.removeRenderedMeshByKey(blockKey);
+      this.loadedBlocks.delete(blockKey);
     }
+
+    if (this.pendingChunkQueue.length) {
+      this.pendingChunkQueue = this.pendingChunkQueue.filter((task) => task.key !== key);
+    }
+
+    this.chunkBlocks.delete(key);
+
+    // 邻接区块失去遮挡后，边界方块可能需要把原本隐藏的面重新显示出来。
+    positions.forEach((position) => this.refreshAdjacentBlocks(position));
+  }
 
   /** 在时间预算内逐步构建区块，减少大批量生成带来的帧卡顿。 */
   private processChunkQueue(force = false) {
@@ -474,65 +538,202 @@ export class World {
 
   /** 把一个区块按“列”分批构建出来，而不是一次性整块生成。 */
   private buildChunkColumns(task: PendingChunkTask, budgetMs: number, startTime: number) {
-      const startX = task.chunkX * CHUNK_SIZE;
-      const startZ = task.chunkZ * CHUNK_SIZE;
-      const chunkBlockKeys = this.chunkBlocks.get(task.key);
-      if (!chunkBlockKeys) return;
+    const startX = task.chunkX * CHUNK_SIZE;
+    const startZ = task.chunkZ * CHUNK_SIZE;
+    if (!this.chunkBlocks.has(task.key)) return;
 
-      while (task.nextColumnIndex < CHUNK_SIZE * CHUNK_SIZE) {
-        const localX = task.nextColumnIndex % CHUNK_SIZE;
-        const localZ = Math.floor(task.nextColumnIndex / CHUNK_SIZE);
-        const worldX = startX + localX;
-        const worldZ = startZ + localZ;
+    while (task.nextColumnIndex < CHUNK_SIZE * CHUNK_SIZE) {
+      const localX = task.nextColumnIndex % CHUNK_SIZE;
+      const localZ = Math.floor(task.nextColumnIndex / CHUNK_SIZE);
+      const worldX = startX + localX;
+      const worldZ = startZ + localZ;
 
-        for (let y = 0; y <= WORLD_TOP_HEIGHT; y++) {
-          const position = { x: worldX, y, z: worldZ };
-          const type = this.getResolvedBlockType(position);
-          if (!type) continue;
-          if (this.addRenderedBlock(position, type, task.key)) {
-            chunkBlockKeys.add(getBlockKey(position));
-          }
-        }
+      for (let y = 0; y <= WORLD_TOP_HEIGHT; y++) {
+        const position = { x: worldX, y, z: worldZ };
+        const type = this.getResolvedBlockType(position);
+        if (!type) continue;
+        this.addLoadedBlock(position, type, task.key);
+      }
 
-        task.nextColumnIndex += 1;
-        if (!Number.isFinite(budgetMs)) continue;
-        if (performance.now() - startTime >= budgetMs) {
-          break;
-        }
+      task.nextColumnIndex += 1;
+      if (!Number.isFinite(budgetMs)) continue;
+      if (performance.now() - startTime >= budgetMs) {
+        break;
       }
     }
+  }
 
-  /** 将逻辑方块实例化成 Three.js 网格并加入场景。 */
-  private addRenderedBlock(
-      position: BlockPosition,
-      type: BlockType,
-      chunkKey = getChunkKey(Math.floor(position.x / CHUNK_SIZE), Math.floor(position.z / CHUNK_SIZE)),
-    ) {
-      const key = getBlockKey(position);
-      if (this.blockMap.has(key)) return false;
+  /** 把逻辑方块加入已加载集合，并按可见面情况决定是否渲染。 */
+  private addLoadedBlock(
+    position: BlockPosition,
+    type: BlockType,
+    chunkKey = getChunkKey(Math.floor(position.x / CHUNK_SIZE), Math.floor(position.z / CHUNK_SIZE)),
+  ) {
+    const key = getBlockKey(position);
+    if (this.loadedBlocks.has(key)) return false;
 
-      const mesh = new THREE.Mesh(this.blockGeometry, this.blockMaterials[type]);
-      mesh.position.set(position.x * BLOCK_SIZE, position.y * BLOCK_SIZE, position.z * BLOCK_SIZE);
-      mesh.userData.blockPosition = { ...position } satisfies BlockPosition;
-      this.scene.add(mesh);
-      this.meshIndexes.set(mesh, this.blockMeshes.length);
-      this.blockMeshes.push(mesh);
-      this.blockMap.set(key, { chunkKey, type, mesh });
-      return true;
-    }
+    const chunkBlockKeys = this.chunkBlocks.get(chunkKey);
+    if (!chunkBlockKeys) return false;
+
+    chunkBlockKeys.add(key);
+    this.loadedBlocks.set(key, {
+      chunkKey,
+      position: { ...position },
+      type,
+    });
+
+    this.refreshRenderedBlock(position);
+    this.refreshAdjacentBlocks(position);
+    return true;
+  }
+
+  /** 从已加载集合中删除逻辑方块，并刷新周围方块的可见面。 */
+  private removeLoadedBlock(position: BlockPosition) {
+    const key = getBlockKey(position);
+    const block = this.loadedBlocks.get(key);
+    if (!block) return false;
+
+    this.removeRenderedMeshByKey(key);
+    this.loadedBlocks.delete(key);
+    this.chunkBlocks.get(block.chunkKey)?.delete(key);
+    this.refreshAdjacentBlocks(position);
+    return true;
+  }
 
   /** 从场景和索引结构中移除指定位置的已渲染方块。 */
   private removeRenderedBlock(position: BlockPosition) {
-      const key = getBlockKey(position);
-      const block = this.blockMap.get(key);
-      if (!block) return false;
+    const key = getBlockKey(position);
+    return this.removeRenderedMeshByKey(key);
+  }
 
-      this.removeMesh(block.mesh);
-      this.scene.remove(block.mesh);
-      this.blockMap.delete(key);
-      this.chunkBlocks.get(block.chunkKey)?.delete(key);
-      return true;
+  /** 根据周围 6 个方向是否被遮挡，计算当前方块应该显示哪些面。 */
+  private getVisibleFaceMask(position: BlockPosition) {
+    const currentType = this.loadedBlocks.get(getBlockKey(position))?.type;
+    if (!currentType) return 0;
+
+    let mask = 0;
+
+    for (const { bit, offset } of FACE_DIRECTIONS) {
+      const neighbor = {
+        x: position.x + offset.x,
+        y: position.y + offset.y,
+        z: position.z + offset.z,
+      };
+
+      const neighborType = this.loadedBlocks.get(getBlockKey(neighbor))?.type;
+      const currentTransparent = TRANSPARENT_BLOCK_TYPES.has(currentType);
+      const neighborTransparent = neighborType ? TRANSPARENT_BLOCK_TYPES.has(neighborType) : false;
+      const shouldRenderFace = !neighborType || (!currentTransparent && neighborTransparent);
+
+      if (shouldRenderFace) {
+        mask |= bit;
+      }
     }
+
+    return mask;
+  }
+
+  /** 为当前 face mask 复用一份裁剪后的立方体几何体。 */
+  private getBlockGeometry(faceMask: number) {
+    const cached = this.blockGeometryCache.get(faceMask);
+    if (cached !== undefined) return cached;
+
+    if (faceMask === 0) {
+      this.blockGeometryCache.set(faceMask, null);
+      return null;
+    }
+
+    const geometry = this.blockGeometryTemplate.clone();
+    const sourceIndex = this.blockGeometryTemplate.getIndex();
+    if (sourceIndex) {
+      const visibleIndices: number[] = [];
+
+      this.blockGeometryTemplate.groups.forEach((group, faceIndex) => {
+        if ((faceMask & (1 << faceIndex)) === 0) return;
+
+        for (let index = group.start; index < group.start + group.count; index++) {
+          visibleIndices.push(sourceIndex.array[index] ?? 0);
+        }
+      });
+
+      geometry.clearGroups();
+      geometry.setIndex(visibleIndices);
+    }
+
+    geometry.computeBoundingBox();
+    geometry.computeBoundingSphere();
+    this.blockGeometryCache.set(faceMask, geometry);
+    return geometry;
+  }
+
+  /** 让某个逻辑方块的渲染状态与当前遮挡情况保持一致。 */
+  private refreshRenderedBlock(position: BlockPosition) {
+    const key = getBlockKey(position);
+    const loadedBlock = this.loadedBlocks.get(key);
+    if (!loadedBlock) {
+      this.removeRenderedMeshByKey(key);
+      return;
+    }
+
+    const faceMask = this.getVisibleFaceMask(position);
+    if (faceMask === 0) {
+      this.removeRenderedMeshByKey(key);
+      return;
+    }
+
+    const geometry = this.getBlockGeometry(faceMask);
+    if (!geometry) {
+      this.removeRenderedMeshByKey(key);
+      return;
+    }
+
+    const block = this.blockMap.get(key);
+    if (block) {
+      if (block.faceMask === faceMask && block.type === loadedBlock.type) return;
+
+      block.faceMask = faceMask;
+      block.type = loadedBlock.type;
+      block.mesh.geometry = geometry;
+      block.mesh.material = this.blockMaterials[loadedBlock.type];
+      block.mesh.userData.blockPosition = { ...position } satisfies BlockPosition;
+      return;
+    }
+
+    const mesh = new THREE.Mesh(geometry, this.blockMaterials[loadedBlock.type]);
+    mesh.position.set(position.x * BLOCK_SIZE, position.y * BLOCK_SIZE, position.z * BLOCK_SIZE);
+    mesh.userData.blockPosition = { ...position } satisfies BlockPosition;
+    this.scene.add(mesh);
+    this.meshIndexes.set(mesh, this.blockMeshes.length);
+    this.blockMeshes.push(mesh);
+    this.blockMap.set(key, {
+      chunkKey: loadedBlock.chunkKey,
+      faceMask,
+      type: loadedBlock.type,
+      mesh,
+    });
+  }
+
+  /** 当前位置变化后，周围 6 个邻居的面可见性也可能发生变化。 */
+  private refreshAdjacentBlocks(position: BlockPosition) {
+    for (const { offset } of FACE_DIRECTIONS) {
+      this.refreshRenderedBlock({
+        x: position.x + offset.x,
+        y: position.y + offset.y,
+        z: position.z + offset.z,
+      });
+    }
+  }
+
+  /** 按 key 删除可见网格，不影响逻辑方块是否存在。 */
+  private removeRenderedMeshByKey(key: string) {
+    const block = this.blockMap.get(key);
+    if (!block) return false;
+
+    this.removeMesh(block.mesh);
+    this.scene.remove(block.mesh);
+    this.blockMap.delete(key);
+    return true;
+  }
 
   /**
    * 使用“尾元素覆盖”的方式删除 mesh，
@@ -555,12 +756,13 @@ export class World {
 
   /** 清空当前已经加载到场景中的所有方块。 */
   private clearBlocks() {
-      this.blockMeshes.forEach((mesh) => this.scene.remove(mesh));
-      this.blockMeshes = [];
-      this.meshIndexes.clear();
-      this.blockMap.clear();
-      this.chunkBlocks.clear();
-    }
+    this.blockMeshes.forEach((mesh) => this.scene.remove(mesh));
+    this.blockMeshes = [];
+    this.meshIndexes.clear();
+    this.loadedBlocks.clear();
+    this.blockMap.clear();
+    this.chunkBlocks.clear();
+  }
 
   /** 清空所有碎块粒子。 */
   private clearParticles() {
@@ -608,10 +810,10 @@ export class World {
               Math.round(
                 SEA_LEVEL +
                   2 +
-                  Math.sin(x * 0.19) * 1.5 +
-                  Math.cos(z * 0.17) * 1.3 +
-                  Math.sin((x + z) * 0.08) * 1.15 +
-                  (hashNoise(x, z) - 0.5) * 1.2,
+                  Math.sin((x + this.terrainSeedOffset.x) * 0.19) * 1.5 +
+                  Math.cos((z + this.terrainSeedOffset.y) * 0.17) * 1.3 +
+                  Math.sin((x + z + this.terrainSeedOffset.x * 0.35 + this.terrainSeedOffset.y * 0.2) * 0.08) * 1.15 +
+                  (this.sampleSeededNoise(x, z, this.terrainSeedOffset) - 0.5) * 1.2,
               ),
             ),
           );
@@ -678,11 +880,14 @@ export class World {
       if (cached !== undefined) return cached;
 
       const distance = Math.sqrt(x * x + z * z);
-      const ringNoise = hashNoise(x, z);
+      const ringNoise = this.sampleSeededNoise(x, z, this.treeSeedOffset);
       const result =
         !withinCabinPlot(x, z) &&
-        ((distance >= FOREST_RING_RADIUS - 1.4 && distance <= FOREST_RING_RADIUS + 1.8 && ringNoise > 0.73) ||
-          (distance > FOREST_RING_RADIUS + 1.8 && distance <= FOREST_OUTER_RADIUS && ringNoise > 0.82 && hashNoise(x + 13, z - 7) > 0.44));
+        ((distance >= FOREST_RING_RADIUS - 1.4 && distance <= FOREST_RING_RADIUS + 1.8 && ringNoise > FOREST_RING_TREE_THRESHOLD) ||
+          (distance > FOREST_RING_RADIUS + 1.8 &&
+            distance <= FOREST_OUTER_RADIUS &&
+            ringNoise > FOREST_OUTER_TREE_THRESHOLD &&
+            this.sampleSeededNoise(x + 13, z - 7, this.treeSeedOffset) > FOREST_OUTER_SECONDARY_THRESHOLD));
 
       this.treeOriginCache.set(key, result);
       return result;
@@ -690,7 +895,7 @@ export class World {
 
   /** 以树原点为中心，计算当前坐标对应树干还是树叶。 */
   private getTreePartType(position: BlockPosition, originX: number, originZ: number): BlockType | null {
-      const trunkHeight = 4 + Math.floor(hashNoise(originX * 2, originZ * 3) * 3);
+      const trunkHeight = 4 + Math.floor(this.sampleSeededNoise(originX * 2, originZ * 3, this.treeDetailSeedOffset) * 3);
       const groundY = this.getSurfaceHeight(originX, originZ);
       const trunkBaseY = groundY + 1;
       const { x, y, z } = position;

@@ -12,7 +12,7 @@ export const WORLD_SCALE = 10;
 /** 单个区块在 X/Z 平面上包含的列数。 */
 export const CHUNK_SIZE = 20;
 /** 以玩家所在区块为中心，向外额外保留多少圈区块。 */
-export const CHUNK_RENDER_DISTANCE = 2;
+export const CHUNK_RENDER_DISTANCE = 3;
 /** 单帧内用于构建区块网格的时间预算，单位毫秒，用来减轻卡顿。 */
 export const CHUNK_BUILD_TIME_BUDGET = 5;
 /** 自然地形允许生成到的最大高度。 */
@@ -65,6 +65,12 @@ export const PATH_LENGTH = 14;
 export const FOREST_RING_RADIUS = 11;
 /** 树林最外层的半径，超出后不再生成树。 */
 export const FOREST_OUTER_RADIUS = 24;
+/** 森林内圈生成树的噪声阈值，值越高树越少。 */
+export const FOREST_RING_TREE_THRESHOLD = 0.82;
+/** 森林外圈生成树的噪声阈值，值越高树越少。 */
+export const FOREST_OUTER_TREE_THRESHOLD = 0.9;
+/** 外圈树木额外采样的第二层筛选阈值，用于进一步拉开树间距。 */
+export const FOREST_OUTER_SECONDARY_THRESHOLD = 0.56;
 
 /** 玩家初始出生点，Y 值同时考虑地基高度、玩家身高与视角高度。 */
 export const CAMERA_START = {
