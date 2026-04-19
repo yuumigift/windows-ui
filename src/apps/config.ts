@@ -58,6 +58,7 @@ export const apps = [
     vuePath: "Snake/Index.vue",
     icon: "GreedySnake.webp",
   },
+
   {
     title: "打雪仗",
     vuePath: "Snowball/Index.vue",
@@ -79,5 +80,12 @@ export const apps = [
     icon: "minecraft.svg",
     width: 1100,
     height: 720,
-  }
+  },
+  {
+    title: "弹弹球",
+    vuePath: "ElasticBall/Index.vue",
+    icon: "elastic_ball.png",
+    width: 1040,
+    height: 760,
+  },
 ];

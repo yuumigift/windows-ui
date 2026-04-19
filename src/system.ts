@@ -29,8 +29,9 @@ export const Task = reactive({
   setDefaultActive() {
     const foundTask = Task.list.find((item) => item.isActive);
     const showedTasks = Task.list.filter((item) => !item.isMinimize);
-    if (!foundTask && showedTasks.length) {
-      Task.handleActive.call(null, showedTasks[showedTasks.length - 1]);
+    const lastTask = showedTasks[showedTasks.length - 1];
+    if (!foundTask && lastTask) {
+      Task.handleActive.call(null, lastTask);
     }
   },
 });
@@ -45,6 +46,10 @@ export const App = reactive({
       return appModules[glob ?? ""];
     };
     const module = getModule(app.vuePath);
+    if (!module) {
+      console.error(`未找到应用组件: ${app.vuePath}`);
+      return;
+    }
     const render: any = await module();
     Task.list = Task.list.map((task) => ({ ...task, isActive: false }));
     Task.list.push({

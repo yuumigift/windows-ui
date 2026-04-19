@@ -75,16 +75,25 @@ const snake = (() => {
     const y = pos.y;
     if (!result) return;
     s.snakeBody.push({ ...pos });
-    let first = s.snakeBody[0];
-    if (s.map[y][x] === 2) {
+    const row = s.map[y];
+    const first = s.snakeBody[0];
+    if (!row) return;
+
+    if (row[x] === 2) {
       eat();
     } else {
-      s.map[first.y][first.x] = 0;
+      const firstRow = first ? s.map[first.y] : undefined;
+      if (first && firstRow) {
+        firstRow[first.x] = 0;
+      }
       s.snakeBody.shift();
     }
-    s.map[y][x] = 1;
+    row[x] = 1;
     s.snakeBody.map((item) => {
-      s.map[item.y][item.x] = 1;
+      const bodyRow = s.map[item.y];
+      if (bodyRow) {
+        bodyRow[item.x] = 1;
+      }
     });
   };
   const getClass = (item: number) => ({
@@ -97,14 +106,20 @@ const snake = (() => {
   const generateFood = () => {
     const x = floor(Math.random() * 9);
     const y = floor(Math.random() * 9);
-    if (s.map[y][x] === 0) {
-      s.map[y][x] = 2;
+    const row = s.map[y];
+    if (!row) return;
+
+    if (row[x] === 0) {
+      row[x] = 2;
     } else {
       generateFood();
     }
   };
   const init = () => {
-    s.map[0][0] = 1;
+    const firstRow = s.map[0];
+    if (firstRow) {
+      firstRow[0] = 1;
+    }
     generateFood();
   };
   window.addEventListener("keydown", (e) => {

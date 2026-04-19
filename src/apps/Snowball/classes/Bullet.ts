@@ -21,7 +21,7 @@ class BulletSpirit extends Entity {
   is_removed = false;
   speed = 5;
   constructor(x: number, y: number, angle: number, owner_id: string) {
-    super(owner_id, "black");
+    super(owner_id, "bullet", "black");
     this.vx = Math.cos(angle) * this.speed;
     this.vy = Math.sin(angle) * this.speed;
     this.x = x;

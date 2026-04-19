@@ -80,7 +80,8 @@ const init = async () => {
   const path = keys.find((o) => o.includes(props.name));
   if (path) {
     const m = globs[path];
-    const img: { default: string } = await (<Promise<{ default: string }>>m());
+    if (!m) return;
+    const img = (await m()) as { default: string };
     s.src = img.default;
   } else {
     console.error(`图片不存在: ${props.name}`);

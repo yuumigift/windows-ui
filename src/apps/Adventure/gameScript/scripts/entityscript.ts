@@ -42,7 +42,7 @@ export const EntityScript = () => {
         const name = comp.constructor.name.toLowerCase()
         if (!s.components[name]) s.components[name] = comp
     }
-    const PushEvent = (event: string, ...args: any) => s.events?.[event](...args)
+    const PushEvent = (event: string, ...args: any) => s.events?.[event]?.(...args)
 
     const ListenForEvent = (event: string, eventHandle: (...args: any) => void) => s.events[event] = eventHandle
 

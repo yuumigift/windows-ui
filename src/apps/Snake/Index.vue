@@ -54,7 +54,8 @@ const stage = reactive({
   enterFrame() {
     if (!snake.is_die) {
       snake.move();
-      if (snake.body[0][0] === food.position[0] && snake.body[0][1] === food.position[1]) {
+      const head = snake.body[0];
+      if (head && head[0] === food.position[0] && head[1] === food.position[1]) {
         snake.is_growing = true;
         food.create();
       }
@@ -104,6 +105,11 @@ const snake = reactive({
 
     const getNewSnakeHead = (): Piece => {
       const oldHead = snake.body[0];
+      if (!oldHead) {
+        snake.is_die = true;
+        return [0, 0];
+      }
+
       if (snake.direction === "left") {
         if (oldHead[0] === 0) {
           snake.is_die = true;
@@ -138,6 +144,11 @@ const snake = reactive({
     };
     const new_body = [getNewSnakeHead(), ...getNewSnakeTail()];
     const head = new_body[0];
+    if (!head) {
+      snake.is_die = true;
+      return;
+    }
+
     new_body.forEach((o, i) => {
       if (i > 0 && o[0] === head[0] && o[1] === head[1]) {
         snake.is_die = true;
@@ -166,6 +177,7 @@ const food = reactive({
       let is_in_body = false;
       for (let index = 0; index < snake.body.length; index++) {
         const body_piece = snake.body[index];
+        if (!body_piece) continue;
         if (body_piece[0] === x && body_piece[1] === y) {
           is_in_body = true;
         }
