@@ -77,5 +77,7 @@ export const apps = [
     title: "我的世界",
     vuePath: "Minecraft/Index.vue",
     icon: "minecraft.svg",
+    width: 1100,
+    height: 720,
   }
 ];
