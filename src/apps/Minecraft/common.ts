@@ -10,7 +10,7 @@ export const GAME_HEIGHT = 640;
 /** 世界中的 1 个逻辑方块会被渲染为多少 Three.js 世界单位。 */
 export const WORLD_SCALE = 10;
 /** 单个区块在 X/Z 平面上包含的列数。 */
-export const CHUNK_SIZE = 20;
+export const CHUNK_SIZE = 14;
 /** 以玩家所在区块为中心，向外额外保留多少圈区块。 */
 export const CHUNK_RENDER_DISTANCE = 3;
 /** 单帧内用于构建区块网格的时间预算，单位毫秒，用来减轻卡顿。 */

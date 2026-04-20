@@ -40,6 +40,7 @@
 </template>
 
 <script lang="ts" setup>
+import { useTemplateRef } from "vue";
 import { Game } from "./classes/Game";
 import { BLOCK_TYPES, type BlockType } from "./types";
 
