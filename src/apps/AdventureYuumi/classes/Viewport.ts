@@ -3,7 +3,7 @@ import type { EnterFramePayload } from "../types";
 
 export class Viewport {
   x = 0;
-  enterFrame({ player }: EnterFramePayload) {
+  enterFrame({ player, ground }: EnterFramePayload) {
     // 玩家处于视口右侧区域（触发视口右移区域）
     if (player.rect.x > this.x + GAME_WIDTH - VIEWPORT_PADDING) {
       this.x += (player.rect.x - (this.x + GAME_WIDTH - VIEWPORT_PADDING)) * VIEWPORT_MOVE_FORCE;
@@ -16,8 +16,13 @@ export class Viewport {
     if (this.x < 0) {
       this.x = 0;
     }
-    if (this.x > 1e5) {
-      this.x = 1e5;
+    const maxViewportX = Math.max(0, ground.worldWidth - GAME_WIDTH);
+    if (this.x > maxViewportX) {
+      this.x = maxViewportX;
     }
+  }
+
+  reset() {
+    this.x = 0;
   }
 }

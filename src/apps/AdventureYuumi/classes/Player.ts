@@ -1,4 +1,4 @@
-import { PLAYER_HEIGHT, PLAYER_JUMP_FORCE, PLAYER_SPEED_FORCE, PLAYER_SPEED_MAX, PLAYER_WIDTH, block } from "../common";
+import { GAME_HEIGHT, PLAYER_HEIGHT, PLAYER_JUMP_FORCE, PLAYER_SPEED_FORCE, PLAYER_SPEED_MAX, PLAYER_WIDTH, block } from "../common";
 import type { EnterFramePayload, MoveConfig } from "../types";
 import { Entity } from "./Entity";
 
@@ -46,6 +46,9 @@ export class Player extends Entity {
       }
     });
   }
+  reset(x: number, y: number) {
+    super.reset(x, y);
+  }
   enterFrame(payload: EnterFramePayload) {
     payload.monster.list.forEach((monster) => {
       const monster_block_info = block(this.rect, monster.rect);
@@ -65,8 +68,18 @@ export class Player extends Entity {
         }
       }
     });
-    
+
     this.move(payload);
+
+    if (this.rect.y > GAME_HEIGHT + 120) {
+      payload.global.over.value = true;
+    }
+
+    const goal_info = block(this.rect, payload.ground.goal);
+    if (goal_info.direction !== "") {
+      payload.global.win.value = true;
+    }
+
     this.draw(payload);
   }
 }

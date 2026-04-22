@@ -19,6 +19,8 @@ export class Game {
   monster: Monster;
   ground: Ground;
   spark: Spark;
+  private animationFrameId = 0;
+  private started = false;
 
   constructor() {
     this.viewport = new Viewport();
@@ -26,9 +28,10 @@ export class Game {
     this.monster = new Monster();
     this.ground = new Ground();
     this.spark = new Spark();
+    this.reset();
   }
   enterFrame() {
-    requestAnimationFrame(() => this.enterFrame());
+    this.animationFrameId = requestAnimationFrame(() => this.enterFrame());
     if (this.global.over.value) return;
     if (this.global.win.value) return;
     clear();
@@ -41,16 +44,32 @@ export class Game {
       spark: this.spark,
     };
     this.viewport.enterFrame(enterFramePayload);
-    this.player.enterFrame(enterFramePayload);
-    this.monster.enterFrame(enterFramePayload);
     this.ground.enterFrame(enterFramePayload);
+    this.monster.enterFrame(enterFramePayload);
+    this.player.enterFrame(enterFramePayload);
     this.spark.enterFrame(enterFramePayload);
+  }
+  reset() {
+    this.global.over.value = false;
+    this.global.win.value = false;
+    this.viewport.reset();
+    this.ground.reset();
+    this.player.reset(this.ground.spawnPoint.x, this.ground.spawnPoint.y);
+    this.monster.reset(this.ground);
+    this.spark.list = [];
   }
   start(cvs: Ref<HTMLCanvasElement | undefined>) {
     const init = () => {
       setContext(cvs.value?.getContext("2d"));
+      this.reset();
+      if (this.started) return;
+      this.started = true;
       this.enterFrame();
     };
     onMounted(init);
+    onBeforeUnmount(() => {
+      cancelAnimationFrame(this.animationFrameId);
+      this.started = false;
+    });
   }
 }

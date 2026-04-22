@@ -30,6 +30,7 @@ export const useCanvas = () => {
   const setContext = (_ctx: CanvasRenderingContext2D | undefined | null) => {
     ctx = _ctx;
   };
+  const getContext = () => (checkCtx(ctx) ? ctx : null);
   const draw = (x: number, y: number, width: number, height: number, color: string = "black") => {
     if (!checkCtx(ctx)) return;
     ctx.fillStyle = color;
@@ -39,7 +40,7 @@ export const useCanvas = () => {
     if (!checkCtx(ctx)) return;
     ctx.clearRect(0, 0, GAME_WIDTH, GAME_HEIGHT);
   };
-  return { draw, clear, setContext };
+  return { draw, clear, setContext, getContext };
 };
 
 export const block = (a: Rect, b: Rect): { rect: Rect; direction: PushDirection } => {

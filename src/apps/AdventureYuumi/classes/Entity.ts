@@ -1,4 +1,4 @@
-import { FRICTION, GRAVITY, block, useCanvas } from "../common";
+import { FRICTION, GAME_HEIGHT, GRAVITY, block, useCanvas } from "../common";
 import type { EnterFramePayload, MoveConfig, Rect } from "../types";
 
 const { draw } = useCanvas();
@@ -104,5 +104,20 @@ export class Entity {
   }
   draw({ viewport }: EnterFramePayload) {
     draw(this.rect.x - viewport.x, this.rect.y, this.rect.w, this.rect.h, this.color);
+  }
+
+  reset(x: number, y: number) {
+    this.rect.x = x;
+    this.rect.y = y;
+    this.ax = 0;
+    this.vx = 0;
+    this.vy = 0;
+    this.jumping = false;
+    this.is_jump = false;
+    this.is_left = false;
+    this.is_right = false;
+    if (this.rect.y > GAME_HEIGHT) {
+      this.rect.y = y;
+    }
   }
 }
