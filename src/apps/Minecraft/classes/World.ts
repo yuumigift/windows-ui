@@ -161,7 +161,7 @@ const hashNoise = (x: number, z: number) => {
 
 /** 木屋与小路所在的核心保护区，生成自然地形/树木时需要避开。 */
 const withinCabinPlot = (x: number, z: number) =>
-  Math.abs(x) <= CABIN_HALF_WIDTH + 3 && z >= -CABIN_HALF_DEPTH - 3 && z <= PATH_LENGTH + 5;
+  Math.abs(x) <= CABIN_HALF_WIDTH + 1 && z >= -CABIN_HALF_DEPTH - 1 && z <= PATH_LENGTH + 1;
 
 /**
  * `World` 负责管理所有“世界内容”：
@@ -787,14 +787,18 @@ export class World {
       const surfaceHeight = this.getSurfaceHeight(position.x, position.z);
       if (position.y < 0 || position.y > WORLD_TOP_HEIGHT || position.y > surfaceHeight) return null;
       if (position.y === surfaceHeight) return "grass";
-      if (surfaceHeight - position.y <= 2) return "dirt";
+      if (surfaceHeight - position.y <= 4) return "dirt";
       return "stone";
     }
 
   /**
    * 计算地表高度。
    *
-   * 木屋区域使用固定平地，其他地方用正弦 + 噪声组合出柔和起伏。
+   * 木屋区域使用固定平地，其他地方用多层噪声叠加：
+   * - 低频高振幅的正弦波制造连绵山脉与盆地
+   * - 中频中等振幅模拟起伏丘陵
+   * - 高频低振幅补充局部细节
+   * 基准面设在 WORLD_MAX_HEIGHT 中段附近，避免大片区域被截断到 0。
    */
   private getSurfaceHeight(x: number, z: number) {
       const key = getColumnKey(x, z);
@@ -803,17 +807,22 @@ export class World {
 
       const height = withinCabinPlot(x, z)
         ? CABIN_GROUND_HEIGHT
-        : Math.max(
-            SEA_LEVEL,
-            Math.min(
-              WORLD_MAX_HEIGHT,
-              Math.round(
+        : Math.round(
+            Math.max(
+              0,
+              Math.min(
+                WORLD_MAX_HEIGHT,
                 SEA_LEVEL +
-                  2 +
-                  Math.sin((x + this.terrainSeedOffset.x) * 0.19) * 1.5 +
-                  Math.cos((z + this.terrainSeedOffset.y) * 0.17) * 1.3 +
-                  Math.sin((x + z + this.terrainSeedOffset.x * 0.35 + this.terrainSeedOffset.y * 0.2) * 0.08) * 1.15 +
-                  (this.sampleSeededNoise(x, z, this.terrainSeedOffset) - 0.5) * 1.2,
+                  14 +
+                  // 山脉：低频高振幅，制造连绵山脊与深谷盆地
+                  Math.sin((x + this.terrainSeedOffset.x) * 0.015) * 5 +
+                  Math.cos((z + this.terrainSeedOffset.y) * 0.018) * 4.5 +
+                  // 丘陵：中频中等振幅，丰富山脚与谷地过渡
+                  Math.sin((x + this.terrainSeedOffset.x) * 0.08) * 1.8 +
+                  Math.cos((z + this.terrainSeedOffset.y) * 0.09) * 1.5 +
+                  // 微地形：低频低振幅，避免产生坑洞
+                  Math.sin((x + z + this.terrainSeedOffset.x * 0.35 + this.terrainSeedOffset.y * 0.2) * 0.04) * 0.5 +
+                  (this.sampleSeededNoise(x, z, this.terrainSeedOffset) - 0.5) * 0.5,
               ),
             ),
           );

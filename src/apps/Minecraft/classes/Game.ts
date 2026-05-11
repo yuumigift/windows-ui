@@ -1,4 +1,5 @@
 import * as THREE from "three";
+import { BLOCK_SIZE, PLAYER_EYE_HEIGHT } from "../common";
 import { BLOCK_TYPES, type BlockType } from "../types";
 import { Viewport } from "./Viewport";
 import { World } from "./World";
@@ -17,6 +18,8 @@ export class Game {
   blockName = ref<BlockType>("wood");
   /** 当前世界里已经渲染出的方块总数。 */
   blockCount = ref(0);
+  /** 玩家当前所在方块坐标（X, Z 地面平面 / Y 高度）。 */
+  playerPos = ref({ x: 0, y: 0, z: 0 });
 
   private scene = new THREE.Scene();
   private viewport = new Viewport();
@@ -85,12 +88,17 @@ export class Game {
     // 2. 更新玩家移动与碰撞
     // 3. 推进世界区块、粒子等逻辑
     // 4. 更新准星命中的高亮方块
-    // 5. 将最新统计同步到界面
+    // 5. 同步玩家坐标与方块统计到界面
     // 6. 最终渲染场景
     const delta = this.viewport.update();
     this.viewport.updateMovement(this.world, delta);
     this.world.update(delta, this.viewport.camera.position);
     this.world.updateSelection(this.viewport.camera);
+    this.playerPos.value = {
+      x: Math.round(this.viewport.camera.position.x / BLOCK_SIZE),
+      y: Math.round((this.viewport.camera.position.y - PLAYER_EYE_HEIGHT) / BLOCK_SIZE),
+      z: Math.round(this.viewport.camera.position.z / BLOCK_SIZE),
+    };
     this.blockCount.value = this.world.count;
     this.viewport.render(this.scene);
   };

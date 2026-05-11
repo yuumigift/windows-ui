@@ -16,9 +16,9 @@ export const CHUNK_RENDER_DISTANCE = 3;
 /** 单帧内用于构建区块网格的时间预算，单位毫秒，用来减轻卡顿。 */
 export const CHUNK_BUILD_TIME_BUDGET = 5;
 /** 自然地形允许生成到的最大高度。 */
-export const WORLD_MAX_HEIGHT = 7;
+export const WORLD_MAX_HEIGHT = 25;
 /** 世界中允许存在方块的绝对最高层，建筑/树冠也不能超过该值。 */
-export const WORLD_TOP_HEIGHT = 14;
+export const WORLD_TOP_HEIGHT = 50;
 /** 海平面高度，也是地形噪声的下限之一。 */
 export const SEA_LEVEL = 2;
 /** 单个方块在 Three.js 世界中的边长。 */
@@ -50,7 +50,7 @@ export const GROUND_SNAP_HEIGHT = BLOCK_SIZE * 1.15;
 export const STEP_DOWN_HEIGHT = BLOCK_SIZE * 0.22;
 
 /** 木屋地基高度，木屋周围地形会被强制拉平到这一层。 */
-export const CABIN_GROUND_HEIGHT = 4;
+export const CABIN_GROUND_HEIGHT = 18;
 /** 木屋在 X 方向上的半宽。 */
 export const CABIN_HALF_WIDTH = 3;
 /** 木屋在 Z 方向上的半深度。 */

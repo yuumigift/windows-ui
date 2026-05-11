@@ -6,13 +6,14 @@
 		<!-- 固定在屏幕中心的准星，用于辅助瞄准方块。 -->
 		<div class="crosshair"></div>
 
-		<!-- 左上角 HUD：显示世界方块统计和当前选中方块。 -->
+		<!-- 左上角 HUD：显示玩家坐标、世界方块统计和当前选中方块。 -->
 		<div class="hud top_left">
+			<div>坐标：{{ game.playerPos.value.x }}, {{ game.playerPos.value.y }}, {{ game.playerPos.value.z }}</div>
 			<div>方块总数：{{ game.blockCount.value }}</div>
 			<div>当前放置：{{ blockLabelMap[game.blockName.value] }}</div>
 		</div>
 
-		<!-- 右上角操作区：当前只保留一个重置按钮。 -->
+		<!-- 右上角操作区：重置按钮。 -->
 		<div class="hud top_right">
 			<button class="action_btn" @click="game.restart()">重置地形</button>
 		</div>
