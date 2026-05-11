@@ -101,7 +101,7 @@ const Star = reactive({
       const img = imgMap[star.img];
       if (!img) return;
       ctx.globalAlpha = star.opacity;
-      ctx.drawImage(img, star.x - Star.config.size / 2 - rect.x, star.y - Star.config.size / 2 - rect.y, Star.config.size, Star.config.size);
+      ctx.drawImage(img, star.x - Star.config.size / 2, star.y - Star.config.size / 2, Star.config.size, Star.config.size);
       ctx.globalAlpha = 0;
     });
     requestAnimationFrame(Star.enterFrame);
@@ -109,8 +109,11 @@ const Star = reactive({
 });
 
 const handleMouseMove = (e: MouseEvent) => {
+  const rect = ref_star.value?.getBoundingClientRect() ?? { x: 0, y: 0 };
+  const x = e.clientX - rect.x;
+  const y = e.clientY - rect.y;
   for (let i = 0; i < 8; i++) {
-    Star.addStar(e.clientX, e.clientY);
+    Star.addStar(x, y);
   }
 };
 onMounted(() => {
