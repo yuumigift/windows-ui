@@ -45,11 +45,5 @@
     "vite": "8.0.7",
     "vite-plugin-vue-devtools": "^8.1.1",
     "vue-tsc": "^3.2.6"
-  },
-  "pnpm": {
-    "ignoredBuiltDependencies": [
-      "core-js",
-      "vue-demi"
-    ]
   }
 }
