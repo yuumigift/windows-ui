@@ -1,13 +1,17 @@
 <template>
   <div class="c__task_icon" :title="title">
     <div class="icon">
-      <img :src="`/icon/${icon}`" alt="" />
+      <img :src="getIconUrl(icon)" alt="" />
     </div>
     <div class="title">{{ title }}</div>
   </div>
 </template>
 
 <script setup lang="ts">
+const iconBase = `${import.meta.env.BASE_URL}icon/`;
+
+const getIconUrl = (icon: string) => `${iconBase}${icon}`;
+
 defineProps({
   icon: {
     default: "",
@@ -44,6 +48,7 @@ defineProps({
 }
 .title {
   display: -webkit-box;
+  line-clamp: 2;
   margin-top: 8px;
   overflow: hidden;
   text-align: center;

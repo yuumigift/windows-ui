@@ -12,7 +12,7 @@
           </div>
           <div class="apps_grid">
             <div class="app_item" v-for="app in filteredApps" :key="app.title" @click="openApp(app)">
-              <div class="app_icon"><img :src="`/icon/${app.icon}`" alt="" /></div>
+              <div class="app_icon"><img :src="getIconUrl(app.icon)" alt="" /></div>
               <div class="app_title">{{ app.title }}</div>
             </div>
           </div>
@@ -32,10 +32,14 @@ import type { System } from "@/types";
 import { Task, App } from "@/system";
 import { apps } from "@/apps/config";
 
+const iconBase = `${import.meta.env.BASE_URL}icon/`;
+
+const getIconUrl = (icon?: string) => `${iconBase}${icon ?? ""}`;
+
 const getIcon = (task: System.ITask) => {
   const title = task.title;
   const icon = apps.find((app) => app.title === title);
-  return `/icon/${icon?.icon}`;
+  return getIconUrl(icon?.icon);
 };
 
 // Start menu state
