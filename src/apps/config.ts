@@ -64,6 +64,13 @@ export const apps = [
     vuePath: "Snowball/Index.vue",
     icon: "showball.png",
   },
+  {
+    title: "拼图",
+    vuePath: "PicturePuzzle/Index.vue",
+    icon: "garden.png",
+    width: 1180,
+    height: 860,
+  },
   // {
   //   title: "大冒险",
   //   vuePath: "Adventure/index.vue",
