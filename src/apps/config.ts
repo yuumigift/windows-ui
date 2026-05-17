@@ -95,4 +95,11 @@ export const apps = [
     width: 1040,
     height: 760,
   },
+  {
+    title: "坦克大战",
+    vuePath: "Tank/Index.vue",
+    icon: "garden.png",
+    width: 1000,
+    height: 800,
+  },
 ];
